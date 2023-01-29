@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+<article class="row">
+    <section class="col">
+        <h1>Contact</h1>
+        <p>Me contacter via le formulaire ci-dessous</p>
+        <form action="" method="post">
+            <div class="form-group">
+                    <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Nom</label>
+                    <input class="form-control form-control-lg w-25" type="text" placeholder="nom" id="inputLarge">
+            </div>
+            <div class="form-group">
+                <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Prénom</label>
+                <input class="form-control form-control-lg w-25" type="text" placeholder="prénom" id="inputLarge">
+            </div>
+                <div class="form-group">
+                <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Email</label>
+                <input class="form-control form-control-lg w-25" type="email" placeholder="email" id="inputLarge">
+            </div>
+            <div class="d-flex mt-4">
+                <button type="submit" class="btn btn-secondary my-3">Envoyer</button>
+            </div>
+        </form>
+    </section>
+</article>
+{% endblock %}
