@@ -1,0 +1,407 @@
+body {
+    color: white;
+    font-size: 0.9em;
+    /*background-color: #03111c;*/
+    background-color: black;
+}
+
+#bloc_page {
+    width: 1140px;
+    margin: auto;
+}
+
+/*------ Logo & Navigation principal ------*/
+#header-navigation {
+    height: 260px;
+    display: flex;
+    font-size: 1.3rem;
+    font-family: 'Oswald', sans-serif;
+    font-weight: lighter;
+    background-image: url("../images/bullebaniere-v2.png");
+    background-repeat: no-repeat;
+    box-shadow: 0px 2px 0px #1c1a19;;
+    justify-content: space-around;
+}
+
+#block-nav-left {
+    width: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#dev {
+    align-items: center;
+    margin-top: 3.5%;
+}
+
+#logo {
+    margin-top: -15%;
+    margin-left: 55%;
+}
+
+.nav-name {
+    color: #FFC312;
+    text-align: end;
+    margin-right: 30%;
+}
+
+.navigation {
+    display: flex;
+}
+
+.nav-principal {
+    display: flex;
+    width: 100%;
+    margin-top: 2%;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.nav-principal-item {
+    margin-top: 190px;
+    padding-top: 3%;
+}
+.nav-principal-item a:hover {
+    transition: .3s;
+    color: #FFC312;
+}
+
+.nav-principal-link {
+    color: #fff;
+    margin-left: 35px;
+    text-decoration: none;
+    text-transform:capitalize;
+    border: 1px solid transparent;
+}
+.active,
+.nav-principal-link a:hover {
+    transition: .3s;
+    color: #FFC312;
+}
+
+
+
+/*------ BODY ------*/
+#body-content {
+    margin-top: 5%;
+    padding-bottom: 5%;
+}
+
+.picture-left,
+.picture-left-long {
+    width: 370px;
+    height: 370px;
+    float: left;
+    shape-outside: circle(55%)
+}
+
+.picture-left, img {
+    margin: 1% 10% 3% 8%;
+}
+
+.picture-left-long, img {
+    margin: 1% 8% 3% 5%;
+}
+
+article p {
+    font-size: 1.1rem;
+    line-height: 30px;
+}
+
+#block-learning {
+    margin-top: 3.5%;
+    text-align: center;
+}
+
+.orange {
+    font-size: 1.2rem;
+    line-height: 50px;
+}
+
+.orange,
+.orange-bold,
+.orange-formation,
+.white-bold {
+    font-weight: bolder;
+}
+
+.orange,
+.orange-bold,
+.orange-formation {
+    color:#FFC312;
+}
+
+.item {
+    font-size: 1.1rem;
+    line-height: 24px;
+}
+
+
+/*------ FORMATION ------*/
+.orange-formation {
+    text-transform: uppercase;
+    font-size: 1.2rem;  
+}
+
+
+/*------ PRODUCTION ------*/
+figure
+{
+    display: flex;
+    flex-flow: row;
+    margin: auto;
+    text-align: right;
+}
+
+.production-link
+{ 
+    color: #fff;
+    text-decoration: none;
+}
+
+.production-link-picture
+{
+    width: 150px;
+    text-align: center;
+}
+
+figcaption
+{
+    width: 250px;
+    text-align: center;
+    font: italic smaller sans-serif;
+}
+/*------ ANIMATION ------*/
+
+#block-animation {
+    z-index: -10;
+    height: 500px;
+    text-align: center;
+}
+
+.bulle-js,
+.bulle-php,
+.bulle-html,
+.bulle-css,
+.bulle-twig,
+.bulle-vs,
+.bulle-slack,
+.bulle-discord,
+.bulle-symfony,
+.bulle-github,
+.bulle-git {
+    cursor: pointer;
+    position: relative;
+    transition: ease-in-out 1.5s;
+    background-repeat: no-repeat;
+}
+
+.bulle-js {
+    width: 95px;
+    height: 118px;
+    top: -160px;
+    left: 260px;
+    background-image: url('../images/bulle-js-v2.png');
+}
+.bulle-js:hover {
+    top: -180px;
+    left: 280px;
+    background-image: url('../images/bulle-js.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-php {
+    width: 115px;
+    height: 130px;
+    top: -310px;
+    left: 360px;
+    background-image: url('../images/bulle-php-v2.png');
+}
+.bulle-php:hover {
+    top: -330px;
+    left: 380px;
+    background-image: url('../images/bulle-php.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-html {
+    width: 115px;
+    height: 120px;
+    top: -470px;
+    left: 160px;
+    background-image: url('../images/bulle-html-v2.png');
+}
+.bulle-html:hover {
+    top: -500px;
+    left: 180px;
+    background-image: url('../images/bulle-html.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-css {
+    width: 115px;
+    height: 108px;
+    top: -680px;
+    left: 130px;
+    background-image: url('../images/bulle-css-v2.png');
+}
+.bulle-css:hover {
+    top: -700px;
+    left: 150px;
+    background-image: url('../images/bulle-css.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-twig {
+    width: 130px;
+    height: 140px;
+    top: -870px;
+    left: 260px;
+    background-image: url('../images/bulle-twig-v2.png');
+}
+.bulle-twig:hover {
+    top: -885px;
+    left: 280px;
+    background-image: url('../images/bulle-twig.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-vs {
+    width: 200px;
+    height: 200px;
+    top: -1045px;
+    left: 540px;
+    background-image: url('../images/bulle-vs-v2.png');
+}
+.bulle-vs:hover {
+    top: -1055px;
+    left: 560px;
+    background-image: url('../images/bulle-vs.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-slack {
+    width: 115px;
+    height: 110px;
+    top: -1010px;
+    left: 650px;
+    background-image: url('../images/bulle-slack-v2.png');
+}
+.bulle-slack:hover {
+    top: -1040px;
+    left: 680px;
+    background-image: url('../images/bulle-slack.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-discord {
+    width: 100px;
+    height: 110px;
+    top: -1085px;
+    left: 810px;
+    background-image: url('../images/bulle-discord-v2.png');
+}
+.bulle-discord:hover {
+    top: -1100px;
+    left: 830px;
+    background-image: url('../images/bulle-discord.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-symfony {
+    width: 150px;
+    height: 140px;
+    top: -1350px;
+    left: 805px;
+    background-image: url('../images/bulle-symfony-v2.png');
+}
+.bulle-symfony:hover {
+    top: -1370px;
+    left: 780px;
+    background-image: url('../images/bulle-symfony.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-github {
+    width: 100px;
+    height: 110px;
+    top: -1390px;
+    left: 925px;
+    background-image: url('../images/bulle-github-v2.png');
+}
+.bulle-github:hover {
+    top: -1400px;
+    left: 945px;
+    background-image: url('../images/bulle-github.png');
+    transition: ease-in-out 1.5s;
+}
+
+.bulle-git {
+    width: 100px;
+    height: 110px;
+    top: -1430px;
+    left: 970px;
+    background-image: url('../images/bulle-git-v2.png');
+}
+.bulle-git:hover {
+    top: -1460px;
+    left: 990px;
+    background-image: url('../images/bulle-git.png');
+}
+
+/*----- LOGING -----*/
+#block-connexion {
+    margin: 5% 5% 9% 5%;
+}
+
+.form-connexion {
+    width: 900px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.loging {
+    color: #FFC312;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 3%;
+}
+
+.input-connexion {
+    margin: 1% 1% 3% 1%;
+    padding: 0.6%;
+    border: 1px solid black;
+}
+
+.btn-connexion {
+    border: 0;
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 3px;
+    background-color: #FFC312;
+}
+
+/*------ FOOTER ------*/
+#footer {
+    height: 100%;
+    font-family: 'Oswald', sans-serif;
+    background-image: url('../images/bullebaniere.jpg');
+    padding-bottom: 5%;
+    
+}
+
+#contact {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#sociaux {
+    display: flex;
+}
+
+#email a {
+    text-decoration: none;
+    color: #fff;
+}
