@@ -1,0 +1,16 @@
+@startuml Super Admin
+
+!include Role.puml 
+
+Class SuperAdmin {
+    
+    - email : string
+    - password : string
+    
+    + login()
+    + logout()
+    + moderateComment()
+    + administerSite()
+}
+
+@enduml

@@ -1,0 +1,12 @@
+@startuml Comment
+
+Class Comment {
+
+    - content: string
+    - statutComment : string
+    - statusComment : string
+    - dateComment : DateTime 
+
+}
+
+@enduml

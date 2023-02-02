@@ -1,0 +1,10 @@
+@startuml Role
+
+Class Role {
+    
+    - name : string
+    - roleString : string
+    
+}
+
+@enduml

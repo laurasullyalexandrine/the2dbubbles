@@ -1,0 +1,20 @@
+@startuml AdminSequence
+
+skinparam responseMessageBelowArrow true
+skinparam SequenceMessageAlignment center
+
+actor Admin as Admin #OrangeRed
+
+database 2dbubbles as 2dbubbles #HotPink
+
+Admin -> 2dbubbles: créer un compte
+alt cas réussi
+2dbubbles -> Admin: valider création du compte
+else email déjà existant 
+2dbubbles -> Admin: échec de l'inscription
+
+
+
+
+end
+@enduml

@@ -1,0 +1,12 @@
+@startuml PosteManager
+
+Class PostManager {
+
+    + addPost(Post post, SuperAdmin superadmin, Admin admin)
+    + updatePost(Post post, SuperAdmin superAdmin)
+    + deletePost(Post post, SuperAdmin superAdmin)
+    + createListingPost(Post post)
+    
+    }
+
+@enduml

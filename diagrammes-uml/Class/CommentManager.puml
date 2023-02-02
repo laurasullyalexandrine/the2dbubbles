@@ -1,0 +1,13 @@
+@startuml CommentManager
+
+Class CommentManager {
+
+    + addComment(Comment comment, SuperAdmin superAdmin, Admin admin)
+    + updateComment(Comment comment, SuperAdmin superAdmin)
+    + deleteComment(Comment comment, SuperAdmin superAdmin)
+    + moderateComment(Comment comment)
+    + createListingComment(Comment comment)
+    
+    }
+
+@enduml
