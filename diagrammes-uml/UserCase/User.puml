@@ -1,0 +1,26 @@
+
+@startuml User
+
+left to right direction
+
+actor "User" as User #Plum
+
+rectangle 2dbubbles {
+  usecase "S'inscrire" as UC1
+  usecase "Se connecter" as UC2
+  usecase "Consulter les posts" as UC3
+  usecase "Afficher les posts" as UC4
+  usecase "Ajouter des commentaires" as UC5
+  usecase "Consulter autres ressources du site" as UC6
+  usecase "Télécharger le CV" as UC7
+}
+
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+User --> UC5
+User --> UC6
+User --> UC7
+
+@enduml
