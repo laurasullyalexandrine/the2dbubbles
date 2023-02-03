@@ -1,6 +1,7 @@
 @startuml Tag
 
 Class Tag {
+    
     - name : string
     
 }

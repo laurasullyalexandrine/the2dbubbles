@@ -3,9 +3,8 @@
 Class Comment {
 
     - content: string
-    - statutComment : string
-    - statusComment : string
-    - dateComment : DateTime 
+    - status : bool
+    - date : DateTime 
 
 }
 
