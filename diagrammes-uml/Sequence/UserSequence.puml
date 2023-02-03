@@ -1,0 +1,45 @@
+@startuml UserSequence
+
+skinparam responseMessageBelowArrow true
+skinparam SequenceMessageAlignment center
+
+actor User as User #Plum
+
+entity Post as Post #LightYellow
+entity Comment as Comment #LightYellow
+entity Tag as Tag #LightYellow
+
+database 2dbubbles as 2dbubbles #YellowGreen
+
+User -> 2dbubbles: créer un compte
+alt cas réussi
+2dbubbles -> User: valider création du compte
+else email déjà existant 
+2dbubbles -> User: échec de l'inscription
+
+User -> 2dbubbles: demander authentification 
+2dbubbles -> User: valider authentification 
+else identification invalides
+2dbubbles -> User: échec de l'authentification
+
+' Avoir si ok
+User -> Tag: chercher un post
+Tag -> User: afficher détails post
+else ce post n'existe pas
+User -> Tag: le post demandé n'existe pas
+
+User -> Comment: ajouter commentaire
+Comment -> User: commentaitre publié
+User -> Comment: refuser commentaire
+Comment -> User: commentaire supprimé
+
+User -> Comment: chercher tous ses commentaires
+Comment -> User: afficher liste de ses commentaires
+
+User -> Comment: chercher un commentaire
+Comment -> User: afficher détails commentaire
+else ce commentaire n'existe pas
+User -> Comment: le commentaire demandé n'existe pas
+
+end
+@enduml
