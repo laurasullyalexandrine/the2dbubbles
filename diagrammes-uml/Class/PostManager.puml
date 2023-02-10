@@ -2,11 +2,11 @@
 
 Class PostManager {
 
-    + addPost(Post post, SuperAdmin superadmin, Admin admin)
-    + updatePost(Post post, SuperAdmin superAdmin)
-    + deletePost(Post post, SuperAdmin superAdmin)
+    + addPost(Post post, User user)
+    + updatePost(Post post, User user)
+    + deletePost(Post post, User user)
     + createListingPost(Post post)
     
-    }
+}
 
 @enduml

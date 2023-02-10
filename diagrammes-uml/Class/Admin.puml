@@ -8,6 +8,7 @@ Class Admin {
     + Login()
     + Logout()
     + administerSite()
+    
 }
 
 @enduml

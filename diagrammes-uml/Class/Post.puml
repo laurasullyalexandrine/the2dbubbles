@@ -6,6 +6,7 @@
 !include Role.puml 
 !include PostManager.puml 
 !include CommentManager.puml 
+!include UserManager.puml
 
 Class Post {
     
@@ -22,9 +23,10 @@ Post *--"1" User: create <
 Post "1"-* Comment: have <>
 Tag *-* Post: have <>
 Comment *-"1" User: create <
-PostManager -- Post: manage 
+PostManager -- Post: exec 
 CommentManager -- Comment: manage
 User - CommentManager: moderate
+UserManager - User: exec
 
 
 @enduml

@@ -1,0 +1,12 @@
+@startuml UserManager
+
+Class UserManager {
+
+    + addUser()
+    + updateUser(User user)
+    + deleteUser(User user)
+    + administerSite()
+    
+    }
+
+@enduml

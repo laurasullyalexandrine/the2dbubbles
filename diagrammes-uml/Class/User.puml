@@ -1,16 +1,12 @@
 @startuml User
 
 Class User {
+    
     - email : string
     - password: string
     
     + login()
     + logout()
-    + addComment()
-    + updateComment()
-    + deleteComment()
-    + moderateComment()
-    + administerSite()
 
 }
 
