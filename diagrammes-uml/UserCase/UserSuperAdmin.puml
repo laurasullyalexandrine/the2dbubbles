@@ -1,0 +1,36 @@
+
+@startuml SuperAdmin
+
+left to right direction
+
+actor "SuperAdmin" as SuperAdmin #OliveDrab
+
+rectangle 2dbubbles {
+  usecase "Créer un compte" as UC1
+  usecase "Se connecter" as UC2
+  usecase "Ajouter des posts" as UC3
+  usecase "Modifier des posts" as UC4
+  usecase "Supprimer des posts" as UC5
+  usecase "Afficher les posts" as UC6
+  usecase "Ajouter des commentaires" as UC7
+  usecase "Modérer des commentaires" as UC8
+  usecase "Supprimer des commentaires" as UC9
+  usecase "Ajouter des tags" as UC10
+  usecase "Modifier des tags" as UC11
+  usecase "Supprimer des tags" as UC12
+}
+
+SuperAdmin --> UC1
+SuperAdmin --> UC2
+SuperAdmin --> UC3
+SuperAdmin --> UC4
+SuperAdmin --> UC5
+SuperAdmin --> UC6
+SuperAdmin --> UC7
+SuperAdmin --> UC8
+SuperAdmin --> UC9
+SuperAdmin --> UC10
+SuperAdmin --> UC11
+SuperAdmin --> UC12
+
+@enduml

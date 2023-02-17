@@ -1,0 +1,12 @@
+@startuml PosteManager
+
+Class PostManager {
+
+    + addPost(Post post, User user)
+    + updatePost(Post post, User user)
+    + deletePost(Post post, User user)
+    + createListingPost(Post post)
+    
+}
+
+@enduml

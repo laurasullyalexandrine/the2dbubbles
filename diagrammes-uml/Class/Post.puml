@@ -1,0 +1,32 @@
+@startuml Post
+
+!include Comment.puml 
+!include Tag.puml 
+!include User.puml 
+!include Role.puml 
+!include PostManager.puml 
+!include CommentManager.puml 
+!include UserManager.puml
+
+Class Post {
+    
+    - title : string
+    - chapo : string
+    - content : string
+    - status : bool 
+    - date : DateTime 
+    
+}
+
+User *--"1" Role: have <>
+Post *--"1" User: create <
+Post "1"-* Comment: have <>
+Tag *-* Post: have <>
+Comment *-"1" User: create <
+PostManager -- Post: exec 
+CommentManager -- Comment: manage
+User - CommentManager: moderate
+UserManager - User: exec
+
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml Comment
+
+Class Comment {
+
+    - content: string
+    - status : bool
+    - date : DateTime 
+
+}
+
+@enduml

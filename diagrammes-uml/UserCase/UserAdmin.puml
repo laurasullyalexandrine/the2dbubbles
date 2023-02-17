@@ -1,0 +1,28 @@
+
+@startuml Admin
+
+left to right direction
+
+actor "Admin" as Admin #OliveDrab
+
+rectangle 2dbubbles {
+  usecase "Créer un compte" as UC1
+  usecase "Se connecter" as UC2
+  usecase "Ajouter des posts" as UC3
+  usecase "Modifier les posts" as UC4
+  usecase "Afficher les posts" as UC5
+  usecase "Ajouter des commentaires" as UC6
+  usecase "Ajouter des tags" as UC7
+  usecase "Modifier des tags" as UC8
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+Admin --> UC8
+
+@enduml
