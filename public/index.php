@@ -7,8 +7,28 @@ use \Twig\Loader\FilesystemLoader;
 require dirname(__DIR__). '/vendor/autoload.php';
 
 // Routing
-$page = 'home';
+/**
+ * Exemples de routes :
+ * .../blog/list => BlogController->list()
+ * .../blog/view/id/5 => BlogController->view(['id' => 5])
+ * Premier mot serait le controlleur deuxième mot action (méthode) 
+ * tous les couples de mots suivants seront des paramètres à transmettre à l'action
+ * ou
+ * .../blog/view/5 => BlogController->view(5)
+ * .../blog/category/livre-d-or/laura => BlogController->category('livre-d-or', 'laura')
+ */
 
+$url = $_SERVER['REQUEST_URI'];
+$url = trim($url, '/');
+$params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
+$controller = array_shift($params); // Permet de stocker le premier élément du tableau qui le controlleur 
+$action = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du controlleur 
+
+// $controller->$action(...$params);
+dd($url, $controller, $action, ...$params); // Les 3 petits points permet de récupérer chaque nouveau paramètre en tant que clé
+
+
+$page = 'home';
 if (isset($_GET['p'])) {
     $page = $_GET['p'];
 }
