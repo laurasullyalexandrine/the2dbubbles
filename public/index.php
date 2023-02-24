@@ -2,11 +2,34 @@
 
 namespace App;
  
+use AltoRouter;
 use \Twig\Environment;
 use \Twig\Loader\FilesystemLoader;
 
 require dirname(__DIR__). '/vendor/autoload.php';
 
+//AltoRouter is a small but powerful routing class,
+$router = new AltoRouter();
+
+$url = $_SERVER['REQUEST_URI'];
+
+$url = trim($url, '/');
+$params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
+$controller = array_shift($params); // Permet de stocker le premier élément du tableau qui le controlleur 
+$method = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du controlleur 
+
+// Permet de mapper tous les controlleurs
+$router->map(
+    'GET',
+    $url, [
+        'controller' => $controller,
+        'method' => $method
+    ],
+    'main-home'
+);
+
+
+dd($router);
 // Routing
 /**
  * Exemples de routes :
@@ -20,6 +43,7 @@ require dirname(__DIR__). '/vendor/autoload.php';
  */
 
 $url = $_SERVER['REQUEST_URI'];
+dd($url);
 $url = trim($url, '/');
 $params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
 $controller = array_shift($params); // Permet de stocker le premier élément du tableau qui le controlleur 
