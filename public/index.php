@@ -25,7 +25,7 @@ $controller = array_shift($params); // Permet de stocker le premier élément du
 $action = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du controlleur 
 
 // $controller->$action(...$params);
-dd($url, $controller, $action, ...$params); // Les 3 petits points permet de récupérer chaque nouveau paramètre en tant que clé
+// dd($url, $controller, $action, ...$params); // Les 3 petits points permet de récupérer chaque nouveau paramètre en tant que clé
 
 
 $page = 'home';
