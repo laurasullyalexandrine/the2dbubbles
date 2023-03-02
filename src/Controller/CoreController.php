@@ -9,7 +9,7 @@ class CoreController
     {
 
         // Charge le chemin absolu vers le dossier front
-        $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/../templates/front');
+        $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/../templates/');
 
         // Crée l'environement des modèles charger avec ceux dans le dossier front
         $twig = new \Twig\Environment($loader);

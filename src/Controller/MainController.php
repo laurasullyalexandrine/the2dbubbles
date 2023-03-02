@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-class HomeController extends CoreController {
+class MainController extends CoreController {
     
     public function home() {
         $this->show('home');

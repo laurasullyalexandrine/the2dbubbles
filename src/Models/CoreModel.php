@@ -1,7 +1,9 @@
 <?php 
 namespace App\Models;
 
+
 class CoreModel {
+
     
     /**
      * The id of the entity
