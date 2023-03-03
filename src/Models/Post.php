@@ -51,7 +51,7 @@ class Post extends CoreModel {
             'id' => $postId
         ]);
         $post = $pdoStatement->fetchObject(self::class);
- 
+
         return $post;
     }
 
@@ -61,7 +61,7 @@ class Post extends CoreModel {
      *
      * @return bool
      */
-    public function insert()
+    public function insert(): bool
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "

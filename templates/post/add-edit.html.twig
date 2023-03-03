@@ -6,8 +6,8 @@
     <h2>{{post.chapo}}</h2> 
 
     <p>
-        <time datetime=" {{post.createdAt|date('Y-m-d-')}} ">{{post.createdAt|date('d-m-Y')}}</time> 
-        <time datetime=" {{post.createdAt|date('H:i:s')}} ">{{post.createdAt|date('H:i:s')}}</time> 
+        <time datetime="{{post.createdAt|date('d-m-Y')}}">{{post.createdAt|date('d-m-Y')}}</time>
+        <time datetime="{{post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time> 
         {% if post.status == true %}
             validé <i class="fa-regular fa-circle-check"></i>
         {% else %}
@@ -16,8 +16,6 @@
     </p>
 
     <p>{{post.content}}</p>
-
-
       
 {% endblock %}
 

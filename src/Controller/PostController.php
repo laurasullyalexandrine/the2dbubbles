@@ -59,6 +59,10 @@ class PostController extends CoreController
      */
     public function edit($postId)
     {
+        if ($this->isPost()) {
+            dd($_POST);
+        }
+        
         $post = Post::findBy($postId);
 
         // On affiche notre vue en transmettant les infos du post
@@ -68,5 +72,6 @@ class PostController extends CoreController
                 'post' => $post
             ]
         );
+        
     }
 }
