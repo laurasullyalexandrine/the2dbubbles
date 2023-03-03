@@ -1,0 +1,11 @@
+{% extends "/base.html.twig" %}
+
+{% block body %}
+    <h1>Liste des rôles</h1>
+   
+    {% for role in roles %}
+        <p>{{role.name}}</p>
+    {% endfor %}
+      
+    
+{% endblock %}
