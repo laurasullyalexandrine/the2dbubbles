@@ -8,7 +8,7 @@ class Post extends CoreModel {
     
     private $title;
     private $chapo;
-    private $id_comment;
+    private $comments;
 
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
@@ -115,22 +115,24 @@ class Post extends CoreModel {
         return $this;
     }
 
+
+
     /**
-     * Get the value of id_comment
+     * Get the value of comments
      */ 
-    public function getId_comment()
+    public function getComments()
     {
-        return $this->id_comment;
+        return $this->comments;
     }
 
     /**
-     * Set the value of id_comment
+     * Set the value of comments
      *
      * @return  self
      */ 
-    public function setId_comment($id_comment)
+    public function setComments($comments)
     {
-        $this->id_comment = $id_comment;
+        $this->comments = $comments;
 
         return $this;
     }

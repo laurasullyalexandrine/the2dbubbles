@@ -4,7 +4,7 @@ namespace App\Models;
 class Role extends CoreModel {
     
     private $roleString;
-    private $id_user;
+    private $users;
     
 
     /**
@@ -27,22 +27,23 @@ class Role extends CoreModel {
         return $this;
     }
 
+
     /**
-     * Get the value of id_user
+     * Get the value of users
      */ 
-    public function getId_user()
+    public function getUsers()
     {
-        return $this->id_user;
+        return $this->users;
     }
 
     /**
-     * Set the value of id_user
+     * Set the value of users
      *
      * @return  self
      */ 
-    public function setId_user($id_user)
+    public function setUsers($users)
     {
-        $this->id_user = $id_user;
+        $this->users = $users;
 
         return $this;
     }

@@ -5,7 +5,7 @@ class User {
     
     private $email;
     private $password;
-    private $id_post;
+    private $posts;
     
 
     /**
@@ -48,22 +48,23 @@ class User {
         return $this;
     }
 
+
     /**
-     * Get the value of id_post
+     * Get the value of posts
      */ 
-    public function getId_post()
+    public function getPosts()
     {
-        return $this->id_post;
+        return $this->posts;
     }
 
     /**
-     * Set the value of id_post
+     * Set the value of posts
      *
      * @return  self
      */ 
-    public function setId_post($id_post)
+    public function setPosts($posts)
     {
-        $this->id_post = $id_post;
+        $this->posts = $posts;
 
         return $this;
     }
