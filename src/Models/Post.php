@@ -60,7 +60,18 @@ class Post extends CoreModel {
         {
             $pdoDBConnexion = Database::getPDO();
             $sql = "
-                INSERT INTO `post` ()";
+                INSERT INTO `post` (title, chapo, content, status, created_at)
+                VALUES (:title,  :chapo, :content, :status, now())"
+                ;
+
+            $pdoStatement = $pdoDBConnexion->prepare($sql);
+            $pdoStatement->execute([
+                ':title' => $this->title,
+                ':chapo' => $this->chapo,
+                ':content' => $this->content,
+                ':status' => 0,
+                ':created_at' => $this->created_at
+            ]);
         }
 
         public function update()
@@ -114,8 +125,6 @@ class Post extends CoreModel {
 
         return $this;
     }
-
-
 
     /**
      * Get the value of comments

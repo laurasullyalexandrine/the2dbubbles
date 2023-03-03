@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Models\Post;
-
+/**
+ * Controller dédié à la gestion des posts
+ */
 class PostController extends CoreController
 {
 
@@ -13,7 +15,11 @@ class PostController extends CoreController
     //         'name_2' => $name2
     //     ]);
     // }
-
+    
+    /**
+     * Listing des posts
+     * @return void
+     */
     public function list()
     {
 
@@ -31,6 +37,27 @@ class PostController extends CoreController
         );
     }
 
+    /**
+     * Ajout d'un nouveau post
+     *
+     * @return void
+     */
+    public function add() 
+    {
+        $this->show(
+            'post/add-edit',
+            [
+                'post' => new Post()
+            ]
+        );
+    }
+
+    /**
+     * Affiche la vue édition d'un post 
+     *
+     * @param [type] $postId
+     * @return void
+     */
     public function edit($postId)
     {
         $post = Post::findBy($postId);
