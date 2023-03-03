@@ -1,0 +1,18 @@
+{% extends "/base.html.twig" %}
+
+{% block body %}
+    <p>
+        <time datetime=" {{comment.createdAt|date('Y-m-d-')}} ">{{post.createdAt|date('d-m-Y')}}</time> 
+        <time datetime=" {{comment.createdAt|date('H:i:s')}} ">{{comment.createdAt|date('H:i:s')}}</time> 
+        
+        {% if comment.status == true %}
+            validé <i class="fa-regular fa-circle-check"></i>
+        {% else %}
+            non validé <i class="fa-regular fa-circle-xmark"></i>
+    {% endif %}
+    </p>
+{# var_dump({{comment}}) #}
+    <p>{{comment.content}}</p>
+
+{% endblock %}
+

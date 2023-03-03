@@ -22,8 +22,7 @@ class PostController extends CoreController
      */
     public function list()
     {
-
-        // On récupère tous les produits
+        // On récupère tous les posts
         $postObject = new Post();
         // Récupérer tous les posts
         $posts = $postObject->findAll();

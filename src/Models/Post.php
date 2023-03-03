@@ -55,34 +55,50 @@ class Post extends CoreModel {
         return $post;
     }
 
-        
-        public function insert()
-        {
-            $pdoDBConnexion = Database::getPDO();
-            $sql = "
-                INSERT INTO `post` (title, chapo, content, status, created_at)
-                VALUES (:title,  :chapo, :content, :status, now())"
-                ;
+    /**
+     * Méthode permettant d'ajouter un enregistrement dans la table post.
+     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     *
+     * @return bool
+     */
+    public function insert()
+    {
+        $pdoDBConnexion = Database::getPDO();
+        $sql = "
+            INSERT INTO `post` (title, chapo, content, status, created_at)
+            VALUES (:title, :chapo, :content, :status, :created_at)"
+            ;
 
-            $pdoStatement = $pdoDBConnexion->prepare($sql);
-            $pdoStatement->execute([
-                ':title' => $this->title,
-                ':chapo' => $this->chapo,
-                ':content' => $this->content,
-                ':status' => 0,
-                ':created_at' => $this->created_at
-            ]);
-        }
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':title' => $this->title,
+            ':chapo' => $this->chapo,
+            ':content' => $this->content,
+            ':status' => 0,
+            ':created_at' => $this->created_at
+        ]);
 
-        public function update()
-        {
+        // Si il y a au moins une ligne ajoutée alors...
+        if ($pdoStatement->rowCount() > 0) {
+            // Récupérer l'id auto-incrémenté généré par MySQL
+            $this->id = $pdoDBConnexion->lastInsertId();
+
+            // Retourner true si l'ajout est validé
+            return true;
+        } 
+
+        return false;
+    }
+    
+    public function update()
+    {
             
-        }
+    }
 
-        public function delete()
-        {
+    public function delete()
+    {
             
-        }
+    }
 
      
 
