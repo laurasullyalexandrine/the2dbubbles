@@ -1,0 +1,23 @@
+{% extends "/base.html.twig" %}
+
+{% block body %}
+    <h1>{{post.title}}</h1>
+   
+    <h2>{{post.chapo}}</h2> 
+
+    <p>
+        <time datetime=" {{post.createdAt|date('Y-m-d-')}} ">{{post.createdAt|date('d-m-Y')}}</time> 
+        <time datetime=" {{post.createdAt|date('H:i:s')}} ">{{post.createdAt|date('H:i:s')}}</time> 
+        {% if post.status == true %}
+            validé <i class="fa-regular fa-circle-check"></i>
+        {% else %}
+                non validé <i class="fa-regular fa-circle-xmark"></i>
+    {% endif %}
+    </p>
+
+    <p>{{post.content}}</p>
+
+    <h2>{{post.comment}}</h2> 
+      
+    
+{% endblock %}

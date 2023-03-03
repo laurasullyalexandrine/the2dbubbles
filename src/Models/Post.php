@@ -17,7 +17,7 @@ class Post extends CoreModel {
      */
     public function findAll() 
     {
-        // Connexion à la BDD
+        // Récupérer de l'objet PDO représentant la connexion à la DB
         $pdoDBConnexion = Database::getPDO();
 
         // Ecrire la requête sql
@@ -34,23 +34,34 @@ class Post extends CoreModel {
         return $posts;
     }
     /**
-     * Méthode permettant de récupérer tous les enregistrements de la table category
+     *  Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un id donné
      *
      * @param [type] $postId
      * @return Post
      */
-    public function find($postId) 
+    public static function findBy($postId) 
     {
         $pdoDBConnexion = Database::getPDO();
-        $sql = "SELECT * FROM `post` WHERE `id_post`= :id_post";
+        $sql = '
+        SELECT * 
+        FROM post 
+        WHERE id = :id';
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':id_post' => 'id_post'
+            'id' => $postId
         ]);
         $post = $pdoStatement->fetchObject(self::class);
-
+ 
         return $post;
     }
+
+        
+        public function insert()
+        {
+            $pdoDBConnexion = Database::getPDO();
+            $sql = "
+                INSERT INTO `post` ()";
+        }
 
         public function update()
         {
@@ -62,10 +73,7 @@ class Post extends CoreModel {
             
         }
 
-        public function insert()
-        {
-            
-        }
+     
 
     /**
      * Get the value of title
