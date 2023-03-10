@@ -15,7 +15,7 @@ class Post extends CoreModel {
      *
      * @return Post
      */
-    public function findAll() 
+    public static function findAll() 
     {
         // Récupérer de l'objet PDO représentant la connexion à la DB
         $pdoDBConnexion = Database::getPDO();

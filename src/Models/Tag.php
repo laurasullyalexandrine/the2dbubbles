@@ -11,7 +11,7 @@ class Tag extends CoreModel {
      *
      * @return Tag
      */
-    public function findAll() 
+    public static function findAll() 
     {
         $pdoDBConnexion = Database::getPDO();
 

@@ -22,18 +22,13 @@ class PostController extends CoreController
      */
     public function list()
     {
-        // On récupère tous les posts
-        $postObject = new Post();
-        // Récupérer tous les posts
-        $posts = $postObject->findAll();
+
+        $posts = Post::findAll();
 
         // On les envoie à la vue
-        $this->show(
-            'post/list',
-            [
+        $this->show('post/list', [
                 'posts' => $posts
-            ]
-        );
+            ]);
     }
 
     /**
@@ -43,12 +38,9 @@ class PostController extends CoreController
      */
     public function add() 
     {
-        $this->show(
-            'post/add-edit',
-            [
+        $this->show('post/add-edit', [
                 'post' => new Post()
-            ]
-        );
+            ]);
     }
 
     /**
@@ -66,12 +58,8 @@ class PostController extends CoreController
         $post = Post::findBy($postId);
 
         // On affiche notre vue en transmettant les infos du post
-        $this->show(
-            'post/add-edit',
-            [
+        $this->show('post/add-edit', [
                 'post' => $post
-            ]
-        );
-        
+            ]);
     }
 }

@@ -11,15 +11,10 @@ class TagController extends CoreController {
      */
     public function list()
     {
-        $tagObject = new Tag();
-        $tags = $tagObject->findAll();
-
-        $this->show(
-            'tag/list',
-            [
+        $tags = Tag::findAll();
+        $this->show('tag/list', [
                 'tags' => $tags
-            ]
-        );
+            ]);
     }
 
     /**
@@ -29,12 +24,9 @@ class TagController extends CoreController {
      */
     public function add() 
     {
-        $this->show(
-            'tag/add-edit',
-            [
+        $this->show('tag/add-edit', [
                 'tag' => new Tag()
-            ]
-        );
+            ]);
     }
 
     /**
@@ -46,12 +38,8 @@ class TagController extends CoreController {
     public function edit($tagId)
     {
         $tag = Tag::findBy($tagId);
-
-        $this->show(
-            'tag/add-edit',
-            [
+        $this->show('tag/add-edit', [
                 'tag' => $tag
-            ]
-        );
+            ]);
     }
 }

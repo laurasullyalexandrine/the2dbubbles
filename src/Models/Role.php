@@ -14,7 +14,7 @@ class Role extends CoreModel {
      *
      * @return Role
      */
-    public function findAll() 
+    public static function findAll() 
     {
         $pdoDBConnexion = Database::getPDO();
 

@@ -15,7 +15,7 @@ class User extends CoreModel {
      *
      * @return User
      */
-    public function findAll() 
+    public static function findAll() 
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = 'SELECT * FROM user';
@@ -53,7 +53,7 @@ class User extends CoreModel {
      * @param string $email
      * @return User
      */
-    public function findByEmail(string $email) 
+    public static function findByEmail(string $email) 
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -78,14 +78,14 @@ class User extends CoreModel {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-        INSERT INTO `user` (
-            email,
-            password
-        )
-        VALUES (
-            :email,
-            :password 
-        )";
+            INSERT INTO `user` (
+                email,
+                password
+            )
+            VALUES (
+                :email,
+                :password 
+            )";
 
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
         $pdoStatement = $pdoDBConnexion->prepare($sql);

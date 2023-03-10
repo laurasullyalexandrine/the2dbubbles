@@ -13,7 +13,7 @@ class Comment extends CoreModel
      *
      * @return Post
      */
-    public function findAll()
+    public static function findAll()
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -75,11 +75,11 @@ class Comment extends CoreModel
         return false;
     }
 
-    public function update()
+    public static function update()
     {
     }
 
-    public function delete()
+    public static function delete()
     {
     }
 }

@@ -12,15 +12,11 @@ class UserController extends CoreController {
      */
     public function list()
     {
-        // On récupère tous les users
-        $userObject = new User();
         // Récupérer tous les users
-        $users = $userObject->findAll();
+        $users = User::findAll();
 
         // On les envoie à la vue
-        $this->show(
-            'user/list',
-            [
+        $this->show('user/list', [
                 'users' => $users
             ]
         );

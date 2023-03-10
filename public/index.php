@@ -3,12 +3,15 @@
 namespace App;
  
 use App\Controller\ErrorController;
+use App\Controller\SecurityController;
 use Exception;
 
 require dirname(__DIR__). '/vendor/autoload.php';
+// $security = new SecurityController();
+// $security->userConnect();
 
 
-// Routing
+;// Routing
 /**
  * Exemples de routes :
  * .../blog/list => BlogController->list()
