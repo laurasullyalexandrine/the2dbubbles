@@ -78,6 +78,7 @@ class Post extends CoreModel {
             ':created_at' => $this->created_at
         ]);
 
+        // Retourne le nombre de lignes affectées par le dernier appel à la fonction PDOStatement::execute()
         // Si il y a au moins une ligne ajoutée alors...
         if ($pdoStatement->rowCount() > 0) {
             // Récupérer l'id auto-incrémenté généré par MySQL

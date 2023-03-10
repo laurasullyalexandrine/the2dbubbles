@@ -156,11 +156,11 @@ class CoreModel {
     }
 
     /**
-     * Get the value of updated_at
+     * Get the value of updated_at and creating a date format from the DateTime class
      */ 
     public function getUpdatedAt()
     {
-        return $this->updated_at;
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
     }
 
     /**

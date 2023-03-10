@@ -4,7 +4,7 @@ namespace App\Models;
 use PDO;
 use App\Utils\Database;
 
-class User {
+class User extends CoreModel {
     
     private $email;
     private $password;
@@ -17,18 +17,10 @@ class User {
      */
     public function findAll() 
     {
-        // Récupérer de l'objet PDO représentant la connexion à la DB
         $pdoDBConnexion = Database::getPDO();
-
-        // Ecrire la requête sql
         $sql = 'SELECT * FROM user';
-
-        // Préparer la requête
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-
-        // Exécuter la requête
         $pdoStatement->execute();
-
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
         
         return $users;
@@ -39,20 +31,75 @@ class User {
      * @param [type] $userId
      * @return User
      */
-    public static function findBy($userId) 
+    public static function findBy(int $userId) 
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = '
-        SELECT * 
-        FROM user 
-        WHERE id = :id';
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            'id' => $userId
+            SELECT * 
+            FROM user 
+            WHERE id = :id';
+            $pdoStatement = $pdoDBConnexion->prepare($sql);
+            $pdoStatement->execute([
+                'id' => $userId
         ]);
         $user = $pdoStatement->fetchObject(self::class);
  
         return $user;
+    }
+
+    /**
+     * Méthode permettant de récupérer un user par son email
+     *
+     * @param string $email
+     * @return User
+     */
+    public function findByEmail(string $email) 
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = '
+            SELECT *
+            FROM `user`
+            WHERE `email` =:email
+        ';
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        // Méthode bindValue() permet de contraintes les types de données saisies 
+        $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);
+        $pdoStatement->execute();
+
+        $user = $pdoStatement->fetchObject(self::class);
+
+        return $user;
+    }
+
+    public function insert() 
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+        INSERT INTO `user` (
+            email,
+            password
+        )
+        VALUES (
+            :email,
+            :password 
+        )";
+
+        // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':email,
+            :passwoord'
+        ]);
+
+        if ($pdoStatement->rowCount() > 0) {
+            $this->id = $pdoDBConnexion->lastInsertId();
+
+            return true;
+        }
+        return false;
     }
 
     /**

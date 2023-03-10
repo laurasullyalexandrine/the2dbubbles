@@ -11,7 +11,6 @@ class CommentController extends CoreController {
      */
     public function list()
     {
-
         $commentObject = new Comment();
         $comments = $commentObject->findAll();
 
