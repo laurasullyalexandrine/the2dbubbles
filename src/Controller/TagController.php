@@ -24,7 +24,7 @@ class TagController extends CoreController {
      */
     public function add() 
     {
-        $this->show('tag/add-edit', [
+        $this->show('tag/add', [
                 'tag' => new Tag()
             ]);
     }
@@ -38,7 +38,7 @@ class TagController extends CoreController {
     public function edit($tagId)
     {
         $tag = Tag::findBy($tagId);
-        $this->show('tag/add-edit', [
+        $this->show('tag/edit', [
                 'tag' => $tag
             ]);
     }

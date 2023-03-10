@@ -38,7 +38,7 @@ class PostController extends CoreController
      */
     public function add() 
     {
-        $this->show('post/add-edit', [
+        $this->show('post/add', [
                 'post' => new Post()
             ]);
     }
@@ -58,7 +58,7 @@ class PostController extends CoreController
         $post = Post::findBy($postId);
 
         // On affiche notre vue en transmettant les infos du post
-        $this->show('post/add-edit', [
+        $this->show('post/edit', [
                 'post' => $post
             ]);
     }

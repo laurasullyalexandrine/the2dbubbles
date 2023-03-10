@@ -25,7 +25,7 @@ class RoleController extends CoreController {
      */
     public function add() 
     {
-        $this->show('role/add-edit', [
+        $this->show('role/add', [
                 'role' => new role()
             ]);
     }
@@ -39,7 +39,7 @@ class RoleController extends CoreController {
     public function edit($roleId)
     {
         $role = role::findBy($roleId);
-        $this->show('role/add-edit', [
+        $this->show('role/edit', [
                 'role' => $role
             ]);
     }

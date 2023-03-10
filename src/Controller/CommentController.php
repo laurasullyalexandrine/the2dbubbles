@@ -25,7 +25,7 @@ class CommentController extends CoreController {
      */
     public function add() 
     {
-        $this->show('comment/add-edit', [
+        $this->show('comment/add', [
                 'comment' => new Comment()
             ]);
     }
@@ -39,7 +39,7 @@ class CommentController extends CoreController {
     public function edit($commentId)
     {
         $comment = Comment::findBy($commentId);
-        $this->show('comment/add-edit', [
+        $this->show('comment/edit', [
                 'comment' => $comment
             ]);
     }
