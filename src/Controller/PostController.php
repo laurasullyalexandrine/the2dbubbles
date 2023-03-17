@@ -22,7 +22,6 @@ class PostController extends CoreController
      */
     public function list()
     {
-
         $posts = Post::findAll();
 
         // On les envoie à la vue

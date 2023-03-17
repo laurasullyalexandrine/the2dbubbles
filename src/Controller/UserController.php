@@ -1,21 +1,18 @@
 <?php 
 
-namespace app\Controller;
+namespace App\Controller;
 
 use App\Models\User;
 
 class UserController extends CoreController {
 
     /**
-     * Listing des user
+     * Listing des users
      * @return void
      */
     public function list()
     {
-        // Récupérer tous les users
         $users = User::findAll();
-
-        // On les envoie à la vue
         $this->show('user/list', [
                 'users' => $users
             ]
@@ -27,7 +24,7 @@ class UserController extends CoreController {
      *
      * @return void
      */
-    public function create() {
+    public function register() {
         // Récupérer les données recues du formalaire d'inscription
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $password_1 = filter_input(INPUT_POST, 'password_1');
@@ -55,7 +52,7 @@ class UserController extends CoreController {
         if(empty($errors)) {
             // Instancier un nouvel objet User()
             $user = new User();
-
+            dd($user);
             // Hasher le mot de passe 
             $option = ['cost' => 12];
             $password = password_hash(
@@ -80,7 +77,7 @@ class UserController extends CoreController {
 
             $user->setEmail(filter_input(INPUT_POST, 'email'));
 
-            $this->show('user/add', [
+            $this->show('user/register', [
                 'user' => $user,
                 'errors' => $errors
             ]);
