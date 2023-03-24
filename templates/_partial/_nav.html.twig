@@ -7,36 +7,46 @@
 		<div class="collapse navbar-collapse" id="navbarColor01">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
-					<a class="nav-link {% block menu_home %} {% endblock %}" href="#">Accueil
+					<a class="nav-link {% block menu_home %} {% endblock %}" href="main/home">Accueil
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {% block menu_post %} {% endblock %}" href="#">Article</a>
+					<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {% block menu_contact %} {% endblock %}" href="#">Contact</a>
+					<a class="nav-link {% block menu_contact %} {% endblock %}" href="main/contact">Contact</a>
 				</li>
-				{# TODO: Ajouter la condition d'access à l'admin en fonction du rôle #}
+				{# Si le user à un rôle admin ou super_admin #}
 					<li class="nav-item">
-						<a class="nav-link {% block menu_admin %} {% endblock %}" href="#">Adminstration</a>
+						<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {% block menu_user %} {% endblock %}" href="#">Utilisateur</a>
+						<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/list">Utilisateur</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {% block menu_role %} {% endblock %}" href="#">Rôle</a>
+						<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/list">Rôle</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link {% block menu_tag %} {% endblock %}" href="#">Tag</a>
+						<a class="nav-link {% block menu_tag %} {% endblock %}" href="/tag/list">Tag</a>
 					</li>
-				{# TODO: Ajouter la condition d'access à l'admin en fonction du rôle #}
-				<li class="nav-item">
-					<a class="nav-link {% block menu_login %} {% endblock %}" href="#">Connexion</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link {% block menu_register %} {% endblock %}" href="#">Inscription</a>
-				</li>
+				{# fin #}
+
+				{# Si l'utilisateur n'est pas connecté #}
+					<li class="nav-item">
+						<a class="nav-link {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
+					</li>
+				{# fin #}
+
+				{# Si l'utilisateur est connecté #}
+					<li class="nav-item">
+						<a class="nav-link {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
+					</li>
+				{# fin #}
 		</div>
 	</div>
 </nav>
