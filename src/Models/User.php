@@ -60,14 +60,13 @@ class User extends CoreModel {
         $sql = '
             SELECT *
             FROM `user`
-            WHERE `email` =:email
+            WHERE `email` = :email
         ';
-
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         // Méthode bindValue() permet de contraintes les types de données saisies 
         $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);
         $pdoStatement->execute();
-
+        
         $user = $pdoStatement->fetchObject(self::class);
 
         return $user;
@@ -76,7 +75,7 @@ class User extends CoreModel {
     public function insert() 
     {
         $pdoDBConnexion = Database::getPDO();
-
+        
         $sql = "
             INSERT INTO `user` (
                 email,
@@ -90,8 +89,8 @@ class User extends CoreModel {
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':email,
-            :passwoord'
+            ':email' => $this->email,
+            ':password' => $this->password
         ]);
 
         if ($pdoStatement->rowCount() > 0) {
@@ -105,7 +104,7 @@ class User extends CoreModel {
     /**
      * Get the value of email
      */ 
-    public function getEmail()
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -115,7 +114,7 @@ class User extends CoreModel {
      *
      * @return  self
      */ 
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -125,7 +124,7 @@ class User extends CoreModel {
     /**
      * Get the value of password
      */ 
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -135,7 +134,7 @@ class User extends CoreModel {
      *
      * @return  self
      */ 
-    public function setPassword($password)
+    public function setPassword($password): self
     {
         $this->password = $password;
 

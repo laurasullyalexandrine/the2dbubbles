@@ -1,27 +1,54 @@
 {% extends "base.html.twig" %}
+{% block menu_contact %} active {% endblock %}
 
 {% block body %}
 <article class="row">
-    <section class="col">
-        <h1>Contact</h1>
-        <p>Me contacter via le formulaire ci-dessous</p>
-        <form action="" method="post">
-            <div class="form-group">
-                    <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Nom</label>
-                    <input class="form-control form-control-lg w-25" type="text" placeholder="nom" id="inputLarge">
+    <section class="vh-50">
+        <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                    class="img-fluid" alt="Sample image">
             </div>
-            <div class="form-group">
-                <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Prénom</label>
-                <input class="form-control form-control-lg w-25" type="text" placeholder="prénom" id="inputLarge">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <h1 class="text-start">Contact</h1>
+                <p class="text-start">Me contacter via le formulaire ci-dessous</p>
+                <form action="sendcontact" method="post">
+
+                    <!-- Firstname input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" name="firstname" id="Firstname" class="form-control form-control-lg" placeholder="saisir votre prénom" />
+                        <label class="form-label" for="form3Example3">Prénom</label>
+                    </div>
+
+                    <!-- Lastname input -->
+                    <div class="form-outline mb-4">
+                        <input type="text" name="lastname" id="Lastname" class="form-control form-control-lg" placeholder="saisir votre nom" />
+                        <label class="form-label" for="form3Example3">Nom</label>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input type="email" name="email" id="Email" class="form-control form-control-lg" placeholder="saisir votre email" />
+                        <label class="form-label" for="form3Example3">Email</label>
+                    </div>
+
+                    <!-- Message input -->
+                    <div class="form-outline mb-4">
+                        <textarea class="form-control" name="message" id="Message" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                    <button type="submit" class="btn btn-primary btn-lg"
+                        style="padding-left: 2.5rem; padding-right: 2.5rem;">Envoyer</button>
+                    <p class="small fw-bold mt-2 pt-1 mb-0">Vous n'avez pas de compte? <a href="#"
+                        class="link-danger">Inscription</a></p>
+                    </div>
+                </form>
             </div>
-                <div class="form-group">
-                <label class="col-form-label col-form-label-lg mt-4" for="inputLarge">Email</label>
-                <input class="form-control form-control-lg w-25" type="email" placeholder="email" id="inputLarge">
-            </div>
-            <div class="d-flex mt-4">
-                <button type="submit" class="btn btn-secondary my-3">Envoyer</button>
-            </div>
-        </form>
+        </div>
+        </div>
     </section>
 </article>
 {% endblock %}

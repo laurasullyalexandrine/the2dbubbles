@@ -11,5 +11,13 @@
     <title>{% block title %}The 2dbubbles{% endblock %}</title>
 </head>
 <body>
-	<main class="container pt-5"> {% block body %}{% endblock %}</main>
+
+	<main class="container pt-5"> 
+        <div class="alert alert-{{flashes.alert}}">
+            {% for message in flashes.messages %}
+                {{message}}
+        </div>
+            {% endfor %} 
+        {% block body %} {% endblock %}
+    </main>
 	

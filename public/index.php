@@ -7,9 +7,9 @@ use App\Controller\SecurityController;
 use Exception;
 
 require dirname(__DIR__). '/vendor/autoload.php';
-// $security = new SecurityController();
-// $security->userConnect();
 
+// Démarrage du système de session de PHP
+session_start();
 
 ;// Routing
 /**
