@@ -1,8 +1,8 @@
-body {
-    color: white;
-    font-size: 0.9em;
+#test {
+    color: white !important;
+    font-size: 0.9em !important;
     /*background-color: #03111c;*/
-    background-color: black;
+    background-color: black !important; 
 }
 
 #bloc_page {
@@ -57,16 +57,16 @@ body {
     justify-content: flex-end;
 }
 
-.nav-principal-item {
+.nav-item {
     margin-top: 190px;
     padding-top: 3%;
 }
-.nav-principal-item a:hover {
+.nav-item a:hover {
     transition: .3s;
     color: #FFC312;
 }
 
-.nav-principal-link {
+.nav-link {
     color: #fff;
     margin-left: 35px;
     text-decoration: none;

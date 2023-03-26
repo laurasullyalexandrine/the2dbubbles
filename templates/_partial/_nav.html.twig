@@ -1,6 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="#">2dbubbles</a>
+		<a class="navbar-brand" href="main/home">
+			<img class="logo_picture"src="/images/logo-2dbubble.png" width="120" alt="logo-2DBubble">
+		</a>
+		<a href="main/home">
+			<img src="/images/dev-php.png" alt="developpeur_web_fullstack">
+		</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -17,7 +22,7 @@
 				<li class="nav-item">
 					<a class="nav-link {% block menu_contact %} {% endblock %}" href="main/contact">Contact</a>
 				</li>
-				{# Si le user à un rôle admin ou super_admin #}
+				
 					<li class="nav-item">
 						<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
 					</li>
@@ -30,9 +35,9 @@
 					<li class="nav-item">
 						<a class="nav-link {% block menu_tag %} {% endblock %}" href="/tag/list">Tag</a>
 					</li>
-				{# fin #}
+			
 
-				{# Si l'utilisateur n'est pas connecté #}
+			
 					<li class="nav-item">
 						<a class="nav-link {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
 					</li>
@@ -40,13 +45,13 @@
 					<li class="nav-item">
 						<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
 					</li>
-				{# fin #}
+			
 
-				{# Si l'utilisateur est connecté #}
+		
 					<li class="nav-item">
 						<a class="nav-link {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
 					</li>
-				{# fin #}
+				
 		</div>
 	</div>
 </nav>

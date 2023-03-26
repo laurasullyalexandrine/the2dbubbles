@@ -8,7 +8,9 @@ class User extends CoreModel {
     
     private $email;
     private $password;
+    private $roles;
     private $posts;
+    private $comments;
 
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table user
@@ -141,8 +143,27 @@ class User extends CoreModel {
         return $this;
     }
 
+    /**
+     * Get the value of roles
+     */ 
+    public function getRoles()
+    {
+        return $this->roles;
+    }
 
     /**
+     * Set the value of roles
+     *
+     * @return  self
+     */ 
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+       /**
      * Get the value of posts
      */ 
     public function getPosts()
@@ -161,4 +182,26 @@ class User extends CoreModel {
 
         return $this;
     }
+
+    /**
+     * Get the value of comments
+     */ 
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Set the value of comments
+     *
+     * @return  self
+     */ 
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+
+        return $this;
+    }
+
+
 }

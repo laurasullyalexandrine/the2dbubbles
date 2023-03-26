@@ -6,8 +6,8 @@ use App\Utils\Database;
 
 class Role extends CoreModel {
     
+    private $roleName;
     private $roleString;
-    private $users;
     
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
@@ -59,15 +59,14 @@ class Role extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            INSERT INTO `role` (id_user, name, roleString)
-            VALUES (:id_user, :name, :roleString)"
+            INSERT INTO `role` (rolename, roleString)
+            VALUES (:rolename, :roleString)"
             ;
-
+        // dd($sql);
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':name' => $this->name,
+            ':rolename' => $this->name,
             ':roleString' => $this->roleString,
-            ':id_user' => $this->users
         ]);
 
         if ($pdoStatement->rowCount() > 0) {
@@ -86,6 +85,28 @@ class Role extends CoreModel {
     public function delete()
     {
         
+    }
+
+    /**
+     * Get the value of roleName
+     */ 
+    public function getRoleName()
+    {
+        $roleName = $this->roleName;
+        $roleName = 'role_user';
+        return $this->roleName;
+    }
+
+    /**
+     * Set the value of roleName
+     *
+     * @return  self
+     */ 
+    public function setRoleName($roleName)
+    {
+        $this->roleName = $roleName;
+
+        return $this;
     }
 
     /**
@@ -108,24 +129,16 @@ class Role extends CoreModel {
         return $this;
     }
 
-
-    /**
-     * Get the value of users
-     */ 
-    public function getUsers()
+    public function getDisplayRole(): string
     {
-        return $this->users;
+        if ($this->roleString === "ROLE_SUPER_ADMIN") {
+            return "Super Administrateur";
+        } elseif ($this->roleString === "ROLE_SUPER_ADMIN") {
+            return "Administrateur";
+        } else {
+            return "2dbubblebum";
+        }
     }
 
-    /**
-     * Set the value of users
-     *
-     * @return  self
-     */ 
-    public function setUsers($users)
-    {
-        $this->users = $users;
 
-        return $this;
-    }
 }

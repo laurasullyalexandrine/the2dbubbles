@@ -2,6 +2,14 @@
 {% block menu_role %} active {% endblock %}
 
 {% block body %}
-
-
+    <h1>Création de rôle</h1>
+    <form action="addpost" method="POST" class="row g-3">
+    <div class="col-md-6">
+        <label for="validationDefault03" class="form-label">Name</label>
+        <input type="text" class="form-control" value="" name="name_role" id="nameRole">
+    </div>
+      <div class="col-12">
+    <button class="btn btn-primary" type="submit">Créer</button>
+  </div>
+    </form>
 {% endblock %}

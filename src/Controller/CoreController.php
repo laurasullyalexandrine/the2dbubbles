@@ -40,4 +40,14 @@ class CoreController
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
+    protected function addFlash(string $alert = null, string $message = null): array
+    {
+        $flashes = [
+            'alert' => $alert,
+            'messages' => $message
+        ];
+    
+        return $flashes;
+    }
+
 }

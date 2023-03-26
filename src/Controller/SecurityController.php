@@ -35,16 +35,7 @@ class SecurityController extends CoreController
      */
     public function registerPost()
     {
-        $alert = null;
-        $message = null;
-
-        $flashes = [
-            'alert' => $alert,
-            'messages' => [
-                'message' => $message
-            ]
-        ];
-
+        $flashes = $this->addFlash();
         // Récupérer les données recues du formalaire d'inscription
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $password_1 = filter_input(INPUT_POST, 'password_1');
@@ -52,28 +43,23 @@ class SecurityController extends CoreController
 
         // Vérifier que tous les champs ne sont pas vide 
         if (empty($email)) {
-            $flashes['alert'] = 'warning';
-            $flashes['messages']['message'] = 'Le champ email est vide';
+            $flashes = $this->addFlash('warning', 'Le champ email est vide');
         }
 
         if (empty($password_1)) {
-            $flashes['alert'] = 'warning';
-            $flashes['messages']['message'] = 'Le champ mot de passe est vide';
+            $flashes = $this->addFlash('warning', 'Le champ mot de passe est vide');
         }
 
         if (empty($password_2)) {
-            $flashes['alert'] = 'warning';
-            $flashes['messages']['message'] = 'Le champ confirmation de mot de passe est vide';
+            $flashes = $this->addFlash('warning', 'Le champ confirmation de mot de passe est vide');
         }
-
         if ($password_1 === $password_2) {
         } else {
-            $flashes['alert'] = 'danger';
-            $flashes['messages']['message'] = 'Les mots de passe de corresponde pas!';
+            $flashes = $this->addFlash('danger', 'Les mots de passe de corresponde pas!');
         }
         
         // Si le formulaire est valide alors ...
-        if (empty($flashes['messages']['message']) && $this->isPost()) {
+        if (empty($flashes) && $this->isPost()) {
             // dd($flashes, 1, $this->isPost());
             // Instancier un nouvel objet User()
             $user = new User();
@@ -94,10 +80,10 @@ class SecurityController extends CoreController
                 // dd($flashes, 2, $this->isPost());
                 header('Location: /security/login');
                 exit;
-            } else { // Si erreur lors de l'enregistrement
+            } // Si erreur lors de l'enregistrement
+            else { 
                 // dd($flashes, 3, $this->isPost());
-                $flashes['alert'] = 'danger';
-                $flashes['messages']['message'] = "Votre compte n'a pas été créé!";
+                $flashes = $this->addFlash('danger', "Votre compte n'a pas été créé!");
                 exit;
             }
         } // Si le formulaire est soumis mais pas valide alors ... 
@@ -107,7 +93,6 @@ class SecurityController extends CoreController
             $user = new User();
             $user->setEmail(filter_input(INPUT_POST, 'email'));
 
-            // dd($checks, $uncheck);
             $this->show('security/register', [
                 'user' => $user,
                 'flashes' => $flashes
@@ -123,59 +108,54 @@ class SecurityController extends CoreController
      */
     public function loginPost()
     {
-        $alert = null;
-        $message = null;
-
-        $flashes = [
-            'alert' => $alert,
-            'messages' => [
-                'message' => $message
-            ]
-        ];
+        $flashes = $this->addFlash();
 
         $email =  filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
         $password = filter_input(INPUT_POST, 'password');
-
+       
             // Vérifier l'existence du user
             $userCurrent = User::findByEmail($email);
+            // dd($userCurrent);
 
             // Créer un système de control du formulaire et si erreur afficher un message d'alerte
             // Controle mot de passe
             if (empty($password)) {
-                $flashes['alert'] = 'danger';
-                $flashes['messages']['message'] = 'Merci de saisir votre mot de passe';
+                // dd($flashes, 1);
+                $flashes = $this->addFlash('warning', 'Merci de saisir votre mot de passe!');
             } elseif (
+                
                 $userCurrent
                 && !empty($password)
-                && !password_verify($password, $userCurrent->getPassword())
+                && !password_verify($password, $userCurrent->getPassword()) // Si la vérification du mot de passe échoue
             ) {
-                $flashes['alert'] = 'danger';
-                $flashes['messages']['message'] = 'Mot de passe incorrect!';
+                // dd($flashes, 1, $password);
+                $flashes = $this->addFlash('danger', 'Mot de passe incorrect!');
             }
 
             // Contrôle email
             if (empty($email)) {
-                $flashes['alert'] = 'warning';
-                $flashes['messages']['message'] = 'Merci de saisir votre email';
+                // dd($flashes, 2, $email);
+                $flashes = $this->addFlash('warning', 'Merci de saisir votre email');
             } elseif ($email !== $userCurrent->getEmail()) {
-                $flashes['alert'] = 'danger';
-                $flashes['messages']['message'] = 'Email incorrect!';
+                $flashes = $this->addFlash('danger', 'Email incorrect!');
             }
 
             // Controle du user
             if (!$userCurrent) {
-                $flashes['alert'] = 'danger';
-                $flashes['messages']['message'] = "Cet utilisateur n'existe pas!";
+                // dd($flashes, 3, $userCurrent);
+                $flashes = $this->addFlash('danger', "Cet utilisateur n'existe pas!");
             }
 
             // Si il y a des erreurs on les affiches sinon ...
-            if (!empty($flashes['messages']['message'])) {
+            if (!empty($flashes['messages'])) {
+                // dd($flashes, 4, $flashes);
                 $this->show('security/login', [
                     'user' => $userCurrent,
                     'flashes' => $flashes
                 ]);
                 
             } else { // Connecter le user
+                // dd($flashes, 5, 'connecter le user');
                 $_SESSION['id'] = $userCurrent->getId();
                 $_SESSION['userObject'] = $userCurrent;
                 header('Location: /main/home');

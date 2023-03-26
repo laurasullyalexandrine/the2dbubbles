@@ -2,12 +2,18 @@
 
 {% block menu_home %} active {% endblock %}
 {% block body %}
+<article id="body-content">
+    <aside class="picture-left"><img src="/images/bienvenue.png" alt="welcome-picture"></aside>
+        <section class="article">
+                <h2><span class="orange">La petite présentation…</span></h2>
+                    <p>Bienvenue sur mon CV interactif et évolutif ! <br> Le graphisme est entièrement réalisé sous l'outil d'édition et de retouche image <strong class="orange-bold">GIMP</strong>.
 
-    <article class="col">
-        <h1>Bienvenue sur 2dbubbles</h1>
-        <section class="row">
-            <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
-            <p>Quam architecto ad porro assumenda et quas, libero aut. Laboriosam maiores laborum illo esse. Assumenda, tempora atque illum eum eligendi dignissimos labore!</p>
+                    <p>Ce petit projet est réalisé, sous le <strong class="orange-bold">framework Symfony</strong> parce qu'il utilise le  <strong class="orange-bold">Design Pattern MVC (Model Vues Controler)</strong>.
+                        La programmation est faite sous l'éditeur de code <strong class="orange-bold">Visual Studio Code</strong>, j'ai utilisé les langages <strong class="orange-bold">HTML5</strong> et <strong class="orange-bold">CSS3</strong> pour l'intégration de la partie statique du site, à l'aide du <strong class="orange-bold">moteur de templates TWIG</strong>. Le framework, géré par le langage<strong class="orange-bold"> PHP</strong>, m'a permis d'y ajouter une petite touche dynamique avec la possibilité de créer un compte pour de futurs 'Bubble Comment' !<br>
+
+                    J'espère pouvoir y intégrer bientôt le langage <strong class="orange-bold">JavaScript</strong> !<br><br>
+
+                    Bonne visite...</p>
         </section>
-    </article>
+</article>
 {% endblock %}
