@@ -43,7 +43,10 @@ class RoleController extends CoreController {
         $id = $session['id'];
         // Vérifier l'existence du user
         $userCurrent = User::findBy($id);
-        
+
+        // $role = $userCurrent->getRoles();
+        // dd($role);
+
         if (empty($name_role)) {
             $flashes = $this->addFlash('warning', 'Le champ nom est vide');
         }

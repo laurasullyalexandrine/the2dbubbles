@@ -148,6 +148,9 @@ class User extends CoreModel {
      */ 
     public function getRoles()
     {
+        $roles = $this->roles;
+        $roles = 'ROLE_UTILISATEUR';
+
         return $this->roles;
     }
 
