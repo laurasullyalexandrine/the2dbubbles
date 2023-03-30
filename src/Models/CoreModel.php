@@ -4,7 +4,6 @@ namespace App\Models;
 use DateTime;
 
 class CoreModel {
-
     
     /**
      * The id of the entity
@@ -12,27 +11,6 @@ class CoreModel {
      * @var int
      */
     protected $id;
-
-    /**
-     * The name of the entities Role and Tag
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * The content of the entities Post and Comment
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * The status of the entities Post and Comment
-     *
-     * @var bool
-     */
-    protected $status;
     
     protected $created_at;
     protected $updated_at;
@@ -58,78 +36,6 @@ class CoreModel {
     public function setId(int $id)
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get the name of the entities Role and Tag
-     *
-     * @return  string
-     */ 
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the name of the entities Role and Tag
-     *
-     * @param  string  $name  The name of the entities Role and Tag
-     *
-     * @return  self
-     */ 
-    public function setName(string $name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get the content of the entities Post and Comment
-     *
-     * @return  string
-     */ 
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set the content of the entities Post and Comment
-     *
-     * @param  string  $content  The content of the entities Post and Comment
-     *
-     * @return  self
-     */ 
-    public function setContent(string $content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get the status of the entities Post and Comment
-     *
-     * @return  bool
-     */ 
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set the status of the entities Post and Comment
-     *
-     * @param  bool  $status  The status of the entities Post and Comment
-     *
-     * @return  self
-     */ 
-    public function setStatus(bool $status)
-    {
-        $this->status = $status;
 
         return $this;
     }

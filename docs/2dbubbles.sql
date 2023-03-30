@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 24 mars 2023 à 11:20
+-- Généré le : dim. 26 mars 2023 à 20:48
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.1.12
 
@@ -69,10 +69,18 @@ CREATE TABLE `post_tag` (
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `name` varchar(20) NOT NULL,
-  `rolestring` varchar(84) NOT NULL
+  `rolename` varchar(64) NOT NULL,
+  `rolestring` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `role`
+--
+
+INSERT INTO `role` (`id`, `rolename`, `rolestring`) VALUES
+(2, 'super_administrateur', 'ROLE_SUPER_ADMINIST'),
+(3, 'administrateur', 'ROLE_ADMINISTRATEUR'),
+(4, 'utilisateur', 'ROLE_UTILISATEUR');
 
 -- --------------------------------------------------------
 
@@ -93,8 +101,9 @@ CREATE TABLE `tag` (
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `id_post` int(11) DEFAULT NULL,
-  `id_comment` int(11) DEFAULT NULL,
+  `roles` int(11) DEFAULT NULL,
+  `posts` int(11) DEFAULT NULL,
+  `comments` int(11) DEFAULT NULL,
   `email` varchar(180) NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -103,9 +112,9 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `id_post`, `id_comment`, `email`, `password`) VALUES
-(2, NULL, NULL, 'laura@2dbubbles.com', '$2y$12$/P9zNnJ8zbPhFPGkHz28EOOsrE8xcxn4jfPBIYGuA0R/00CclpQ0S'),
-(3, NULL, NULL, 'laura@2dbubbles.com', '$2y$12$yZYh0.jTFJm5aeL.Fb6JGuEqdG9Z.uJhFI1/vYxDgQ5T2cVlLJVLW');
+INSERT INTO `user` (`id`, `roles`, `posts`, `comments`, `email`, `password`) VALUES
+(13, 3, NULL, NULL, 'laura@2dbubbles.com', '$2y$12$CNUYfPWF5J73t.P2szjsVODYH9XKrMkuJ34BNLtRORk62/qyq4w9C'),
+(16, NULL, NULL, NULL, 'paul.baba@gmail.com', '$2y$12$0Q0a2qt2oV8GkceLD7dRPe0mfVP4dIE95sFMQUJ9mr53jKjYFKhW6');
 
 --
 -- Index pour les tables déchargées
@@ -128,8 +137,7 @@ ALTER TABLE `post`
 -- Index pour la table `role`
 --
 ALTER TABLE `role`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_user` (`id_user`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `tag`
@@ -142,8 +150,9 @@ ALTER TABLE `tag`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_comment` (`id_comment`),
-  ADD KEY `id_post` (`id_post`);
+  ADD KEY `id_comment` (`comments`),
+  ADD KEY `id_post` (`posts`),
+  ADD KEY `roles` (`roles`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -165,7 +174,7 @@ ALTER TABLE `post`
 -- AUTO_INCREMENT pour la table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `tag`
@@ -177,7 +186,7 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Contraintes pour les tables déchargées
@@ -190,17 +199,12 @@ ALTER TABLE `post`
   ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`id_comment`) REFERENCES `comment` (`id`) ON DELETE CASCADE;
 
 --
--- Contraintes pour la table `role`
---
-ALTER TABLE `role`
-  ADD CONSTRAINT `role_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE;
-
---
 -- Contraintes pour la table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_comment`) REFERENCES `comment` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`id_post`) REFERENCES `post` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`comments`) REFERENCES `comment` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`posts`) REFERENCES `post` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_ibfk_3` FOREIGN KEY (`roles`) REFERENCES `role` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

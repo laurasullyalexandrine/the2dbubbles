@@ -1,15 +1,36 @@
-<?php 
+<?php
+
 namespace App\Models;
 
 use PDO;
 use App\Utils\Database;
 
-class User extends CoreModel {
-    
+class User extends CoreModel
+{
+    /**
+     * @var string
+     */
     private $email;
+
+    /**
+     * @var string
+     */
     private $password;
+
+    /**
+     * @var int
+     */
     private $roles;
+
+    /**
+     * @var int
+     */
     private $posts;
+
+
+    /**
+     * @var int
+     */
     private $comments;
 
     /**
@@ -17,14 +38,18 @@ class User extends CoreModel {
      *
      * @return User
      */
-    public static function findAll() 
+    public static function findAll()
     {
         $pdoDBConnexion = Database::getPDO();
-        $sql = 'SELECT * FROM user';
+        $sql = "
+            SELECT user.id, user.email, role.rolename
+            FROM user
+            LEFT JOIN role ON user.roles = role.id
+            ORDER BY email ASC
+            ";
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        
         return $users;
     }
     /**
@@ -33,19 +58,19 @@ class User extends CoreModel {
      * @param [type] $userId
      * @return User
      */
-    public static function findBy(int $userId) 
+    public static function findBy(int $userId)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = '
             SELECT * 
             FROM user 
             WHERE id = :id';
-            $pdoStatement = $pdoDBConnexion->prepare($sql);
-            $pdoStatement->execute([
-                'id' => $userId
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            'id' => $userId
         ]);
         $user = $pdoStatement->fetchObject(self::class);
- 
+
         return $user;
     }
 
@@ -55,7 +80,7 @@ class User extends CoreModel {
      * @param string $email
      * @return User
      */
-    public static function findByEmail(string $email) 
+    public static function findByEmail(string $email)
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -68,16 +93,21 @@ class User extends CoreModel {
         // Méthode bindValue() permet de contraintes les types de données saisies 
         $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);
         $pdoStatement->execute();
-        
+
         $user = $pdoStatement->fetchObject(self::class);
 
         return $user;
     }
 
-    public function insert() 
+    /**
+     * Méthode permettant de modifier un user
+     *
+     * @return void
+     */
+    public function insert()
     {
         $pdoDBConnexion = Database::getPDO();
-        
+
         $sql = "
             INSERT INTO `user` (
                 email,
@@ -85,7 +115,7 @@ class User extends CoreModel {
             )
             VALUES (
                 :email,
-                :password 
+                :password
             )";
 
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
@@ -103,9 +133,60 @@ class User extends CoreModel {
         return false;
     }
 
+
+    public function update()
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            UPDATE `user`
+            SET 
+                email = :email,
+                password = :password,
+                roles = :roles,
+                updated_at = NOW()
+            WHERE id: = :id
+        ";
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':email' => $this->email,
+            ':password' => $this->password,
+            ':roles' => $this->roles
+        ]);
+
+        return $pdoStatement;
+    }
+
+
+    /**
+     * Méthode permettant la supression d'un utilisateur
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `user`
+            WHERE id = :id
+        ";
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+
+        // Permet d'associer une valeur à un paramètre et de contraindre la donnée attendue
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+
+        $pdoStatement->execute();
+
+        // Retourne vrai si au moins une ligne a été supprimée
+        return ($pdoStatement->rowCount() > 0);
+    }
+
+
     /**
      * Get the value of email
-     */ 
+     */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -115,7 +196,7 @@ class User extends CoreModel {
      * Set the value of email
      *
      * @return  self
-     */ 
+     */
     public function setEmail($email): self
     {
         $this->email = $email;
@@ -125,7 +206,7 @@ class User extends CoreModel {
 
     /**
      * Get the value of password
-     */ 
+     */
     public function getPassword(): string
     {
         return $this->password;
@@ -135,7 +216,7 @@ class User extends CoreModel {
      * Set the value of password
      *
      * @return  self
-     */ 
+     */
     public function setPassword($password): self
     {
         $this->password = $password;
@@ -145,12 +226,9 @@ class User extends CoreModel {
 
     /**
      * Get the value of roles
-     */ 
+     */
     public function getRoles()
     {
-        $roles = $this->roles;
-        $roles = 'ROLE_UTILISATEUR';
-
         return $this->roles;
     }
 
@@ -158,7 +236,7 @@ class User extends CoreModel {
      * Set the value of roles
      *
      * @return  self
-     */ 
+     */
     public function setRoles($roles)
     {
         $this->roles = $roles;
@@ -166,9 +244,9 @@ class User extends CoreModel {
         return $this;
     }
 
-       /**
+    /**
      * Get the value of posts
-     */ 
+     */
     public function getPosts()
     {
         return $this->posts;
@@ -178,7 +256,7 @@ class User extends CoreModel {
      * Set the value of posts
      *
      * @return  self
-     */ 
+     */
     public function setPosts($posts)
     {
         $this->posts = $posts;
@@ -188,7 +266,7 @@ class User extends CoreModel {
 
     /**
      * Get the value of comments
-     */ 
+     */
     public function getComments()
     {
         return $this->comments;
@@ -198,13 +276,11 @@ class User extends CoreModel {
      * Set the value of comments
      *
      * @return  self
-     */ 
+     */
     public function setComments($comments)
     {
         $this->comments = $comments;
 
         return $this;
     }
-
-
 }

@@ -2,10 +2,34 @@
 {% block menu_user %} active {% endblock %}
 {% block body %}
     <h1>Liste des utilisateurs</h1>
-   {{dump(users)}}
-    {% for user in users %}
-        <p>{{user.email}}</p>
-    {% endfor %}
-      
+   {# {{dump(users)}} #}
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Rôle</th>
+            </tr>
+        </thead>
+        <tbody>
+         {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{user.rolename}}</td>
+                <td>
+                    <a href="#">edit</a>
+                    <a href="#">delete</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/user/add">Ajouter</a>
     
 {% endblock %}

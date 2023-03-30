@@ -6,8 +6,29 @@ use PDO;
 
 class Post extends CoreModel {
     
+    /**
+     * @var string
+     */
     private $title;
+
+    /**
+     * @var string
+     */
     private $chapo;
+
+    /**
+     * @var string
+     */
+    private $content;
+
+    /**
+     * @var bool
+     */
+    private $status;
+
+    /**
+     * @var int
+     */
     private $comments;
 
     /**
@@ -17,18 +38,11 @@ class Post extends CoreModel {
      */
     public static function findAll() 
     {
-        // Récupérer de l'objet PDO représentant la connexion à la DB
         $pdoDBConnexion = Database::getPDO();
 
-        // Ecrire la requête sql
         $sql = 'SELECT * FROM post';
-
-        // Préparer la requête
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-
-        // Exécuter la requête
         $pdoStatement->execute();
-
         $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
         
         return $posts;
@@ -81,24 +95,60 @@ class Post extends CoreModel {
         // Retourne le nombre de lignes affectées par le dernier appel à la fonction PDOStatement::execute()
         // Si il y a au moins une ligne ajoutée alors...
         if ($pdoStatement->rowCount() > 0) {
-            // Récupérer l'id auto-incrémenté généré par MySQL
             $this->id = $pdoDBConnexion->lastInsertId();
 
-            // Retourner true si l'ajout est validé
             return true;
         } 
-
         return false;
     }
     
+    /**
+     * Méthode permettant l'édition d'un commentaire
+     *
+     * @return void
+     */
     public function update()
     {
-            
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            UPDATE `comment`
+            SET 
+                title = :title,
+                chapo = :chapo
+                content = :content,
+                status = :status,
+                updated_at = NOW()
+        ";
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':content' => $this->content,
+            ':status' => $this->status,
+        ]);
+
+        return $pdoStatement;
     }
 
+
+    /**
+     * Méthode permettant la supression d'un commentaire
+     *
+     * @return bool
+     */
     public function delete()
     {
-            
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `post`
+            WHERE id = :id
+        ";
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->execute();
+
+        return ($pdoStatement->rowCount() > 0);
     }
 
      
@@ -139,6 +189,54 @@ class Post extends CoreModel {
     public function setChapo($chapo)
     {
         $this->chapo = $chapo;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of content
+     *
+     * @return  string
+     */ 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set the value of content
+     *
+     * @param  string  $content
+     *
+     * @return  self
+     */ 
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of status
+     *
+     * @return  bool
+     */ 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the value of status
+     *
+     * @param  bool  $status
+     *
+     * @return  self
+     */ 
+    public function setStatus(bool $status)
+    {
+        $this->status = $status;
 
         return $this;
     }

@@ -7,6 +7,16 @@ use App\Utils\Database;
 
 class Comment extends CoreModel
 {
+    /**
+     * @var string
+     */
+    private $content;
+
+    /**
+     * @var bool
+     */
+    private $status;
+
 
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
@@ -75,11 +85,98 @@ class Comment extends CoreModel
         return false;
     }
 
-    public static function update()
+    /**
+     * Méthode permettant l'édition d'un commentaire
+     *
+     * @return void
+     */
+    public function update()
     {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            UPDATE `comment`
+            SET 
+                content = :content,
+                status = :status,
+                updated_at = NOW()
+        ";
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':content' => $this->content,
+            ':status' => $this->status,
+        ]);
+
+        return $pdoStatement;
     }
 
-    public static function delete()
+
+    /**
+     * Méthode permettant la supression d'un commentaire
+     *
+     * @return bool
+     */
+    public function delete()
     {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `comment`
+            WHERE id = :id
+        ";
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->execute();
+        
+        return ($pdoStatement->rowCount() > 0);
+    }
+
+    /**
+     * Get the content of the entities Post and Comment
+     *
+     * @return  string
+     */ 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set the content of the entities Post and Comment
+     *
+     * @param  string  $content  The content of the entities Post and Comment
+     *
+     * @return  self
+     */ 
+    public function setContent(string $content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the status of the entities Post and Comment
+     *
+     * @return  bool
+     */ 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set the status of the entities Post and Comment
+     *
+     * @param  bool  $status  The status of the entities Post and Comment
+     *
+     * @return  self
+     */ 
+    public function setStatus(bool $status)
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

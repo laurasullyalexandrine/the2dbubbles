@@ -6,6 +6,8 @@ use App\Utils\Database;
 
 class Tag extends CoreModel {
     
+    private $name;
+
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table tag
      *
@@ -15,7 +17,6 @@ class Tag extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
 
-        // Ecrire la requête sql
         $sql = 'SELECT * FROM `tag`';
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -73,14 +74,69 @@ class Tag extends CoreModel {
         return false;
     }
 
+    /**
+     * Méthode permettant l'édition d'un tag
+     *
+     * @return void
+     */
     public function update()
     {
-        
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            UPDATE `tag`
+            SET 
+                name = :name,
+                updated_at = NOW()
+        ";
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':name' => $this->name,
+        ]);
+
+        return $pdoStatement;
     }
 
+
+    /**
+     * Méthode permettant la supression d'un tag
+     *
+     * @return bool
+     */
     public function delete()
     {
-        
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `tag`
+            WHERE id = :id
+        ";
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->execute();
+
+        return ($pdoStatement->rowCount() > 0);
     }
 
+
+    /**
+     * Get the value of name
+     */ 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the value of name
+     *
+     * @return  self
+     */ 
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 }

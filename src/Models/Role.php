@@ -6,8 +6,22 @@ use App\Utils\Database;
 
 class Role extends CoreModel {
     
-    private $roleName;
+
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
     private $roleString;
+
+
+    public function __toString()
+    {
+        return $this->name;
+    }
     
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
@@ -77,34 +91,68 @@ class Role extends CoreModel {
         return false;
     }
 
+    /**
+     * Méthode permetttant l'édition d'un rôle
+     *
+     * @return void
+     */
     public function update()
     {
-        
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            UPDATE `role`
+            SET 
+                name = :name,
+                rolestring = :rolestring,
+        ";
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            ':name' => $this->name,
+            ':rolestring' => $this->roleString,
+        ]);
+
+        return $pdoStatement;
     }
 
+
+    /**
+     * Méthode permettant la supression d'un rôle
+     *
+     * @return bool
+     */
     public function delete()
     {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `role`
+            WHERE id = :id
+        ";
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->execute();
         
+        return ($pdoStatement->rowCount() > 0);
     }
 
     /**
-     * Get the value of roleName
+     * Get the value of name
      */ 
-    public function getRoleName()
+    public function getName()
     {
-        $roleName = $this->roleName;
-        $roleName = 'role_user';
-        return $this->roleName;
+        return $this->name;
     }
 
     /**
-     * Set the value of roleName
+     * Set the value of name
      *
      * @return  self
      */ 
-    public function setRoleName($roleName)
+    public function setName($name)
     {
-        $this->roleName = $roleName;
+        $this->name = $name;
 
         return $this;
     }
@@ -139,6 +187,8 @@ class Role extends CoreModel {
             return "2dbubblebum";
         }
     }
+
+
 
 
 }

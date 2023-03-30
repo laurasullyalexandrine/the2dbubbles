@@ -59,7 +59,7 @@ class SecurityController extends CoreController
         }
         
         // Si le formulaire est valide alors ...
-        if (empty($flashes) && $this->isPost()) {
+        if (empty($flashes['messages']) && $this->isPost()) {
             // dd($flashes, 1, $this->isPost());
             // Instancier un nouvel objet User()
             $user = new User();

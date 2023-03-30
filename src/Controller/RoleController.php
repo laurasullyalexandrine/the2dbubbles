@@ -20,7 +20,7 @@ class RoleController extends CoreController {
     }
 
     /**
-     * Ajout d'un nouveau role
+     * Page d'ajout de role méthode GET
      *
      * @return void
      */
@@ -31,7 +31,12 @@ class RoleController extends CoreController {
             ]);
     }
 
-    public function addPost() 
+    /**
+     * Ajout d'un role méthode POST
+     *
+     * @return void
+     */
+    public function addRolePost() 
     {
         $flashes = $this->addFlash();
 
@@ -44,8 +49,7 @@ class RoleController extends CoreController {
         // Vérifier l'existence du user
         $userCurrent = User::findBy($id);
 
-        // $role = $userCurrent->getRoles();
-        // dd($role);
+        // TODO: Ajouter l'access control en fonction du role et la generation du token
 
         if (empty($name_role)) {
             $flashes = $this->addFlash('warning', 'Le champ nom est vide');
