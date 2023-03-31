@@ -104,13 +104,13 @@ class Role extends CoreModel {
             UPDATE `role`
             SET 
                 name = :name,
-                rolestring = :rolestring,
+                roleString = :roleString,
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
             ':name' => $this->name,
-            ':rolestring' => $this->roleString,
+            ':roleString' => $this->roleString,
         ]);
 
         return $pdoStatement;

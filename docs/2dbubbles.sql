@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 26 mars 2023 à 20:48
+-- Généré le : ven. 31 mars 2023 à 10:38
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.1.12
 
@@ -30,8 +30,9 @@ SET time_zone = "+00:00";
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
   `content` text NOT NULL,
-  `statut` tinyint(1) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `statut` tinyint(1) UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -42,12 +43,13 @@ CREATE TABLE `comment` (
 
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
-  `id_comment` int(11) DEFAULT NULL,
+  `comments` int(11) UNSIGNED DEFAULT NULL,
   `title` varchar(84) NOT NULL,
   `chapo` varchar(180) NOT NULL,
   `content` text NOT NULL,
-  `status` tinyint(1) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `status` tinyint(1) UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -57,8 +59,8 @@ CREATE TABLE `post` (
 --
 
 CREATE TABLE `post_tag` (
-  `id_post` int(11) NOT NULL,
-  `id_tag` int(11) NOT NULL
+  `id_post` int(11) UNSIGNED NOT NULL,
+  `id_tag` int(11) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -69,15 +71,15 @@ CREATE TABLE `post_tag` (
 
 CREATE TABLE `role` (
   `id` int(11) NOT NULL,
-  `rolename` varchar(64) NOT NULL,
-  `rolestring` varchar(24) NOT NULL
+  `name` varchar(64) NOT NULL,
+  `roleString` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `role`
 --
 
-INSERT INTO `role` (`id`, `rolename`, `rolestring`) VALUES
+INSERT INTO `role` (`id`, `name`, `roleString`) VALUES
 (2, 'super_administrateur', 'ROLE_SUPER_ADMINIST'),
 (3, 'administrateur', 'ROLE_ADMINISTRATEUR'),
 (4, 'utilisateur', 'ROLE_UTILISATEUR');
@@ -90,8 +92,18 @@ INSERT INTO `role` (`id`, `rolename`, `rolestring`) VALUES
 
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL,
-  `name` varchar(10) NOT NULL
+  `name` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `tag`
+--
+
+INSERT INTO `tag` (`id`, `name`) VALUES
+(1, 'école'),
+(2, 'diplôme'),
+(3, 'reconversion'),
+(4, 'loisir');
 
 -- --------------------------------------------------------
 
@@ -101,20 +113,14 @@ CREATE TABLE `tag` (
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `roles` int(11) DEFAULT NULL,
-  `posts` int(11) DEFAULT NULL,
-  `comments` int(11) DEFAULT NULL,
+  `roles` int(11) UNSIGNED DEFAULT NULL,
+  `posts` int(11) UNSIGNED DEFAULT NULL,
+  `comments` int(11) UNSIGNED DEFAULT NULL,
   `email` varchar(180) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Déchargement des données de la table `user`
---
-
-INSERT INTO `user` (`id`, `roles`, `posts`, `comments`, `email`, `password`) VALUES
-(13, 3, NULL, NULL, 'laura@2dbubbles.com', '$2y$12$CNUYfPWF5J73t.P2szjsVODYH9XKrMkuJ34BNLtRORk62/qyq4w9C'),
-(16, NULL, NULL, NULL, 'paul.baba@gmail.com', '$2y$12$0Q0a2qt2oV8GkceLD7dRPe0mfVP4dIE95sFMQUJ9mr53jKjYFKhW6');
 
 --
 -- Index pour les tables déchargées
@@ -131,7 +137,7 @@ ALTER TABLE `comment`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_comment` (`id_comment`);
+  ADD KEY `id_comment` (`comments`);
 
 --
 -- Index pour la table `role`
@@ -152,7 +158,7 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD KEY `id_comment` (`comments`),
   ADD KEY `id_post` (`posts`),
-  ADD KEY `roles` (`roles`);
+  ADD KEY `user_ibfk_3` (`roles`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -180,31 +186,13 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
---
--- Contraintes pour les tables déchargées
---
-
---
--- Contraintes pour la table `post`
---
-ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`id_comment`) REFERENCES `comment` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `user`
---
-ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`comments`) REFERENCES `comment` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`posts`) REFERENCES `post` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `user_ibfk_3` FOREIGN KEY (`roles`) REFERENCES `role` (`id`) ON DELETE CASCADE;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
