@@ -79,8 +79,8 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            INSERT INTO `post` (title, chapo, content, status, created_at)
-            VALUES (:title, :chapo, :content, :status, :created_at)"
+            INSERT INTO `post` (title, chapo, content, status)
+            VALUES (:title, :chapo, :content, :status)"
             ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -89,7 +89,6 @@ class Post extends CoreModel {
             ':chapo' => $this->chapo,
             ':content' => $this->content,
             ':status' => 0,
-            ':created_at' => $this->created_at
         ]);
 
         // Retourne le nombre de lignes affectées par le dernier appel à la fonction PDOStatement::execute()

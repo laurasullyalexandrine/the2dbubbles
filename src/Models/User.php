@@ -42,7 +42,7 @@ class User extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT user.id, user.email, role.name
+            SELECT *
             FROM user
             LEFT JOIN role ON user.roles = role.id
             ORDER BY email ASC
@@ -50,7 +50,6 @@ class User extends CoreModel
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        dd($users);
         return $users;
     }
     /**

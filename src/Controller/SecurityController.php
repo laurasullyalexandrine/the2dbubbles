@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Models\Role;
 use App\Models\User;
 
 /**
@@ -70,10 +71,16 @@ class SecurityController extends CoreController
                 PASSWORD_BCRYPT,
                 $option
             );
+            // TODO:
+            // $roles = Role::findAll();
+            // foreach ($roles as $role) {
+            // }
+            // $user->setRoles($role);
 
             // Mettre à jour les propriétés de l'instance
-            $user->setEmail($email);
-            $user->setPassword($password);
+            $user->setEmail($email)
+            ->setPassword($password);
+            
 
             // Utiliser la méthode insert() pour enregistrer les données du formulaire en base de données
             if ($user->insert()) {

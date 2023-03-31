@@ -12,7 +12,7 @@ class TagController extends CoreController {
     public function list()
     {
         $tags = Tag::findAll();
-        $this->show('tag/list', [
+        $this->show('admin/tag/list', [
                 'tags' => $tags
             ]);
     }
@@ -24,7 +24,7 @@ class TagController extends CoreController {
      */
     public function add() 
     {
-        $this->show('tag/add', [
+        $this->show('admin/tag/add', [
                 'tag' => new Tag()
             ]);
     }
@@ -38,7 +38,7 @@ class TagController extends CoreController {
     public function edit($tagId)
     {
         $tag = Tag::findBy($tagId);
-        $this->show('tag/edit', [
+        $this->show('admin/tag/edit', [
                 'tag' => $tag
             ]);
     }

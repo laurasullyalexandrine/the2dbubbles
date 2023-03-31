@@ -1,0 +1,33 @@
+{% extends "/base.html.twig" %}
+{% block menu_post %}
+	active
+{% endblock %}
+
+{% block body %}
+	<h1>Création d'un article</h1>
+	<form action="addpostpost" method="POST" class="row g-3">
+		<div class="col-md-6">
+			<input type="text" class="form-control" value="{{post.title}}" name="title" id="Title">
+			<label for="title" class="form-label">Titre</label>
+		</div>
+		<div class="col-md-6">
+			<input type="text" class="form-control" value="{{post.chapo}}" name="chapo" id="Chapo">
+			<label for="validationDefault03" class="form-label">Chapô</label>
+		</div>
+		<div class="col-md-6">
+			<textarea class="form-control" name="content" id="Content" rows="3" value="{{post.content}}"></textarea>
+			<label for="Contenu" class="form-label">Contenu</label>
+		</div>
+		<div class="col-md-6">
+			<select class="form-select" name="status" id="Status">
+                <option>---- Choisir ----</option>
+				<option value="1">Validé</option>
+				<option value="0">Invalidé</option>
+			</select>
+			<label class="form-label" for="Status">Status</label>
+		</div>
+		<div class="col-12">
+			<button class="btn btn-primary" type="submit">Envoyer</button>
+		</div>
+	</form>
+{% endblock %}

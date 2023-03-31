@@ -14,7 +14,7 @@ class RoleController extends CoreController {
     public function list()
     {
         $roles = Role::findAll();
-        $this->show('role/list', [
+        $this->show('admin/role/list', [
                 'roles' => $roles
             ]);
     }
@@ -26,7 +26,7 @@ class RoleController extends CoreController {
      */
     public function add() 
     {
-        $this->show('role/add', [
+        $this->show('admin/role/add', [
                 'role' => new role()
             ]);
     }
@@ -36,7 +36,7 @@ class RoleController extends CoreController {
      *
      * @return void
      */
-    public function addRolePost() 
+    public function addRole() 
     {
         $flashes = $this->addFlash();
 
@@ -62,7 +62,7 @@ class RoleController extends CoreController {
             $role->setName($name_role);
             $role->setRoleString('ROLE_'. mb_strtoupper($name_role));
             if ($role->insert()) {
-                header('Location: /role/list');
+                header('Location: admin/role/list');
                 exit;
             }  else { 
                 // dd($flashes, 'afficher les erreurs');
@@ -74,7 +74,7 @@ class RoleController extends CoreController {
             $role = new Role();
             $role->setName(filter_input(INPUT_POST, 'name_role'));
 
-            $this->show('role/add', [
+            $this->show('admin/role/add', [
                 'user' => $userCurrent,
                 'flashes' => $flashes
             ]);

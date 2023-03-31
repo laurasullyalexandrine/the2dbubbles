@@ -1,0 +1,43 @@
+{% extends "/base.html.twig" %}
+{% block menu_post %}
+	active
+{% endblock %}
+{% block body %}
+	<h1>Liste des articles</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+                <th>id</th>
+				<th>Titre</th>
+				<th>Chapô</th>
+				<th>Contenu</th>
+                <th>Validité</th>
+                <th>Éditer le</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for post in posts %}
+				<tr>
+					<td>{{ post.id }}</td>
+					<td>{{ post.title }}</td>
+                    <td>{{ post.chapo }}</td>
+                    <td class="w-25">{{ post.content }}</td>
+					<td>{{ post.status }}</td>
+					<td>{{post.createdAt|date('d-m-Y')}} {{post.createdAt|date('H:i:s')}}</td>
+					<td>
+						<a href="post/edit">edit</a>
+						<a href="post/delete">delete</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">Aucun enregistrement trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="/post/add">Ajouter</a>
+
+{% endblock %}

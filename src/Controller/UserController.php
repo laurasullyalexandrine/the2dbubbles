@@ -14,7 +14,7 @@ class UserController extends CoreController {
     public function list()
     {
         $users = User::findAll();
-        $this->show('user/list', [
+        $this->show('admin/user/list', [
                 'users' => $users
             ]
         );
@@ -29,7 +29,7 @@ class UserController extends CoreController {
     public function add()
     {
         $roles = new Role();
-        $this->show('user/add', [
+        $this->show('admin/user/add', [
             'user' => new User(), 
             'roles' => $roles::findAll()
         ]);
@@ -95,12 +95,11 @@ class UserController extends CoreController {
             $user->setEmail($email);
             $user->setRoles($role);
             $user->setPassword($password);
-            dd($user);
 
             // Utiliser la méthode insert() pour enregistrer les données du formulaire en base de données
             if ($user->insert()) {
                 // dd($flashes, 2, $this->isPost());
-                header('Location: /user/list');
+                header('Location: admin/user/list');
                 exit;
             } // Si erreur lors de l'enregistrement
             else { 
@@ -117,7 +116,7 @@ class UserController extends CoreController {
             $user->setPassword(filter_input(INPUT_POST, 'password_1'));
             $user->setRoles(filter_input(INPUT_POST, 'email'));
 
-            $this->show('user/list', [
+            $this->show('admin/user/list', [
                 'user' => $user,
                 'flashes' => $flashes
             ]);
@@ -145,7 +144,6 @@ class UserController extends CoreController {
         $flashes = $this->addFlash();
 
         $user = User::findBy($userId);
-        dd($user);
         if ($user) {
             $user->delete();
             $flashes = $this->addFlash('success', "L'utilisateur a été supprimé");
