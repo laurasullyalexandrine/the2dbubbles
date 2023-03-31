@@ -1,0 +1,17 @@
+{% extends "/base.html.twig" %}
+
+{% block menu_role %} active {% endblock %}
+
+{% block body %}
+	<h1>Modifier un rôle</h1>
+	<form action="editrole/{{role.id}}" method="POST" class="row g-3">
+		<div class="col-md-6">
+			<label for="Role" class="form-label">Nom</label>
+			<input type="text" class="form-control" value="{{role.name}}" name="role" id="Role">
+		</div>
+		<div class="col-12">
+			<button class="btn btn-primary" type="submit">Modifier</button>
+		</div>
+	</form>
+{% endblock %}
+

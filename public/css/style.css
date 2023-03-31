@@ -374,12 +374,12 @@ figcaption
     border: 1px solid black;
 }
 
-.btn-connexion {
-    border: 0;
-    cursor: pointer;
-    padding: 5px 15px;
+.btn {
+    border: 0 !important; 
+    cursor: pointer !important;
+    padding: 5px 15px !important;
     border-radius: 3px;
-    background-color: #FFC312;
+    background-color: #FFC312 !important;
 }
 
 /*------ FOOTER ------*/

@@ -25,6 +25,7 @@ session_start();
 $url = $_SERVER['REQUEST_URI'];
 
 $url = trim($url, '/');
+
 ;$params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
 $controllerName = array_shift($params); // Permet de stocker le premier élément du tableau qui le contrôleur 
 $method = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du contrôleur 
@@ -33,6 +34,7 @@ $method = array_shift($params); // Permet de stocker le premier élément du tab
     // post->PostController
     // Reconstruction de nom de la classe 
     $controllerName = 'App\Controller\\'. ucfirst($controllerName).'Controller';
+    
     if (class_exists($controllerName)) {
         // Instancier bon contrôleur
         $controller = new $controllerName();
