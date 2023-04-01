@@ -8,13 +8,13 @@ use App\Models\User;
 class RoleController extends CoreController {
     
     /**
-     * Listing des roles
+     * reading des roles
      * @return void
      */
-    public function list()
+    public function read()
     {
         $roles = Role::findAll();
-        $this->show('role/list', [
+        $this->show('role/read', [
                 'roles' => $roles
             ]);
     }
@@ -24,19 +24,7 @@ class RoleController extends CoreController {
      *
      * @return void
      */
-    public function add() 
-    {
-        $this->show('role/add', [
-                'role' => new role()
-            ]);
-    }
-
-    /**
-     * Ajout d'un role méthode POST
-     *
-     * @return void
-     */
-    public function addRole() 
+    public function create() 
     {
         $flashes = $this->addFlash();
 
@@ -61,7 +49,7 @@ class RoleController extends CoreController {
             $role->setName($roleName)
                 ->setRoleString('ROLE_'. mb_strtoupper($roleName));
             if ($role->insert()) {
-                header('Location: /role/list');
+                header('Location: /role/read');
                 exit;
             }  else { 
                 // dd($flashes, 'afficher les erreurs');
@@ -73,12 +61,16 @@ class RoleController extends CoreController {
             $role = new Role();
             $role->setName(filter_input(INPUT_POST, 'name_role'));
 
-            $this->show('role/add', [
+            $this->show('role/create', [
                 'user' => $userCurrent,
                 'flashes' => $flashes
             ]);
         }
 
+
+        $this->show('role/create', [
+                'role' => new role()
+            ]);
     }
 
     /**
@@ -87,20 +79,13 @@ class RoleController extends CoreController {
      * @param [type] $roleId
      * @return void
      */
-    public function edit($roleId)
+    public function update($roleId)
     {
         $role = role::findBy($roleId);
-        $this->show('role/edit', [
-                'role' => $role
-            ]);
-    }
-
-    public function editRole($roleId) 
-    {
         $flashes = $this->addFlash();
 
         $roleName = filter_input(INPUT_POST, 'role');
-
+        dd($roleName);
         // Récupérer l'id du User en session
         $session = $_SESSION;
         $id = $session['id'];
@@ -118,7 +103,7 @@ class RoleController extends CoreController {
                 ->setRoleString('ROLE_'. mb_strtoupper($roleName));
 
             if ($role->update()) {
-                header('Location: /role/list');
+                header('Location: /role/read');
                 exit;
             } else {
                 $flashes = $this->addFlash('danger', "Le rôle n'a pas été modifié!");
@@ -128,29 +113,39 @@ class RoleController extends CoreController {
             $role = new Role();
             $role->setName(filter_input(INPUT_POST, 'name_role'));
 
-            $this->show('role/add', [
+            $this->show('role/update', [
                 'user' => $userCurrent,
                 'flashes' => $flashes
             ]);
         }
+        $this->show('/role/update', [
+                'role' => $role
+            ]);
     }
 
+
+    /**
+     * Permet de supprimer un rôle
+     *
+     * @param [type] $roleId
+     * @return void
+     */
     public function delete($roleId) 
     {
         $flashes = $this->addFlash();
 
         $role = Role::findBy($roleId);
-
+        // dd($role);
         if ($role) {
             $role->delete();
 
             $flashes = $this->addFlash('success', "Le rôle a été supprimé");
-            header('Location: /role/list');
+            header('Location: /role/read');
         } else {
-            $flashes = $this->addFlash('danger', "Le rôle n'existe pas!");
+            $flashes = $this->addFlash('danger', "Ce rôle n'existe pas!");
         }
 
-        $this->show('/role/list', [
+        $this->show('/role/read', [
             'role' => $role,
             'flashes' => $flashes
         ]);

@@ -25,8 +25,11 @@ session_start();
 $url = $_SERVER['REQUEST_URI'];
 
 $url = trim($url, '/');
+// Ajout d'une condition tempon si aucune url n'est trouvée
+$url = $url ?: 'main/home';
 
-;$params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
+$params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
+// dd($params);
 $controllerName = array_shift($params); // Permet de stocker le premier élément du tableau qui le contrôleur 
 $method = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du contrôleur 
 

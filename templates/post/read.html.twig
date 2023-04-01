@@ -5,6 +5,10 @@
 {% block body %}
 	<h1>Liste des articles</h1>
 
+	<div class="d-flex justify-content-around my-3">
+		<a class="btn" href="/main/home">Retour</a>
+	</div>
+
 	<table class="table">
 		<thead>
 			<tr>
@@ -26,8 +30,8 @@
 					<td>{{ post.status }}</td>
 					<td>{{post.createdAt|date('d-m-Y')}} {{post.createdAt|date('H:i:s')}}</td>
 					<td>
-						<a href="/post/edit">edit</a>
-						<a href="/post/delete">delete</a>
+						<a href="/post/update">edit</a>
+						{# <a href="/post/delete">delete</a> #}
 					</td>
 				</tr>
 			{% else %}
@@ -38,6 +42,6 @@
 		</tbody>
 	</table>
 
-	<a href="/post/add">Ajouter</a>
+	<a href="/post/create">Ajouter</a>
 
 {% endblock %}

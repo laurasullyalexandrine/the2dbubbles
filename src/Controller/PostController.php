@@ -11,32 +11,18 @@ class PostController extends CoreController
 {
     
     /**
-     * Listing des posts
-     * @return void
-     */
-    public function list()
-    {
-        $posts = Post::findAll();
-
-        // On les envoie à la vue
-        $this->show('admin/post/list', [
-                'posts' => $posts
-            ]);
-    }
-
-    /**
      * Ajout d'un nouveau post
      *
      * @return void
      */
-    public function add() 
+    public function create() 
     {
-        $this->show('admin/post/add', [
+        $this->show('/post/create', [
                 'post' => new Post()
             ]);
     }
 
-    public function addPostPost() 
+    public function createPostPost() 
     {
         $flashes = $this->addFlash();
 
@@ -78,7 +64,7 @@ class PostController extends CoreController
                 ->setStatus($status);
             // dd($post);
             if ($post->insert()) {
-                header('Location: admin/post/list');
+                header('Location: /post/read');
                 exit;
             }  else { 
                 // dd($flashes, 'afficher les erreurs');
@@ -93,12 +79,25 @@ class PostController extends CoreController
             $post->setContent(filter_input(INPUT_POST, 'content'));
             $post->setStatus(filter_input(INPUT_POST, 'status'));
 
-            $this->show('admin/post/add', [
+            $this->show('/post/create', [
                 'user' => $userCurrent,
                 'flashes' => $flashes
             ]);
         }
+    }
 
+    /**
+     * reading des posts
+     * @return void
+     */
+    public function read()
+    {
+        $posts = Post::findAll();
+
+        // On les envoie à la vue
+        $this->show('/post/read', [
+                'posts' => $posts
+            ]);
     }
 
     /**
@@ -107,13 +106,40 @@ class PostController extends CoreController
      * @param [type] $postId
      * @return void
      */
-    public function edit($postId)
+    public function update($postId)
     {
         $post = Post::findBy($postId);
 
         // On affiche notre vue en transmettant les infos du post
-        $this->show('admin/post/edit', [
+        $this->show('/post/update', [
                 'post' => $post
             ]);
+    }
+
+    /**
+     * Permet de supprimer un post
+     *
+     * @param [type] $postId
+     * @return void
+     */
+    public function delete($postId) 
+    {
+        $flashes = $this->addFlash();
+
+        $post = Post::findBy($postId);
+
+        if ($post) {
+            $post->delete();
+
+            $flashes = $this->addFlash('success', "L'article a été supprimé");
+            header('Location: /post/read');
+        } else {
+            $flashes = $this->addFlash('danger', "Cet article n'existe pas!");
+        }
+
+        $this->show('/post/read', [
+            'post' => $post,
+            'flashes' => $flashes
+        ]);
     }
 }

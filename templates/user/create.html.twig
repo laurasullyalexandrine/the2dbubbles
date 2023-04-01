@@ -12,7 +12,7 @@
 
 									<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Ajout d'un utilisateur administrateur</p>
 
-									<form action="adduserpost" method="POST" class="mx-1 mx-md-4">
+									<form action="create" method="post" class="mx-1 mx-md-4">
 
 										<div class="d-flex flex-row align-items-center mb-4">
 											<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
@@ -44,16 +44,16 @@
 												<select class="form-select" name="role" id="Role">
 													<option>----- Obligatoire -----</option>
 													{% for role in roles %}
-														<option value ="{{role.rolename}}">{{role.rolename}}</option>
+														<option value="{{ role.id }}">{{ role.name }}</option>
 													{% endfor %}
 												</select>
-												<label class="form-label" for="">Choisir un rôle</label>
+												<label class="form-label" for="Role">Choisir un rôle</label>
 											</div>
 										</div>
 										<div
 											class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
 											{# <input type="hidden" value="{{ tokenCSRF }}" name="tokenCSRF"> #}
-											<button type="submit" class="btn btn-primary btn-lg">Enregistrer</button>
+											<button type="submit" class="btn btn-lg">Enregistrer</button>
 										</div>
 									</form>
 

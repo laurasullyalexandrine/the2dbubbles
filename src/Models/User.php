@@ -4,9 +4,12 @@ namespace App\Models;
 
 use PDO;
 use App\Utils\Database;
+use Exception;
 
 class User extends CoreModel
 {
+    const HASH_COST = 12;
+
     /**
      * @var string
      */
@@ -70,7 +73,7 @@ class User extends CoreModel
             'id' => $userId
         ]);
         $user = $pdoStatement->fetchObject(self::class);
-
+        // dd($user);
         return $user;
     }
 
@@ -111,19 +114,23 @@ class User extends CoreModel
         $sql = "
             INSERT INTO `user` (
                 email,
-                password
+                password,
+                roles
             )
             VALUES (
                 :email,
-                :password
+                :password,
+                :roles
             )";
 
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            ':email' => $this->email,
-            ':password' => $this->password,
-        ]);
+            $pdoStatement->execute([
+                'email' => $this->email,
+                'password' => $this->password,
+                'roles' => $this->roles,
+            ]);
+
 
         if ($pdoStatement->rowCount() > 0) {
             $this->id = $pdoDBConnexion->lastInsertId();
@@ -150,9 +157,9 @@ class User extends CoreModel
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':email' => $this->email,
-            ':password' => $this->password,
-            ':roles' => $this->roles
+            'email' => $this->email,
+            'password' => $this->password,
+            'roles' => $this->roles
         ]);
 
         return $pdoStatement;
@@ -167,6 +174,7 @@ class User extends CoreModel
     public function delete()
     {
         $pdoDBConnexion = Database::getPDO();
+        dd($pdoDBConnexion);
 
         $sql = "
             DELETE FROM `user`
@@ -176,7 +184,6 @@ class User extends CoreModel
 
         // Permet d'associer une valeur à un paramètre et de contraindre la donnée attendue
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
-
         $pdoStatement->execute();
 
         // Retourne vrai si au moins une ligne a été supprimée

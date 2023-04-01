@@ -374,12 +374,21 @@ figcaption
     border: 1px solid black;
 }
 
-.btn {
+.btn,
+.btn-delete {
+    color: #fff;
     border: 0 !important; 
     cursor: pointer !important;
     padding: 5px 15px !important;
     border-radius: 3px;
+}
+
+.btn {
     background-color: #FFC312 !important;
+}
+
+.btn-delete {
+    background-color: #B33771;
 }
 
 /*------ FOOTER ------*/

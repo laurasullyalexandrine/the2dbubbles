@@ -1,0 +1,20 @@
+{% extends "/base.html.twig" %}
+{% block menu_role %}
+	active
+{% endblock %}
+
+{% block body %}
+	<h1>Création de rôle</h1>
+	<div class="d-flex justify-content-around my-3">
+		<a class="btn" href="/role/read">Retour</a>
+	</div>
+	<form action="create" method="post" class="row g-3">
+		<div class="col-md-6">
+			<label for="Role" class="form-label">Nom</label>
+			<input type="text" class="form-control" value="{{ role.name }}" name="role" id="Role">
+		</div>
+		<div class="col-12">
+			<button class="btn" type="submit">Créer</button>
+		</div>
+	</form>
+{% endblock %}

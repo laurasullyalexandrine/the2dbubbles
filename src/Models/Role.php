@@ -1,11 +1,13 @@
-<?php 
+<?php
+
 namespace App\Models;
 
 use PDO;
 use App\Utils\Database;
 
-class Role extends CoreModel {
-    
+class Role extends CoreModel
+{
+
 
     /**
      * @var string
@@ -22,13 +24,13 @@ class Role extends CoreModel {
     {
         return $this->name;
     }
-    
+
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
      * @return Role
      */
-    public static function findAll() 
+    public static function findAll()
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -38,7 +40,7 @@ class Role extends CoreModel {
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $roles = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        
+
         return $roles;
     }
     /**
@@ -47,19 +49,19 @@ class Role extends CoreModel {
      * @param [type] $roleId
      * @return Role
      */
-    public static function findBy($roleId) 
+    public static function findBy(int $roleId)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = '
-        SELECT * 
-        FROM role 
-        WHERE id = :id';
+            SELECT * 
+            FROM role 
+            WHERE id = :id';
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
             'id' => $roleId
         ]);
         $role = $pdoStatement->fetchObject(self::class);
- 
+        dd($role);
         return $role;
     }
 
@@ -68,25 +70,24 @@ class Role extends CoreModel {
      * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      *
      * @return void
-     */    
+     */
     public function insert()
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
             INSERT INTO `role` (name, roleString)
-            VALUES (:name, :roleString)"
-            ;
+            VALUES (:name, :roleString)";
         // dd($sql);
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':name' => $this->name,
-            ':roleString' => $this->roleString,
+            'name' => $this->name,
+            'roleString' => $this->roleString,
         ]);
 
         if ($pdoStatement->rowCount() > 0) {
             $this->id = $pdoDBConnexion->lastInsertId();
             return true;
-        } 
+        }
 
         return false;
     }
@@ -109,8 +110,8 @@ class Role extends CoreModel {
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':name' => $this->name,
-            ':roleString' => $this->roleString,
+            'name' => $this->name,
+            'roleString' => $this->roleString,
         ]);
 
         return $pdoStatement;
@@ -133,13 +134,13 @@ class Role extends CoreModel {
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();
-        
+
         return ($pdoStatement->rowCount() > 0);
     }
 
     /**
      * Get the value of name
-     */ 
+     */
     public function getName()
     {
         return $this->name;
@@ -149,7 +150,7 @@ class Role extends CoreModel {
      * Set the value of name
      *
      * @return  self
-     */ 
+     */
     public function setName($name)
     {
         $this->name = $name;
@@ -159,7 +160,7 @@ class Role extends CoreModel {
 
     /**
      * Get the value of roleString
-     */ 
+     */
     public function getRoleString()
     {
         return $this->roleString;
@@ -169,7 +170,7 @@ class Role extends CoreModel {
      * Set the value of roleString
      *
      * @return  self
-     */ 
+     */
     public function setRoleString($roleString)
     {
         $this->roleString = $roleString;
@@ -187,8 +188,4 @@ class Role extends CoreModel {
             return "2dbubblebum";
         }
     }
-
-
-
-
 }
