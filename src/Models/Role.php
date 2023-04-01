@@ -43,6 +43,7 @@ class Role extends CoreModel
 
         return $roles;
     }
+
     /**
      *  Méthode permettant de récupérer un enregistrement de la table Role en fonction d'un id donné
      *
@@ -62,6 +63,28 @@ class Role extends CoreModel
         ]);
         $role = $pdoStatement->fetchObject(self::class);
         dd($role);
+        return $role;
+    }
+
+    /**
+     *  Méthode permettant de récupérer un enregistrement de la table Role en fonction d'un id donné
+     *
+     * @param [type] $roleId
+     * @return Role
+     */
+    public static function findByName(string $roleName)
+    {
+        $pdoDBConnexion = Database::getPDO();
+        $sql = '
+            SELECT * 
+            FROM role 
+            WHERE name = :name';
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute([
+            'name' => $roleName
+        ]);
+        $role = $pdoStatement->fetchObject(self::class);
+
         return $role;
     }
 

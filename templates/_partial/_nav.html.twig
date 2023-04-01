@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container-fluid">
-		<a class="navbar-brand" href="main/home">
+		<a class="navbar-brand" href="/main/home">
 			<img class="logo_picture" src="/images/logo-2dbubble.png" width="120" alt="logo-2DBubble">
 		</a>
-		<a href="main/home">
+		<a href="/main/home">
 			<img src="/images/dev-php.png" alt="developpeur_web_fullstack">
 		</a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -12,12 +12,12 @@
 		<div class="collapse navbar-collapse" id="navbarColor01">
 			<ul class="navbar-nav me-auto">
 				<li class="nav-item">
-					<a class="nav-link {% block menu_home %} {% endblock %}" href="main/home">Accueil
+					<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil
 						<span class="visually-hidden">(current)</span>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
+					<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/read">Article</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link {% block menu_contact %} {% endblock %}" href="main/contact">Contact</a>
@@ -27,13 +27,13 @@
 					<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/list">Utilisateur</a>
+					<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/list">Rôle</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link {% block menu_tag %} {% endblock %}" href="/tag/list">Tag</a>
+					<a class="nav-link {% block menu_tag %} {% endblock %}" href="/tag/read">Tag</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>

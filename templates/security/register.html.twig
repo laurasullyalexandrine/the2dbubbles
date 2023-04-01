@@ -17,7 +17,7 @@
 										<div class="d-flex flex-row align-items-center mb-4">
 											<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
 											<div class="form-outline flex-fill mb-0">
-												<input type="email" name="email" id="Email" class="form-control" value="{{user.email}}"/>
+												<input type="email" name="email" id="Email" class="form-control" value="{{ user.email }}"/>
 												<label class="form-label" for="Email">Email</label>
 											</div>
 										</div>
@@ -37,11 +37,11 @@
 												<label class="form-label" for="Password_2">Confirmez mot de passe</label>
 											</div>
 										</div>
-
+											<input type="hidden" value="utilisateur" name="role" id="Role">
 										<div
 											class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
 											{# <input type="hidden" value="{{ tokenCSRF }}" name="tokenCSRF"> #}
-											<button type="submit" class="btn btn-primary btn-lg">S'inscrire</button>
+											<button type="submit" class="btn btn-lg">S'inscrire</button>
 										</div>
 									</form>
 
