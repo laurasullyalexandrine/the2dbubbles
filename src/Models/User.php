@@ -45,22 +45,21 @@ class User extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT *
+            SELECT user.id, user.email, role.name AS role
             FROM user
-            LEFT JOIN role ON user.roles = role.id
-            ORDER BY email ASC
-            ";
+            INNER JOIN role ON role.id = user.roles
+            WHERE user.roles 
+            ORDER BY user.email
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
         return $users;
     }
-    /**
-     *  Méthode permettant de récupérer un enregistrement de la table User en fonction d'un id donné
-     *
-     * @param [type] $userId
-     * @return User
-     */
+
+
+    
     public static function findBy(int $userId)
     {
         $pdoDBConnexion = Database::getPDO();
@@ -69,11 +68,11 @@ class User extends CoreModel
             FROM user 
             WHERE id = :id';
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            'id' => $userId
-        ]);
+        $pdoStatement->bindValue(':id', $userId, PDO::PARAM_INT);
+        $pdoStatement->execute();
+
         $user = $pdoStatement->fetchObject(self::class);
-        // dd($user);
+
         return $user;
     }
 
@@ -152,17 +151,16 @@ class User extends CoreModel
                 password = :password,
                 roles = :roles,
                 updated_at = NOW()
-            WHERE id: = :id
+            WHERE id = :id
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            'email' => $this->email,
-            'password' => $this->password,
-            'roles' => $this->roles
-        ]);
-
-        return $pdoStatement;
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
+        // dd($pdoStatement);
+        return $pdoStatement->execute();
     }
 
 
@@ -174,7 +172,6 @@ class User extends CoreModel
     public function delete()
     {
         $pdoDBConnexion = Database::getPDO();
-        dd($pdoDBConnexion);
 
         $sql = "
             DELETE FROM `user`

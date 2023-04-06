@@ -5,31 +5,66 @@
 {% endblock %}
 
 {% block body %}
-    <article class="d-flex flex-column">
-        <h1>Modifier le profil de
-            {{ user.email }}</h1>
-        <div class="d-flex justify-content-around my-3">
-            <a class="btn" href="/user/read">Retour</a>
-        </div>
-        <form action="update/{{user.id}}" method="post" class="row g-3">
-            <div class="col-md-6">
-                <label for="Role" class="form-label">Email</label>
-                <input type="email" class="form-control" value="{{user.email}}" name="email" id="Email">
-            </div>
+	<section class="vh-100">
 
-            <div class="col-md-6">
-                <label for="Role" class="form-label">Mot de passe</label>
-                <input type="password" class="form-control" value="{{user.password}}" name="password_1" id="password_1">
-            </div>
+		<div class="d-flex justify-content-around my-3">
+			<a class="btn" href="/user/read">Retour</a>
+		</div>
 
-            <div class="col-md-6">
-                <label for="Role" class="form-label">Confirmez mot de passe</label>
-                <input type="password" class="form-control" value="{{user.password}}" name="password_2" id="password_2">
-            </div>
+		<div class="container h-100">
+			<div
+				class="row d-flex justify-content-center align-items-center h-100">
+				{# <div class="col-lg-12 col-xl-11"> #}
+				<div class="card text-black" style="border-radius: 25px;">
+					<div
+						class="card-body p-md-5">
+						{# <div class="row justify-content-center"> #}
+						<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-            <div class="col-12">
-                <button class="btn" type="submit">Modifier</button>
-            </div>
-        </form>
-    </article>
-{% endblock %}
+							<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Modifier le profil de
+								{{ user.email }}</p>
+
+							<form action="/user/update/{{ user.id }}" method="post" class="mx-1 mx-md-4">
+
+								<div class="d-flex flex-row align-items-center mb-4">
+									<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+									<div class="form-outline flex-fill mb-0">
+										<input type="email" name="email" id="form3Example3c" class="form-control" value="{{ user.email }}"/>
+										<label class="form-label" for="form3Example3c">Email</label>
+									</div>
+								</div>
+
+								<div class="d-flex flex-row align-items-center mb-4">
+									<i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+									<div class="form-outline flex-fill mb-0">
+										<input type="password" name="password_1" id="password_1" class="form-control"/>
+										<label class="form-label" for="form3Example4c">Mot de passe</label>
+									</div>
+								</div>
+
+								<div class="d-flex flex-row align-items-center mb-4">
+									<i class="fas fa-user fa-lg me-3 fa-fw"></i>
+									<div class="form-group">
+										<select class="form-select" name="role" id="Role">
+											<option>----- Obligatoire -----</option>
+											{% for role in roles %}
+												<option value="{{ role.id }}">{{ role.name }}</option>
+											{% endfor %}
+										</select>
+										<label class="form-label" for="Role">Choisir un rôle</label>
+									</div>
+								</div>
+								<div
+									class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+									{# <input type="hidden" value="{{ tokenCSRF }}" name="tokenCSRF"> #}
+									<button class="btn btn-lg" type="submit">Modifier</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div></section>{% endblock %}

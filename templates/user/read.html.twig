@@ -5,7 +5,6 @@
    	<div class="d-flex justify-content-around my-3">
 		<a class="btn" href="/main/home">Retour</a>
 	</div>
-
         <table class="table">
         <thead>
             <tr>
@@ -16,15 +15,15 @@
         </thead>
         <tbody>
          {% for user in users %}
+         {% set role = user.role %}
             <tr>
                 <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
-                {% if user.roles == null %}
-                    <td>pas encore de rôle</td>
+                {% if role is empty %}
+                <td>aucun rôle attribué</td>
                 {% else %}
-                    <td>{{ user.roles }}</td>
+                    <td>{{ role|capitalize }}</td>
                 {% endif %}
-                
                 <td  class="d-flex">
                     <a class="btn" href="/user/update/{{ user.id }}">éditer</a>
                     {{ include('user/_delete.html.twig') }}
@@ -38,6 +37,6 @@
         </tbody>
     </table>
 
-    <a class="btn" href="/user/create">Ajouter</a>
+    <a class="btn mb-5" href="/user/create">Ajouter</a>
     
 {% endblock %}

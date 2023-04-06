@@ -66,57 +66,57 @@ class RoleController extends CoreController {
                 'flashes' => $flashes
             ]);
         }
-
-
         $this->show('role/create', [
                 'role' => new role()
             ]);
     }
 
     /**
-     * Affiche la vue édition d'un role 
+     * Éditer un rôle 
      *
      * @param [type] $roleId
      * @return void
      */
     public function update($roleId)
     {
-        $role = role::findBy($roleId);
         $flashes = $this->addFlash();
+        $role = role::findBy($roleId);
 
         $roleName = filter_input(INPUT_POST, 'role');
-        dd($roleName);
+
+        // TODO: Ajouter l'accès contrôle par rôle
         // Récupérer l'id du User en session
         $session = $_SESSION;
-        $id = $session['id'];
-        // Vérifier l'existence du user
-        $userCurrent = User::findBy($id);
 
-        if (empty($roleName)) {
-            $flashes = $this->addFlash('warning', 'Le champ du rôle est vide');
-        }
-
-        if (empty($flashes["messages"]) && $this->isPost()) {
-            dd($roleName);
-            $role = Role::findBy($roleId);
-            $role->setName($roleName)
-                ->setRoleString('ROLE_'. mb_strtoupper($roleName));
-
-            if ($role->update()) {
-                header('Location: /role/read');
-                exit;
-            } else {
-                $flashes = $this->addFlash('danger', "Le rôle n'a pas été modifié!");
-                exit;
-            }
+        if (empty($session)) {
+            header('Location: /security/login');
         } else {
-            $role = new Role();
-            $role->setName(filter_input(INPUT_POST, 'name_role'));
-
-            $this->show('role/update', [
-                'user' => $userCurrent,
-                'flashes' => $flashes
-            ]);
+            $userId = $session['id'];
+            // Vérifier l'existence du user
+            $userCurrent = User::findBy($userId);
+    
+            if ($this->isPost()) {
+                if (empty($roleName)) {
+                    $flashes = $this->addFlash('warning', 'Le champ du rôle est vide');
+                }
+                if (empty($flashes["messages"])) {
+                    $role->setName($roleName)
+                        ->setRoleString('ROLE_'. mb_strtoupper($roleName));
+                    if ($role->update()) {
+                        header('Location: /role/read');
+                        exit;
+                    } else {
+                        $flashes = $this->addFlash('danger', "Le rôle n'a pas été modifié!");
+                    }
+                } else {
+                    $role->setName(filter_input(INPUT_POST, $roleName));
+        
+                    $this->show('role/update', [
+                        'user' => $userCurrent,
+                        'flashes' => $flashes
+                    ]);
+                }
+            }
         }
         $this->show('/role/update', [
                 'role' => $role
@@ -138,9 +138,9 @@ class RoleController extends CoreController {
         // dd($role);
         if ($role) {
             $role->delete();
-
-            $flashes = $this->addFlash('success', "Le rôle a été supprimé");
             header('Location: /role/read');
+            $flashes = $this->addFlash('success', "Le rôle a été supprimé");
+            echo $flashes;
         } else {
             $flashes = $this->addFlash('danger', "Ce rôle n'existe pas!");
         }

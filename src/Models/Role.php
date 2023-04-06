@@ -19,12 +19,6 @@ class Role extends CoreModel
      */
     private $roleString;
 
-
-    public function __toString()
-    {
-        return $this->name;
-    }
-
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
@@ -35,6 +29,27 @@ class Role extends CoreModel
         $pdoDBConnexion = Database::getPDO();
 
         $sql = 'SELECT * FROM `role`';
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute();
+        $roles = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+
+        return $roles;
+    }
+
+        /**
+     * Méthode permettant de récupérer tous les enregistrements de la table role
+     *
+     * @return Role
+     */
+    public static function findByUser()
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = '
+            SELECT * 
+            FROM role
+            LEFT JOIN user ON role.id = user.roles';
 
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -56,13 +71,15 @@ class Role extends CoreModel
         $sql = '
             SELECT * 
             FROM role 
-            WHERE id = :id';
+            WHERE id = :id'
+        ;
+        
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
             'id' => $roleId
         ]);
         $role = $pdoStatement->fetchObject(self::class);
-        dd($role);
+
         return $role;
     }
 
@@ -129,15 +146,16 @@ class Role extends CoreModel
             SET 
                 name = :name,
                 roleString = :roleString,
+                updated_at = NOW()
+            WHERE id = :id
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            'name' => $this->name,
-            'roleString' => $this->roleString,
-        ]);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':name', $this->name, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':roleString', $this->roleString, PDO::PARAM_STR);
 
-        return $pdoStatement;
+        return $pdoStatement->execute();
     }
 
 
