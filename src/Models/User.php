@@ -13,6 +13,11 @@ class User extends CoreModel
     /**
      * @var string
      */
+    private $pseudo;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -28,12 +33,6 @@ class User extends CoreModel
     /**
      * @var int
      */
-    private $posts;
-
-
-    /**
-     * @var int
-     */
     private $comments;
 
     /**
@@ -45,28 +44,29 @@ class User extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT user.id, user.email, role.name AS role
+            SELECT user.id, pseudo, email, role.name AS role
             FROM user
             INNER JOIN role ON role.id = user.roles
             WHERE user.roles 
-            ORDER BY user.email
+            ORDER BY user.email ASC
             "
         ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        dd($users);
         return $users;
     }
 
-
-    
     public static function findBy(int $userId)
     {
         $pdoDBConnexion = Database::getPDO();
-        $sql = '
+        $sql = "
             SELECT * 
             FROM user 
-            WHERE id = :id';
+            WHERE id = :id
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':id', $userId, PDO::PARAM_INT);
         $pdoStatement->execute();
@@ -147,6 +147,7 @@ class User extends CoreModel
         $sql = "
             UPDATE `user`
             SET 
+                pseudo = :pseudo,
                 email = :email,
                 password = :password,
                 roles = :roles,
@@ -156,6 +157,7 @@ class User extends CoreModel
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindValue('pseudo', $this->pseudo, PDO::PARAM_STR);
         $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
@@ -187,6 +189,29 @@ class User extends CoreModel
         return ($pdoStatement->rowCount() > 0);
     }
 
+    /**
+     * Get the value of pseudo
+     *
+     * @return  string
+     */ 
+    public function getPseudo()
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * Set the value of pseudo
+     *
+     * @param  string  $pseudo
+     *
+     * @return  self
+     */ 
+    public function setPseudo(string $pseudo)
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
 
     /**
      * Get the value of email
@@ -244,26 +269,6 @@ class User extends CoreModel
     public function setRoles($roles)
     {
         $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of posts
-     */
-    public function getPosts()
-    {
-        return $this->posts;
-    }
-
-    /**
-     * Set the value of posts
-     *
-     * @return  self
-     */
-    public function setPosts($posts)
-    {
-        $this->posts = $posts;
 
         return $this;
     }

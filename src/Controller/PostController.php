@@ -9,7 +9,36 @@ use App\Models\User;
  */
 class PostController extends CoreController
 {
-    
+
+    /**
+     * reading des posts
+     * @return void
+     */
+    public function list()
+    {
+        $posts = Post::findAll();
+        
+        // On les envoie à la vue
+        $this->show('/post/list', [
+                'posts' => $posts
+            ]);
+    }
+
+    /**
+     * reading des posts
+     * @return void
+     */
+    public function read($postId)
+    {
+        $post = Post::findBy($postId);
+        // dd($post);
+        // On les envoie à la vue
+        $this->show('/post/read', [
+                'post' => $post
+            ]);
+            
+    }
+
     /**
      * Ajout d'un nouveau post
      *
@@ -84,20 +113,6 @@ class PostController extends CoreController
                 'flashes' => $flashes
             ]);
         }
-    }
-
-    /**
-     * reading des posts
-     * @return void
-     */
-    public function read()
-    {
-        $posts = Post::findAll();
-
-        // On les envoie à la vue
-        $this->show('/post/read', [
-                'posts' => $posts
-            ]);
     }
 
     /**

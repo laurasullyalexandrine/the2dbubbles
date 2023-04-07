@@ -1,0 +1,55 @@
+{% extends "/base.html.twig" %}
+{% block menu_post %}
+	active
+{% endblock %}
+{% block body %}
+	<h1>Liste des articles</h1>
+
+	<div class="d-flex justify-content-around my-3">
+		<a class="btn" href="/main/home">Retour</a>
+	</div>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Titre</th>
+				<th>Contenu</th>
+                <th>Validité</th>
+                <th>Auteur</th>
+				<th>Publié le</th>
+				<th>Modifié le</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for post in posts %}
+				{% set user = post.user %}
+				<tr>
+					<td>{{ post.title }}</td>
+                    <td class="w-25">{{ post.content }}</td>
+					{% if post.status == 1 %}
+					<td class="text-center"><i class="fa-solid fa-circle-check" style="color: #17cf1a;"></i></td>
+						{# <td><i class="fa-solid fa-circle-check" style="color: #f1b309;"></i></td> #}
+					{% else %}
+					<td class="text-center"><i class="fa-sharp fa-solid fa-circle-xmark" style="color: #e90712;"></i></td>
+					{% endif %}
+					<td>{{ user }}</td>
+					<td>{{post.createdAt|date('d-m-Y')}} {{post.createdAt|date('H:i:s')}}</td>
+					<td>{{post.updatedAt|date('d-m-Y')}} {{post.updatedAt|date('H:i:s')}}</td>
+					<td class="d-flex flex-row">
+						<a class="btn mx-4 my-4" href="/post/read/{{post.id}}">voir</a>
+						<a class="btn mx-4 my-4" href="/post/update/{{post.id}}">edit</a>
+						{{ include('post/_delete.html.twig') }}
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">Aucun enregistrement trouvé</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a class="btn mb-5" href="/post/create">Ajouter</a>
+
+{% endblock %}

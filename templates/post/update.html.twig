@@ -2,6 +2,7 @@
 {% block menu_post %} active {% endblock %}
 
 {% block body %}
+{{dump(post)}}
     <h1>{{post.title}}</h1>
    
     <h2>{{post.chapo}}</h2> 
@@ -9,10 +10,10 @@
     <p>
         <time datetime="{{post.createdAt|date('d-m-Y')}}">{{post.createdAt|date('d-m-Y')}}</time>
         <time datetime="{{post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time> 
-        {% if post.status == true %}
+        {% if post.status == 1 %}
             validé <i class="fa-regular fa-circle-check"></i>
         {% else %}
-                non validé <i class="fa-regular fa-circle-xmark"></i>
+            non validé <i class="fa-regular fa-circle-xmark"></i>
     {% endif %}
     </p>
 

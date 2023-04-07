@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Pseudo</th>
                 <th>Email</th>
                 <th>Rôle</th>
             </tr>
@@ -18,9 +19,10 @@
          {% set role = user.role %}
             <tr>
                 <td>{{ user.id }}</td>
+                <td>{{ user.pseudo }}</td>
                 <td>{{ user.email }}</td>
                 {% if role is empty %}
-                <td>aucun rôle attribué</td>
+                    <td>aucun rôle attribué</td>
                 {% else %}
                     <td>{{ role|capitalize }}</td>
                 {% endif %}

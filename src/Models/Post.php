@@ -32,6 +32,11 @@ class Post extends CoreModel {
     private $comments;
 
     /**
+     * @var int
+     */
+    private $users;
+
+    /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
      *
      * @return Post
@@ -40,11 +45,17 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
 
-        $sql = 'SELECT * FROM post';
+        $sql = "
+            SELECT post.id, title, chapo, post.content, post.status, post.created_at, post.updated_at, user.id, user.pseudo AS user
+            FROM post
+            INNER JOIN user ON user.id = post.users
+            WHERE post.users
+            ORDER BY created_at ASC
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        
         return $posts;
     }
     /**
@@ -56,16 +67,18 @@ class Post extends CoreModel {
     public static function findBy($postId) 
     {
         $pdoDBConnexion = Database::getPDO();
-        $sql = '
-        SELECT * 
-        FROM post 
-        WHERE id = :id';
+        $sql = "
+            SELECT * 
+            FROM post 
+            WHERE id = :id
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            'id' => $postId
-        ]);
-        $post = $pdoStatement->fetchObject(self::class);
+        $pdoStatement->bindValue(':id', $postId, PDO::PARAM_INT);
+        $pdoStatement->execute();
 
+        $post = $pdoStatement->fetchObject(self::class);
+        dd($post);
         return $post;
     }
 
@@ -256,6 +269,30 @@ class Post extends CoreModel {
     public function setComments($comments)
     {
         $this->comments = $comments;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of users
+     *
+     * @return  int
+     */ 
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Set the value of users
+     *
+     * @param  int  $users
+     *
+     * @return  self
+     */ 
+    public function setUsers(int $users)
+    {
+        $this->users = $users;
 
         return $this;
     }

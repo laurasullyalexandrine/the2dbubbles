@@ -21,10 +21,16 @@
 						{# <div class="row justify-content-center"> #}
 						<div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-							<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Modifier le profil de
-								{{ user.email }}</p>
-
+							<p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Modifier le profil de {{ user.pseudo }} <span class="btn">{{role_name_user}}</span></p>
 							<form action="/user/update/{{ user.id }}" method="post" class="mx-1 mx-md-4">
+
+								<div class="d-flex flex-row align-items-center mb-4">
+									<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+									<div class="form-outline flex-fill mb-0">
+										<input type="text" name="pseudo" id="Pseudo" class="form-control" value="{{ user.pseudo }}"/>
+										<label class="form-label" for="Pseudo">Prénom/Pseudo</label>
+									</div>
+								</div>
 
 								<div class="d-flex flex-row align-items-center mb-4">
 									<i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
@@ -41,19 +47,16 @@
 										<label class="form-label" for="form3Example4c">Mot de passe</label>
 									</div>
 								</div>
+								
 
-								<div class="d-flex flex-row align-items-center mb-4">
-									<i class="fas fa-user fa-lg me-3 fa-fw"></i>
-									<div class="form-group">
-										<select class="form-select" name="role" id="Role">
-											<option>----- Obligatoire -----</option>
-											{% for role in roles %}
-												<option value="{{ role.id }}">{{ role.name }}</option>
-											{% endfor %}
-										</select>
-										<label class="form-label" for="Role">Choisir un rôle</label>
+								<i class="fas fa-user fa-lg me-3 fa-fw"></i>
+								<label class="form-label" for="Role">Rôle</label>
+								{% for role in roles %}
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="role" id="Role" value="{{ role.id }}" checked="{{role_current_user}}">
+										<label class="form-check-label" for="Role">{{ role.name }}</label>
 									</div>
-								</div>
+								{% endfor %}
 								<div
 									class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
 									{# <input type="hidden" value="{{ tokenCSRF }}" name="tokenCSRF"> #}

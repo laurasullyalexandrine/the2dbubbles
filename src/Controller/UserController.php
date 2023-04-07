@@ -37,15 +37,20 @@ class UserController extends CoreController
 
             // Récupérer les données recues du formalaire d'inscription
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+            $pseudo = filter_input(INPUT_POST, 'pseudo');
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $password_2 = filter_input(INPUT_POST, 'password_2');
             // Contraindre le type de la valeur soumis 
             $role = (int)filter_input(INPUT_POST, 'role');
             // Mettre à jour les propriétés de l'instance
+            $user->setPseudo($pseudo);
             $user->setEmail($email);
             $user->setRoles($role);
 
             // Vérifier que tous les champs ne sont pas vide 
+            if (empty($pseudo)) {
+                $flashes = $this->addFlash('warning', 'Le champ prénom/pseudo est vide');
+            }
             if (empty($email)) {
                 $flashes = $this->addFlash('warning', 'Le champ email est vide');
             }
@@ -124,34 +129,36 @@ class UserController extends CoreController
     {
         $flashes = $this->addFlash();
         $user = User::findBy($userId);
-        $role = new Role();
+        $roleCurrentUser = $user->getRoles();
         $roles = Role::findAll();
 
+
+        foreach ($roles as $existingRole) {
+            if ($existingRole->getId() === $roleCurrentUser) {
+                $roleNameUser = $existingRole->getName();
+            }
+        }
+
         if ($this->isPost()) {
+            $pseudo = filter_input(INPUT_POST, 'pseudo');
+            // dd($pseudo);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $role = (int)filter_input(INPUT_POST, 'role');
+            $user->setPseudo($pseudo);
             $user->setEmail($email);
             $user->setRoles($role);
-
+// dd($user);
+   
             // Vérifier que tous les champs ne sont pas vide 
+            if (empty($pseudo)) {
+                $flashes = $this->addFlash('warning', 'Le champ Prénom/Pseudo est vide');
+            }
             if (empty($email)) {
                 $flashes = $this->addFlash('warning', 'Le champ email est vide');
             }
-
             if (empty($password_1)) {
                 $flashes = $this->addFlash('warning', 'Le champ mot de passe est vide');
-            }
-
-            $roleExist = false;
-            foreach ($roles as $existingRole) {
-                if ($existingRole->getId() === $role) {
-                    $roleExist = true;
-                    break;
-                }
-            }
-            if (!$roleExist) {
-                $flashes = $this->addFlash('warning', 'Le rôle choisi est invalide');
             }
 
             if (empty($flashes["messages"])) {
@@ -169,12 +176,15 @@ class UserController extends CoreController
                     $flashes = $this->addFlash('danger', "L'utilisateur n'a pas été modifié!");
                 }
             } else {
+                // $user->setPseudo(filter_input(INPUT_POST, $pseudo));
                 $user->setEmail(filter_input(INPUT_POST, $email));
                 $user->setRoles(filter_input(INPUT_POST, $role));
             }
         }
         $this->show('/user/update', [
             'user' => $user,
+            'role_current_user' => $roleCurrentUser,
+            'role_name_user' => $roleNameUser,
             'roles' => $roles,
             'flashes' => $flashes
         ]);
