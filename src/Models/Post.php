@@ -14,6 +14,11 @@ class Post extends CoreModel {
     /**
      * @var string
      */
+    private $slug;
+
+    /**
+     * @var string
+     */
     private $chapo;
 
     /**
@@ -56,6 +61,7 @@ class Post extends CoreModel {
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+
         return $posts;
     }
     /**
@@ -64,7 +70,7 @@ class Post extends CoreModel {
      * @param [type] $postId
      * @return Post
      */
-    public static function findBy($postId) 
+    public static function findById(int $postId) 
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -78,9 +84,31 @@ class Post extends CoreModel {
         $pdoStatement->execute();
 
         $post = $pdoStatement->fetchObject(self::class);
-        dd($post);
+        // dd($post);
         return $post;
     }
+
+
+    public static function findByTitle($title)
+    {
+        $pdoDBConnexion = Database::getPDO();
+        $sql = "
+            SELECT post.id, post.title, post.chapo, post.content, post.status, post.created_at, post.updated_at, comment.id AS comment, user.pseudo AS user
+            FROM post
+            LEFT JOIN comment ON comment.id = post.comments
+            INNER JOIN user ON user.id = post.users
+            WHERE title = :title
+            "
+        ;
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':title', $title, PDO::PARAM_STR);
+        $pdoStatement->execute();
+        $post = $pdoStatement->fetchObject(self::class);
+
+        return $post;
+    }
+
 
     /**
      * Méthode permettant d'ajouter un enregistrement dans la table post.
@@ -92,8 +120,8 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            INSERT INTO `post` (title, chapo, content, status)
-            VALUES (:title, :chapo, :content, :status)"
+            INSERT INTO `post` (title, chapo, content, status, slug)
+            VALUES (:title, :chapo, :content, :status, :slug)"
             ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -102,6 +130,7 @@ class Post extends CoreModel {
             ':chapo' => $this->chapo,
             ':content' => $this->content,
             ':status' => 0,
+            ':slug' => $this->slug
         ]);
 
         // Retourne le nombre de lignes affectées par le dernier appel à la fonction PDOStatement::execute()
@@ -293,6 +322,30 @@ class Post extends CoreModel {
     public function setUsers(int $users)
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slug
+     *
+     * @return  string
+     */ 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of slug
+     *
+     * @param  string  $slug
+     *
+     * @return  self
+     */ 
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }

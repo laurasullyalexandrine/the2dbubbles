@@ -50,4 +50,24 @@ class CoreController
         return $flashes;
     }
 
+    protected function slugify(string $string): string
+    {
+        $matches = [
+            "é" => "e",
+            "è" => "e",
+            "ô" => "o",
+            "ê" => "e",
+        ];
+
+        $string = trim($string);
+        $string = mb_strtolower($string);
+        $string = preg_replace("/[^\w\d\-\ ]+/", "", $string);
+        $string = str_ireplace(array_keys($matches), $matches, $string);
+        $string = preg_replace("/[^a-z0-9-]+/", "-", $string);
+        $string = preg_replace("/\-{2,}/", "-", $string);
+        $string = trim($string, "-");
+        
+        return $string;
+    }
+
 }

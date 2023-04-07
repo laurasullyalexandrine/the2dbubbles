@@ -37,8 +37,8 @@
 					<td>{{post.createdAt|date('d-m-Y')}} {{post.createdAt|date('H:i:s')}}</td>
 					<td>{{post.updatedAt|date('d-m-Y')}} {{post.updatedAt|date('H:i:s')}}</td>
 					<td class="d-flex flex-row">
-						<a class="btn mx-4 my-4" href="/post/read/{{post.id}}">voir</a>
-						<a class="btn mx-4 my-4" href="/post/update/{{post.id}}">edit</a>
+						<a class="btn mx-4 my-4" href="/post/read/{{post.title}}">voir</a>
+						<a class="btn mx-4 my-4" href="/post/update/{{post.title}}">edit</a>
 						{{ include('post/_delete.html.twig') }}
 					</td>
 				</tr>

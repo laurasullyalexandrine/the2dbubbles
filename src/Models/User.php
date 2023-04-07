@@ -54,10 +54,16 @@ class User extends CoreModel
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-        dd($users);
+
         return $users;
     }
 
+    /**
+     * Méthode permettant de récupérer un enregistrement de la table User en fonction d'un id donné
+     *
+     * @param integer $userId
+     * @return User
+     */
     public static function findBy(int $userId)
     {
         $pdoDBConnexion = Database::getPDO();
@@ -72,7 +78,7 @@ class User extends CoreModel
         $pdoStatement->execute();
 
         $user = $pdoStatement->fetchObject(self::class);
-
+        dd($user);
         return $user;
     }
 
@@ -86,11 +92,12 @@ class User extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
 
-        $sql = '
+        $sql = "
             SELECT *
             FROM `user`
             WHERE `email` = :email
-        ';
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         // Méthode bindValue() permet de contraintes les types de données saisies 
         $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);

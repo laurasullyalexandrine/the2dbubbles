@@ -25,21 +25,6 @@ class PostController extends CoreController
     }
 
     /**
-     * reading des posts
-     * @return void
-     */
-    public function read($postId)
-    {
-        $post = Post::findBy($postId);
-        // dd($post);
-        // On les envoie à la vue
-        $this->show('/post/read', [
-                'post' => $post
-            ]);
-            
-    }
-
-    /**
      * Ajout d'un nouveau post
      *
      * @return void
@@ -56,6 +41,7 @@ class PostController extends CoreController
         $flashes = $this->addFlash();
 
         $title = filter_input(INPUT_POST, 'title');
+        $slug = $this->slugify($title);
         $chapo = filter_input(INPUT_POST, 'chapo');
         $content = filter_input(INPUT_POST, 'content');
         $status = filter_input(INPUT_POST, 'status');
@@ -90,7 +76,8 @@ class PostController extends CoreController
             $post->setTitle($title)
                 ->setChapo($chapo)
                 ->setContent($content)
-                ->setStatus($status);
+                ->setStatus($status)
+                ->setSlug($slug);
             // dd($post);
             if ($post->insert()) {
                 header('Location: /post/read');
@@ -98,7 +85,6 @@ class PostController extends CoreController
             }  else { 
                 // dd($flashes, 'afficher les erreurs');
                 $flashes = $this->addFlash('danger', "Le rôle n'a pas été créé!");
-                exit; 
             }
         } else {
             // dd($flashes, 'si erreur dans le traitement du formulaire');
@@ -116,14 +102,26 @@ class PostController extends CoreController
     }
 
     /**
-     * Affiche la vue édition d'un post 
+     * Permet de voir un post d'y ajouter des commentaires
      *
-     * @param [type] $postId
-     * @return void
+     * @param string $title
+     * @return Post
      */
-    public function update($postId)
+    public function read($title)
     {
-        $post = Post::findBy($postId);
+        dd($title, $this->slugify($title));
+        $post = Post::findByTitle(trim($title));
+
+        // On les envoie à la vue
+        $this->show('/post/read', [
+                'post' => $post
+            ]);
+            
+    }
+
+    public function update($title)
+    {
+        $post = Post::findByTitle($title);
 
         // On affiche notre vue en transmettant les infos du post
         $this->show('/post/update', [
@@ -141,7 +139,7 @@ class PostController extends CoreController
     {
         $flashes = $this->addFlash();
 
-        $post = Post::findBy($postId);
+        $post = Post::findById($postId);
 
         if ($post) {
             $post->delete();
