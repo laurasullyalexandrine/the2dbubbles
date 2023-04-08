@@ -128,7 +128,7 @@ class UserController extends CoreController
     public function update($userId)
     {
         $flashes = $this->addFlash();
-        $user = User::findBy($userId);
+        $user = User::findById($userId);
         $roleCurrentUser = $user->getRoles();
         $roles = Role::findAll();
 
@@ -199,7 +199,7 @@ class UserController extends CoreController
     public function delete($userId)
     {
         $flashes = $this->addFlash();
-        $user = User::findBy($userId);
+        $user = User::findById($userId);
 
         if ($user) {
             $user->delete();

@@ -31,86 +31,89 @@ class PostController extends CoreController
      */
     public function create() 
     {
-        $this->show('/post/create', [
-                'post' => new Post()
-            ]);
-    }
-
-    public function createPostPost() 
-    {
         $flashes = $this->addFlash();
-
-        $title = filter_input(INPUT_POST, 'title');
-        $slug = $this->slugify($title);
-        $chapo = filter_input(INPUT_POST, 'chapo');
-        $content = filter_input(INPUT_POST, 'content');
-        $status = filter_input(INPUT_POST, 'status');
-
-        // Récupérer l'id du User en session
+        $post = new Post();
+        // Vérifier qu'il y a bien un user connecté
         $session = $_SESSION;
-        $id = $session['id'];
-        // Vérifier l'existence du user
-        $userCurrent = User::findBy($id);
-
-        // TODO: Ajouter l'access control en fonction du role et la generation du token
-        
-            if (empty($title)) {
-                $flashes = $this->addFlash('warning', 'Le champ titre est vide');
-            }
-    
-            if (empty($chapo)) {
-                $flashes = $this->addFlash('warning', 'Le champ chapô est vide');
-            }
-            if (empty($content)) {
-                $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
-            }
-    
-            if (empty($status)) {
-                $flashes = $this->addFlash('warning', 'Choisir un status');
-            }
-        
-
-        if (empty($flashes["messages"]) && $this->isPost()) {
-
-            $post = new Post();
-            $post->setTitle($title)
-                ->setChapo($chapo)
-                ->setContent($content)
-                ->setStatus($status)
-                ->setSlug($slug);
-            // dd($post);
-            if ($post->insert()) {
-                header('Location: /post/read');
-                exit;
-            }  else { 
-                // dd($flashes, 'afficher les erreurs');
-                $flashes = $this->addFlash('danger', "Le rôle n'a pas été créé!");
-            }
+        if (empty($session)) {
+            // Sinon le rediriger vers la page de login
+            header('Location: /security/login');
         } else {
-            // dd($flashes, 'si erreur dans le traitement du formulaire');
-            $post = new Post();
-            $post->setTitle(filter_input(INPUT_POST, 'title'));
-            $post->setChapo(filter_input(INPUT_POST, 'chapo'));
-            $post->setContent(filter_input(INPUT_POST, 'content'));
-            $post->setStatus(filter_input(INPUT_POST, 'status'));
+            // Récupérer le user connecté
+            $userCurrent = $session["userObject"];
+            // TODO: Ajouter l'access control en fonction du role et la generation du token
+            // $userCurrent = User::findBy($id);
+            if ($this->isPost()) {
+                $title = filter_input(INPUT_POST, 'title');
+                $slug = $this->slugify($title);
+                $chapo = filter_input(INPUT_POST, 'chapo');
+                $content = filter_input(INPUT_POST, 'content');
+                $status = (int)filter_input(INPUT_POST, 'status');
+                // dd($status);
+                if (empty($title)) {
+                    $flashes = $this->addFlash('warning', 'Le champ titre est vide');
+                }
+        
+                if (empty($chapo)) {
+                    $flashes = $this->addFlash('warning', 'Le champ chapô est vide');
+                }
+                if (empty($content)) {
+                    $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
+                }
+        
+                if (empty($status)) {
+                    $flashes = $this->addFlash('warning', 'Choisir un status');
+                }
+    
+                if (empty($flashes["messages"])) {
+                    $post->setTitle($title)
+                        ->setChapo($chapo)
+                        ->setContent($content)
+                        ->setStatus($status)
+                        ->setSlug($slug);
+                    $userId = $userCurrent->getId();
+                    $post->setUsers($userId);
+                    if ($post->insert()) {
+                        header('Location: /post/list');
+                        exit;
+                    }  else { 
+                        // dd($flashes, 'afficher les erreurs');
+                        $flashes = $this->addFlash('danger', "Le post n'a pas été créé!");
+                    }
+                } else {
+                    $post->setTitle(filter_input(INPUT_POST, $title));
+                    $slug = $this->slugify($title);
+                    $post->setChapo(filter_input(INPUT_POST, $chapo));
+                    // dd($content);
+                    $post->setContent(filter_input(INPUT_POST, 'content'));
+                    $post->setStatus(filter_input(INPUT_POST, 'status'));
 
+                    $this->show('/post/create', [
+                        'post' => new Post(),
+                        'user' => $userCurrent,
+                        'flashes' => $flashes
+                    ]);
+                }
+            }
             $this->show('/post/create', [
-                'user' => $userCurrent,
-                'flashes' => $flashes
-            ]);
+                    'post' => new Post(),
+                    'user' => $userCurrent,
+                    'flashes' => $flashes
+                ]);
         }
     }
 
+
     /**
-     * Permet de voir un post d'y ajouter des commentaires
+     * Permet de voir un post et d'y ajouter des commentaires
      *
      * @param string $title
      * @return Post
      */
-    public function read($title)
+    public function read(string $slug)
     {
-        dd($title, $this->slugify($title));
-        $post = Post::findByTitle(trim($title));
+        $post = Post::findBySlug($slug);
+        dd($post);
 
         // On les envoie à la vue
         $this->show('/post/read', [
@@ -119,9 +122,10 @@ class PostController extends CoreController
             
     }
 
-    public function update($title)
+    public function update($slug)
     {
-        $post = Post::findByTitle($title);
+        $flashes = $this->addFlash();
+        $post = Post::findBySlug($slug);
 
         // On affiche notre vue en transmettant les infos du post
         $this->show('/post/update', [
@@ -135,17 +139,16 @@ class PostController extends CoreController
      * @param [type] $postId
      * @return void
      */
-    public function delete($postId) 
+    public function delete($slug) 
     {
         $flashes = $this->addFlash();
-
-        $post = Post::findById($postId);
+        $post = Post::findBySlug($slug);
 
         if ($post) {
             $post->delete();
-
             $flashes = $this->addFlash('success', "L'article a été supprimé");
             header('Location: /post/read');
+            exit;
         } else {
             $flashes = $this->addFlash('danger', "Cet article n'existe pas!");
         }

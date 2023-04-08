@@ -64,7 +64,7 @@ class User extends CoreModel
      * @param integer $userId
      * @return User
      */
-    public static function findBy(int $userId)
+    public static function findById(int $userId)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "

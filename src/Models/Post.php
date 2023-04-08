@@ -89,23 +89,21 @@ class Post extends CoreModel {
     }
 
 
-    public static function findByTitle($title)
+    public static function findBySlug($slug)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT post.id, post.title, post.chapo, post.content, post.status, post.created_at, post.updated_at, comment.id AS comment, user.pseudo AS user
+            SELECT *
             FROM post
-            LEFT JOIN comment ON comment.id = post.comments
-            INNER JOIN user ON user.id = post.users
-            WHERE title = :title
+            WHERE slug = :slug
             "
         ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':title', $title, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
         $post = $pdoStatement->fetchObject(self::class);
-
+        dd($post);
         return $post;
     }
 
@@ -120,12 +118,13 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            INSERT INTO `post` (title, chapo, content, status, slug)
-            VALUES (:title, :chapo, :content, :status, :slug)"
+            INSERT INTO `post` (users, title, chapo, content, status, slug)
+            VALUES (:users, :title, :chapo, :content, :status, :slug)"
             ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
+            ':users' => $this->users,
             ':title' => $this->title,
             ':chapo' => $this->chapo,
             ':content' => $this->content,
@@ -153,20 +152,23 @@ class Post extends CoreModel {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            UPDATE `comment`
+            UPDATE `post`
             SET 
                 title = :title,
                 chapo = :chapo
                 content = :content,
                 status = :status,
+                slug = :slug,
                 updated_at = NOW()
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            ':content' => $this->content,
-            ':status' => $this->status,
-        ]);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':title', $this->title, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':chapo', $this->chapo, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':content', $this->content, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_BOOL);
+        $pdoStatement->bindValue(':slug', $this->slug, PDO::PARAM_STR);
 
         return $pdoStatement;
     }
@@ -210,6 +212,30 @@ class Post extends CoreModel {
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of slug
+     *
+     * @return  string
+     */ 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of slug
+     *
+     * @param  string  $slug
+     *
+     * @return  self
+     */ 
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -322,30 +348,6 @@ class Post extends CoreModel {
     public function setUsers(int $users)
     {
         $this->users = $users;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of slug
-     *
-     * @return  string
-     */ 
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * Set the value of slug
-     *
-     * @param  string  $slug
-     *
-     * @return  self
-     */ 
-    public function setSlug(string $slug)
-    {
-        $this->slug = $slug;
 
         return $this;
     }

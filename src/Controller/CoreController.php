@@ -50,13 +50,22 @@ class CoreController
         return $flashes;
     }
 
+    /**
+     * Permet de créer un slug 
+     *
+     * @param string $string
+     * @return string
+     */
     protected function slugify(string $string): string
     {
         $matches = [
             "é" => "e",
             "è" => "e",
-            "ô" => "o",
             "ê" => "e",
+            "ë" => "e",
+            "ô" => "o",
+            "û" => "u",
+
         ];
 
         $string = trim($string);
