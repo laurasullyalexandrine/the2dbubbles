@@ -116,8 +116,10 @@ class Role extends CoreModel
         $pdoDBConnexion = Database::getPDO();
         $sql = "
             INSERT INTO `role` (name, roleString)
-            VALUES (:name, :roleString)";
-        // dd($sql);
+            VALUES (:name, :roleString)
+            "
+        ;
+
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
             'name' => $this->name,

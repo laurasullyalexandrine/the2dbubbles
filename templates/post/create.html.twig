@@ -4,29 +4,29 @@
 {% endblock %}
 
 {% block body %}
-<article>
-	<section>
-		<div class="d-flex justify-content-between my-3">
-            <h1>Création d'un article<a class="btn ms-5" href="/post/list">Retour</a></h1>
-        </div>
+	<article class="container">
+		<section class="row">
+			<div class="d-flex justify-content-between my-3">
+				<h1>Création d'un article<a class="btn ms-5" href="/post/list">Retour</a></h1>
+			</div>
 
-		<form action="create" method="post" class="row g-3">
-			<div class="col-md-6">
-				<input type="text" class="form-control" value="{{post.title}}" name="title" id="Title">
-				<label for="Title" class="form-label">Titre</label>
-			</div>
-			<div class="col-md-6">
-				<input type="text" class="form-control" value="{{post.chapo}}" name="chapo" id="Chapo">
-				<label for="Chapo" class="form-label">Chapô</label>
-			</div>
-			<div class="col-md-6">
-				<textarea class="form-control" name="content" id="Content" rows="8" value="{{post.content}}"></textarea>
-				<label for="Contenu" class="form-label">Contenu</label>
-			</div>				
-			<div class="col-12">
-				<button class="btn" type="submit">Créer</button>
-			</div>
-		</form>
-	</section>
-</article>
+			<form action="create" method="post" class="row g-3">
+				<div class="col-md-6">
+					<input type="text" class="form-control" value="{{ post.title }}" name="title" id="Title">
+					<label for="Title" class="form-label">Titre</label>
+				</div>
+				<div class="col-md-6">
+					<input type="text" class="form-control" value="{{ post.chapo }}" name="chapo" id="Chapo">
+					<label for="Chapo" class="form-label">Chapô</label>
+				</div>
+				<div class="col-md-6">
+					<textarea class="form-control" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
+					<label for="Contenu" class="form-label">Contenu</label>
+				</div>				
+				<div class="col-12">
+					<button class="btn" type="submit">Créer</button>
+				</div>
+			</form>
+		</section>
+	</article>
 {% endblock %}

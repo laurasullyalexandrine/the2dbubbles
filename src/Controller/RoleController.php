@@ -34,7 +34,7 @@ class RoleController extends CoreController {
         $session = $_SESSION;
         $id = $session['id'];
         // Vérifier l'existence du user
-        $userCurrent = User::findBy($id);
+        $userCurrent = User::findById($id);
 
         // TODO: Ajouter l'access control en fonction du role et la generation du token
 
@@ -43,7 +43,6 @@ class RoleController extends CoreController {
         }
 
         if (empty($flashes["messages"]) && $this->isPost()) {
-            // dd($flashes, 'créer le role');
             $role = new Role();
 
             $role->setName($roleName)
@@ -52,12 +51,10 @@ class RoleController extends CoreController {
                 header('Location: /role/read');
                 exit;
             }  else { 
-                // dd($flashes, 'afficher les erreurs');
                 $flashes = $this->addFlash('danger', "Le rôle n'a pas été créé!");
                 exit; 
             }
         } else {
-            // dd($flashes, 'si erreur dans le traitement du formulaire');
             $role = new Role();
             $role->setName(filter_input(INPUT_POST, 'name_role'));
 
@@ -93,7 +90,7 @@ class RoleController extends CoreController {
         } else {
             $userId = $session['id'];
             // Vérifier l'existence du user
-            $userCurrent = User::findBy($userId);
+            $userCurrent = User::findById($userId);
     
             if ($this->isPost()) {
                 if (empty($roleName)) {
@@ -133,9 +130,8 @@ class RoleController extends CoreController {
     public function delete($roleId) 
     {
         $flashes = $this->addFlash();
-
         $role = Role::findBy($roleId);
-        // dd($role);
+
         if ($role) {
             $role->delete();
             header('Location: /role/read');

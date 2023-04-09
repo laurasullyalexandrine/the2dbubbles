@@ -141,14 +141,12 @@ class UserController extends CoreController
 
         if ($this->isPost()) {
             $pseudo = filter_input(INPUT_POST, 'pseudo');
-            // dd($pseudo);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $role = (int)filter_input(INPUT_POST, 'role');
             $user->setPseudo($pseudo);
             $user->setEmail($email);
             $user->setRoles($role);
-// dd($user);
    
             // Vérifier que tous les champs ne sont pas vide 
             if (empty($pseudo)) {
@@ -176,7 +174,7 @@ class UserController extends CoreController
                     $flashes = $this->addFlash('danger', "L'utilisateur n'a pas été modifié!");
                 }
             } else {
-                // $user->setPseudo(filter_input(INPUT_POST, $pseudo));
+                $user->setPseudo(filter_input(INPUT_POST, $pseudo));
                 $user->setEmail(filter_input(INPUT_POST, $email));
                 $user->setRoles(filter_input(INPUT_POST, $role));
             }

@@ -79,4 +79,14 @@ class CoreController
         return $string;
     }
 
+    protected function userIsConnected() 
+    {
+        $session = $_SESSION;
+        if (!empty($session)) {
+            $user = $session["userObject"];
+
+            return $user;
+        }
+    }
+
 }

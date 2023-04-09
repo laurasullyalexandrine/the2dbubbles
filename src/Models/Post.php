@@ -51,7 +51,7 @@ class Post extends CoreModel {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            SELECT post.id, title, chapo, post.content, post.status, post.created_at, post.updated_at, user.id, user.pseudo AS user
+            SELECT post.id, title, chapo, post.content, post.slug, post.status, post.created_at, post.updated_at, user.id, user.pseudo AS user
             FROM post
             INNER JOIN user ON user.id = post.users
             WHERE post.users
@@ -84,7 +84,7 @@ class Post extends CoreModel {
         $pdoStatement->execute();
 
         $post = $pdoStatement->fetchObject(self::class);
-        // dd($post);
+
         return $post;
     }
 
@@ -93,8 +93,10 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT *
+            SELECT post.id, post.title, post.chapo, post.content, post.slug, post.status, post.created_at, post.updated_at, comment.id AS comment, user.pseudo AS user
             FROM post
+            LEFT JOIN comment ON comment.id = post.comments
+            INNER JOIN user ON user.id = post.users
             WHERE slug = :slug
             "
         ;
@@ -103,7 +105,7 @@ class Post extends CoreModel {
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
         $post = $pdoStatement->fetchObject(self::class);
-        dd($post);
+
         return $post;
     }
 
@@ -143,9 +145,9 @@ class Post extends CoreModel {
     }
     
     /**
-     * Méthode permettant l'édition d'un commentaire
+     * Méthode permettant l'édition d'un article
      *
-     * @return void
+     * @return Post
      */
     public function update()
     {
@@ -154,23 +156,26 @@ class Post extends CoreModel {
         $sql = "
             UPDATE `post`
             SET 
+                users = :users,
                 title = :title,
-                chapo = :chapo
+                chapo = :chapo,
                 content = :content,
                 status = :status,
                 slug = :slug,
                 updated_at = NOW()
+            WHERE id = :id
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':users', $this->users, PDO::PARAM_INT);
         $pdoStatement->bindValue(':title', $this->title, PDO::PARAM_STR);
         $pdoStatement->bindValue(':chapo', $this->chapo, PDO::PARAM_STR);
         $pdoStatement->bindValue(':content', $this->content, PDO::PARAM_STR);
         $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_BOOL);
         $pdoStatement->bindValue(':slug', $this->slug, PDO::PARAM_STR);
 
-        return $pdoStatement;
+        return $pdoStatement->execute();
     }
 
 

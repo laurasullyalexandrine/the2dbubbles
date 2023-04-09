@@ -28,7 +28,6 @@ class SecurityController extends CoreController
             // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
             // Contrôle mot de passe
             if (empty($password)) {
-                // dd($flashes, 1);
                 $flashes = $this->addFlash('warning', 'Merci de saisir votre mot de passe!');
             } elseif (
                 $userCurrent
@@ -84,7 +83,6 @@ class SecurityController extends CoreController
 
             // Récupérer les données recues du formalaire d'inscription
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            // dd($email);
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $password_2 = filter_input(INPUT_POST, 'password_2');
             $hiddenRole = filter_input(INPUT_POST, 'role');
@@ -148,7 +146,6 @@ class SecurityController extends CoreController
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {
-                        dd($e);
                         $flashes = $this->addFlash('danger', 'Il existe déjà un compte avec cet email!');
                     } else {
                         $flashes = $this->addFlash('danger', $e->getMessage());

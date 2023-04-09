@@ -29,7 +29,7 @@ $url = trim($url, '/');
 $url = $url ?: 'main/home';
 
 $params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
-// dd($params);
+
 $controllerName = array_shift($params); // Permet de stocker le premier élément du tableau qui le contrôleur 
 $method = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du contrôleur 
 

@@ -78,7 +78,7 @@ class User extends CoreModel
         $pdoStatement->execute();
 
         $user = $pdoStatement->fetchObject(self::class);
-        dd($user);
+
         return $user;
     }
 
@@ -160,7 +160,8 @@ class User extends CoreModel
                 roles = :roles,
                 updated_at = NOW()
             WHERE id = :id
-        ";
+        "
+    ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
@@ -168,7 +169,7 @@ class User extends CoreModel
         $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
-        // dd($pdoStatement);
+
         return $pdoStatement->execute();
     }
 

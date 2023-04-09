@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Models\Post;
 use App\Models\User;
+
 /**
  * Controller dédié à la gestion des posts
  */
@@ -17,11 +18,11 @@ class PostController extends CoreController
     public function list()
     {
         $posts = Post::findAll();
-        
+
         // On les envoie à la vue
         $this->show('/post/list', [
-                'posts' => $posts
-            ]);
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -29,7 +30,7 @@ class PostController extends CoreController
      *
      * @return void
      */
-    public function create() 
+    public function create()
     {
         $flashes = $this->addFlash();
         $post = new Post();
@@ -42,29 +43,29 @@ class PostController extends CoreController
             // Récupérer le user connecté
             $userCurrent = $session["userObject"];
             // TODO: Ajouter l'access control en fonction du role et la generation du token
-            // $userCurrent = User::findBy($id);
+
             if ($this->isPost()) {
                 $title = filter_input(INPUT_POST, 'title');
                 $slug = $this->slugify($title);
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
                 $status = (int)filter_input(INPUT_POST, 'status');
-                // dd($status);
+
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
                 }
-        
+
                 if (empty($chapo)) {
                     $flashes = $this->addFlash('warning', 'Le champ chapô est vide');
                 }
                 if (empty($content)) {
                     $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
                 }
-        
+
                 if (empty($status)) {
                     $flashes = $this->addFlash('warning', 'Choisir un status');
                 }
-    
+
                 if (empty($flashes["messages"])) {
                     $post->setTitle($title)
                         ->setChapo($chapo)
@@ -76,15 +77,13 @@ class PostController extends CoreController
                     if ($post->insert()) {
                         header('Location: /post/list');
                         exit;
-                    }  else { 
-                        // dd($flashes, 'afficher les erreurs');
+                    } else {
                         $flashes = $this->addFlash('danger', "Le post n'a pas été créé!");
                     }
                 } else {
                     $post->setTitle(filter_input(INPUT_POST, $title));
                     $slug = $this->slugify($title);
                     $post->setChapo(filter_input(INPUT_POST, $chapo));
-                    // dd($content);
                     $post->setContent(filter_input(INPUT_POST, 'content'));
                     $post->setStatus(filter_input(INPUT_POST, 'status'));
 
@@ -96,10 +95,10 @@ class PostController extends CoreController
                 }
             }
             $this->show('/post/create', [
-                    'post' => new Post(),
-                    'user' => $userCurrent,
-                    'flashes' => $flashes
-                ]);
+                'post' => new Post(),
+                'user' => $userCurrent,
+                'flashes' => $flashes
+            ]);
         }
     }
 
@@ -113,13 +112,11 @@ class PostController extends CoreController
     public function read(string $slug)
     {
         $post = Post::findBySlug($slug);
-        dd($post);
 
         // On les envoie à la vue
         $this->show('/post/read', [
-                'post' => $post
-            ]);
-            
+            'post' => $post
+        ]);
     }
 
     public function update($slug)
@@ -127,10 +124,66 @@ class PostController extends CoreController
         $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
 
-        // On affiche notre vue en transmettant les infos du post
+        // Vérifier qu'il y a bien un user connecté
+        if (!$this->userIsConnected()) {
+            // Sinon le rediriger vers la page de login
+            header('Location: /security/login');
+        } else {
+            // Récupérer le user connecté
+            $userCurrent = $this->userIsConnected();
+
+            // TODO: Ajouter l'access control en fonction du role et la generation du token
+
+            if ($this->isPost()) {
+                $title = filter_input(INPUT_POST, 'title');
+                $slug = $this->slugify($title);
+                $chapo = filter_input(INPUT_POST, 'chapo');
+                $content = filter_input(INPUT_POST, 'content');
+                $status = (int)filter_input(INPUT_POST, 'status');
+
+                if (empty($title)) {
+                    $flashes = $this->addFlash('warning', 'Le champ titre est vide');
+                }
+                if (empty($chapo)) {
+                    $flashes = $this->addFlash('warning', 'Le champ chapô est vide');
+                }
+                if (empty($content)) {
+                    $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
+                }
+                if (empty($status)) {
+                    $flashes = $this->addFlash('warning', 'Choisir un status');
+                }
+
+                if (empty($flashes["messages"])) {
+                    $post->setTitle($title)
+                        ->setChapo($chapo)
+                        ->setContent($content)
+                        ->setStatus($status)
+                        ->setSlug($title);
+
+                    $userId = $userCurrent->getId();
+                    $post->setUsers($userId);
+                    
+                    if ($post->update()) {
+                        header('Location: /post/list');
+                        exit;
+                    } else {
+                        $flashes = $this->addFlash('danger', "L'article n'a pas été modifié!");
+                    }
+                } else {
+                    $post->setTitle(filter_input(INPUT_POST, $title));
+                    $slug = $this->slugify($title);
+                    $post->setChapo(filter_input(INPUT_POST, $chapo));
+                    $post->setContent(filter_input(INPUT_POST, $content));
+                    $post->setStatus(filter_input(INPUT_POST, $status));
+                }
+            }
+        }
+        // On affiche notre vue en transmettant les infos du post et des messages d'alerte
         $this->show('/post/update', [
-                'post' => $post
-            ]);
+            'post' => $post,
+            'flashes' => $flashes
+        ]);
     }
 
     /**
@@ -139,7 +192,7 @@ class PostController extends CoreController
      * @param [type] $postId
      * @return void
      */
-    public function delete($slug) 
+    public function delete($slug)
     {
         $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
