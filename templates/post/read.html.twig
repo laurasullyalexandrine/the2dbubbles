@@ -19,6 +19,10 @@
             </p>
             <p class="text-justify w-50">{{ post.content }}</p>
             <p class="fw-bolder">Auteur : {{post.user}} Modifié le </p>
+            <div class="d-flex">
+				{{ include('post/_delete.html.twig') }}
+            </div>
+            	<a class="btn " href="/post/update/{{post.slug}}">edit</a>
         </section>
 
         <section>

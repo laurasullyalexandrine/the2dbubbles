@@ -126,12 +126,12 @@ class Post extends CoreModel {
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':users' => $this->users,
-            ':title' => $this->title,
-            ':chapo' => $this->chapo,
-            ':content' => $this->content,
-            ':status' => 0,
-            ':slug' => $this->slug
+            'users' => $this->users,
+            'title' => $this->title,
+            'chapo' => $this->chapo,
+            'content' => $this->content,
+            'status' => $this->status,
+            'slug' => $this->slug
         ]);
 
         // Retourne le nombre de lignes affectées par le dernier appel à la fonction PDOStatement::execute()

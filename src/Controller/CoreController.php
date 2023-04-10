@@ -64,8 +64,9 @@ class CoreController
             "ê" => "e",
             "ë" => "e",
             "ô" => "o",
+            "ö" => "o",
             "û" => "u",
-
+            "ü" => "u"
         ];
 
         $string = trim($string);
@@ -82,6 +83,7 @@ class CoreController
     protected function userIsConnected() 
     {
         $session = $_SESSION;
+        
         if (!empty($session)) {
             $user = $session["userObject"];
 
