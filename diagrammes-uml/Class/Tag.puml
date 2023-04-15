@@ -1,9 +1,0 @@
-@startuml Tag
-
-Class Tag {
-    
-    - name : string
-    
-}
-
-@enduml

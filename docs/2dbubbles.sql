@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 07 avr. 2023 à 09:14
+-- Généré le : sam. 15 avr. 2023 à 12:52
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.1.12
 
@@ -29,11 +29,38 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
+  `posts` int(11) DEFAULT NULL,
+  `users` int(11) DEFAULT NULL,
   `content` text NOT NULL,
-  `statut` tinyint(1) UNSIGNED NOT NULL,
+  `status` tinyint(1) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `comment`
+--
+
+INSERT INTO `comment` (`id`, `posts`, `users`, `content`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, 56, 'Jouer à l\'apprenti chimiste', 0, '2023-04-14 08:52:36', NULL),
+(2, 6, 53, 'Pourquoi tant d\'intérêt ?!', 1, '2023-04-15 08:38:21', NULL),
+(3, 6, 52, 'Comment peut-on s\'inscrire sur ChatGPT ?', 1, '2023-04-15 08:58:32', NULL),
+(4, 6, 52, 'Quel avenir pour les métiers dit techniques ?', 0, '2023-04-15 09:06:58', NULL),
+(5, 7, 52, 'Je veux devenir développeur backend quels sont les prérequis ?', 0, '2023-04-15 09:15:51', NULL),
+(6, 7, 52, 'Quel est le salaire d\'un développeur backend junior ?', 0, '2023-04-15 09:17:21', NULL),
+(7, 7, 52, 'Quelle étude pour devenir développeur Backend ?', 0, '2023-04-15 09:18:34', NULL),
+(8, 13, 52, 'Est ce que ce langage est facile à appréhender ?', 0, '2023-04-15 09:23:24', NULL),
+(9, 13, 52, 'Est ce que ce langage est facile à appréhender ?', 0, '2023-04-15 09:23:36', NULL),
+(10, 13, 52, 'Est ce que ce langage est facile à appréhender ?', 0, '2023-04-15 09:24:08', NULL),
+(11, 13, 52, 'Est ce que ce langage est facile à appréhender ?', 0, '2023-04-15 09:24:33', NULL),
+(12, 13, 52, 'Est ce que ce langage est facile à appréhender ?', 0, '2023-04-15 09:24:45', NULL),
+(13, 13, 52, 'Est ce que ce langage est facile à appréhender ?', 0, '2023-04-15 09:33:22', NULL),
+(14, 13, 52, 'test', 0, '2023-04-15 09:33:40', NULL),
+(15, 13, 52, 'test', 0, '2023-04-15 09:34:10', NULL),
+(16, 13, 52, 'test', 0, '2023-04-15 09:34:54', NULL),
+(17, 13, 52, 'test', 0, '2023-04-15 09:35:13', NULL),
+(18, 13, 52, 'test 1', 0, '2023-04-15 09:36:07', NULL),
+(19, 13, 52, 'test', 0, '2023-04-15 09:44:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -44,11 +71,10 @@ CREATE TABLE `comment` (
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
   `users` int(11) DEFAULT NULL,
-  `comments` int(11) DEFAULT NULL,
   `title` varchar(84) NOT NULL,
   `chapo` varchar(180) NOT NULL,
   `content` text NOT NULL,
-  `status` tinyint(1) UNSIGNED NOT NULL,
+  `slug` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -57,9 +83,11 @@ CREATE TABLE `post` (
 -- Déchargement des données de la table `post`
 --
 
-INSERT INTO `post` (`id`, `users`, `comments`, `title`, `chapo`, `content`, `status`, `created_at`, `updated_at`) VALUES
-(1, 52, NULL, 'Bla bla', 'Bla bla bla', 'On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. L\'avantage du Lorem Ipsum sur un texte générique comme \'Du texte. Du texte. Du texte.\' est qu\'il possède une distribution de lettres plus ou moins normale, et en tout cas comparable avec celle du français standard.', 1, '2023-04-06 12:58:11', NULL),
-(2, 52, NULL, 'L\'alternance', 'OpenclassRoom', 'On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même.', 1, '2023-04-06 12:58:11', NULL);
+INSERT INTO `post` (`id`, `users`, `title`, `chapo`, `content`, `slug`, `created_at`, `updated_at`) VALUES
+(2, 52, 'L\'alternante', 'OpenclassRoom', 'On sait DEPUIS longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même.', 'L\'alternante', '2023-04-14 11:47:58', '2023-04-09 09:43:59'),
+(6, 52, 'ChatGPT', 'OpenAI', 'Nous avons formé un modèle appelé ChatGPT qui interagit de manière conversationnelle. Le format de dialogue permet à ChatGPT de répondre aux questions de suivi, d\'admettre ses erreurs, de contester les prémisses incorrectes et de rejeter les demandes inappropriées.', 'chatgpt', '2023-04-14 11:48:07', NULL),
+(7, 52, 'Développeur back-end', 'C\'est quoi un le backend ?', 'C\'est quoi un développeur back-end ?\r\nLe développeur back-end s\'occupe du côté technique et fonctionnel d\'un site web. Contrairement au développeur front-end, celui-ci travaille dans l\'ombre et se charge de toute la partie back-office, c\'est-à-dire les éléments indispensables pour le fonctionnement du site, mais qui sont invisibles des internautes.', 'dveloppeur-back-end', '2023-04-08 16:06:09', NULL),
+(13, 52, 'PHP', 'Langage de programmation', 'PHP: Hypertext Preprocessor, plus connu sous son sigle PHP, est un langage de programmation libre, principalement utilisé pour produire des pages Web dynamiques via un serveur HTTP, mais pouvant également fonctionner comme n\'importe quel langage interprété de façon locale. PHP est un langage impératif orienté objet.', 'PHP', '2023-04-11 06:56:11', '2023-04-11 06:56:11');
 
 -- --------------------------------------------------------
 
@@ -125,6 +153,7 @@ INSERT INTO `tag` (`id`, `name`) VALUES
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `roles` int(11) DEFAULT NULL,
+  `pseudo` varchar(64) DEFAULT NULL,
   `email` varchar(180) NOT NULL,
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -135,10 +164,10 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `roles`, `email`, `password`, `created_at`, `updated_at`) VALUES
-(52, 2, 'laura@2dbubbles.com', '$2y$12$WWFcfJ2txPN2vJ9UnuFn/OkJqXlQj/a.CQJc9scuH8UQgSaBmi0Le', '2023-04-01 15:55:52', NULL),
-(53, 3, 'paul@2dbubbles.com', '$2y$12$Lglgxai.WYklPgQY4SYqlOeOxXYIVo5ItdikbYhXh4ujSyIaxpfyi', '2023-04-03 06:43:45', '2023-04-06 12:53:00'),
-(56, 4, 'test@2dbubbles.com', '$2y$12$8dg31qI9JnT4aRXsbjzRsu5OiiQy/4Cu5IPtA5Y7YhTNdu0Uxb8l.', '2023-04-06 12:52:44', NULL);
+INSERT INTO `user` (`id`, `roles`, `pseudo`, `email`, `password`, `created_at`, `updated_at`) VALUES
+(52, 2, 'Laura', 'laura@2dbubbles.com', '$2y$12$WWFcfJ2txPN2vJ9UnuFn/OkJqXlQj/a.CQJc9scuH8UQgSaBmi0Le', '2023-04-01 15:55:52', NULL),
+(53, 3, 'Paolito', 'paolito@2dbubbles.com', '$2y$12$la3SACzR0yyqnCvh47LUauYm6uViXj1Ddgtw6dikSbrnlrDUuHJsO', '2023-04-03 06:43:45', '2023-04-07 09:15:56'),
+(56, 2, 'Julie', 'julie@gmail.com', '$2y$12$bL7kz/nTrWmVcKtJg0WokuHosCMlm4EHNn/BvgHCttQabvP2pPDH6', '2023-04-06 12:52:44', '2023-04-09 09:38:41');
 
 --
 -- Index pour les tables déchargées
@@ -148,14 +177,16 @@ INSERT INTO `user` (`id`, `roles`, `email`, `password`, `created_at`, `updated_a
 -- Index pour la table `comment`
 --
 ALTER TABLE `comment`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `posts` (`posts`),
+  ADD KEY `users` (`users`);
 
 --
 -- Index pour la table `post`
 --
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `id_comment` (`comments`),
+  ADD UNIQUE KEY `slug` (`slug`),
   ADD KEY `users` (`users`);
 
 --
@@ -186,13 +217,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT pour la table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `role`
@@ -217,10 +248,16 @@ ALTER TABLE `user`
 --
 
 --
+-- Contraintes pour la table `comment`
+--
+ALTER TABLE `comment`
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`posts`) REFERENCES `post` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`users`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+
+--
 -- Contraintes pour la table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`comments`) REFERENCES `comment` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `post_ibfk_2` FOREIGN KEY (`users`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --

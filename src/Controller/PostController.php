@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 
@@ -49,7 +52,11 @@ class PostController extends CoreController
                 $slug = $this->slugify($title);
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
-                // $status = (int)filter_input(INPUT_POST, 'status');
+                $post->setTitle($title)
+                    ->setSlug($slug)
+                    ->setContent($content)
+                    ->setChapo($chapo);
+                    
 
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
@@ -64,7 +71,6 @@ class PostController extends CoreController
                     $post->setTitle($title)
                         ->setChapo($chapo)
                         ->setContent($content)
-                        ->setStatus(0)
                         ->setSlug($slug);
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
@@ -76,11 +82,16 @@ class PostController extends CoreController
                         $flashes = $this->addFlash('danger', "Le post n'a pas été créé!");
                     }
                 } else {
-                    // dd($flashes);
-                    $post->setTitle(filter_input(INPUT_POST, $title));
-                    $slug = $this->slugify($title);
-                    $post->setChapo(filter_input(INPUT_POST, $chapo));
-                    $post->setContent(filter_input(INPUT_POST, $content));
+                   $post->setTitle(filter_input(INPUT_POST, $title));
+                   $post->setTitle(filter_input(INPUT_POST, $chapo));
+                   $post->setTitle(filter_input(INPUT_POST, $content));
+
+                    $this->show('/post/create', [
+                        'post' => $post,
+                        'user' => $userCurrent,
+                        'flashes' => $flashes
+                    ]);
+
                 }
             }
             $this->show('/post/create', [
@@ -91,9 +102,8 @@ class PostController extends CoreController
         }
     }
 
-
     /**
-     * Permet de voir un post et d'y ajouter des commentaires
+     * Permet de voir un Post ses commentaires
      *
      * @param string $title
      * @return Post
@@ -101,10 +111,23 @@ class PostController extends CoreController
     public function read(string $slug)
     {
         $post = Post::findBySlug($slug);
+        $postId = $post->getId();
+
+        // Récupérer les tableaux des commentaires
+        $comments = Comment::findBySlugPost($slug);
+        $commentsCheck = [];
+
+        foreach ($comments as $comment) {
+            if ($comment->getStatus() === 1) {
+                $commentsCheck[] = $comment;
+            }
+        }
 
         // On les envoie à la vue
         $this->show('/post/read', [
-            'post' => $post
+            'post' => $post,
+            'comments' => $comments,
+            'commentsCheck' => $commentsCheck
         ]);
     }
 
@@ -128,7 +151,6 @@ class PostController extends CoreController
                 $slug = $this->slugify($title);
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
-                $status = (bool)filter_input(INPUT_POST, 'status');
                 
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
@@ -139,15 +161,11 @@ class PostController extends CoreController
                 if (empty($content)) {
                     $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
                 }
-                if (empty($status)) {
-                    $flashes = $this->addFlash('warning', 'Choisir un status');
-                }
 
                 if (empty($flashes["messages"])) {
                     $post->setTitle($title)
                         ->setChapo($chapo)
                         ->setContent($content)
-                        ->setStatus($status)
                         ->setSlug($title);
 
                     $userId = $userCurrent->getId();
@@ -159,7 +177,9 @@ class PostController extends CoreController
                     } else {
                         $flashes = $this->addFlash('danger', "L'article n'a pas été modifié!");
                     }
-                }
+                } else {
+                    $slug = $this->slugify($title);
+                } 
             }
         }
         // On affiche notre vue en transmettant les infos du post et des messages d'alerte

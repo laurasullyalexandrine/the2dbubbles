@@ -3,10 +3,10 @@
 	active
 {% endblock %}
 {% block body %}
-	<h1>Liste des articles</h1>
+	
 
-	<div class="d-flex justify-content-around my-3">
-		<a class="btn" href="/main/home">Retour</a>
+	<div class="d-flex justify-content-between my-3">
+		<h1>Liste des articles <a class="btn" href="/main/home">Retour</a></h1>
 	</div>
 
 	<table class="table">
@@ -27,16 +27,16 @@
 				<tr>
 					<td>{{ post.title }}</td>
                     <td class="w-25">{{ post.content }}</td>
-					{% if post.status == 1 %}
-					<td class="text-center"><i class="fa-solid fa-circle-check" style="color: #17cf1a;"></i></td>
-						{# <td><i class="fa-solid fa-circle-check" style="color: #f1b309;"></i></td> #}
-					{% else %}
-					<td class="text-center"><i class="fa-sharp fa-solid fa-circle-xmark" style="color: #e90712;"></i></td>
-					{% endif %}
 					<td>{{ user }}</td>
-					<td>{{post.createdAt|date('d-m-Y')}} {{post.createdAt|date('H:i:s')}}</td>
-					<td>{{post.updatedAt|date('d-m-Y')}} {{post.updatedAt|date('H:i:s')}}</td>
-					<td class="d-flex flex-row">
+					<td> 
+						<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
+						 <time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+					</td>
+					<td>
+						<time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
+						 <time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
+					</td>
+					<td class="d-flex flex-column">
 						<a class="btn mx-4 my-4" href="/post/read/{{post.slug}}">voir</a>
 						<a class="btn mx-4 my-4" href="/post/update/{{post.slug}}">edit</a>
 						{{ include('post/_delete.html.twig') }}
@@ -50,6 +50,6 @@
 		</tbody>
 	</table>
 
-	<a class="btn mb-5" href="/post/create">Ajouter</a>
+	<a class="btn mb-5" href="/post/create">Ajouter un article</a>
 
 {% endblock %}

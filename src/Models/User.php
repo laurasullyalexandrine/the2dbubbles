@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use PDO;
@@ -31,11 +33,6 @@ class User extends CoreModel
     private $roles;
 
     /**
-     * @var int
-     */
-    private $comments;
-
-    /**
      * Méthode permettant de récupérer tous les enregistrements de la table user
      *
      * @return User
@@ -44,11 +41,12 @@ class User extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT user.id, pseudo, email, role.name AS role
-            FROM user
-            INNER JOIN role ON role.id = user.roles
-            WHERE user.roles 
-            ORDER BY user.email ASC
+            SELECT u.id, pseudo, email, r.name AS role
+            FROM user u
+            INNER JOIN role r
+            ON r.id = u.roles
+            WHERE u.roles 
+            ORDER BY u.pseudo ASC
             "
         ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -106,6 +104,30 @@ class User extends CoreModel
         $user = $pdoStatement->fetchObject(self::class);
 
         return $user;
+    }
+
+    public static function findByPostComment(string $pseudo) 
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            SELECT u.pseudo, c.content, c.created_at
+            FROM user u
+            LEFT JOIN comment c
+            ON u.id = c.users
+            LEFT JOIN post p
+            ON p.users = u.id
+            "
+        ;
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+
+        $user = $pdoStatement->fetchObject(self::class);
+
+        // dd($user);
+        return $user;
+        
     }
 
     /**
@@ -277,26 +299,6 @@ class User extends CoreModel
     public function setRoles($roles)
     {
         $this->roles = $roles;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of comments
-     */
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
-     * Set the value of comments
-     *
-     * @return  self
-     */
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
 
         return $this;
     }

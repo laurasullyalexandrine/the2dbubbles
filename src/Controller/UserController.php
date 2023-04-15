@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Models\Role;
@@ -176,7 +178,7 @@ class UserController extends CoreController
             } else {
                 $user->setPseudo(filter_input(INPUT_POST, $pseudo));
                 $user->setEmail(filter_input(INPUT_POST, $email));
-                $user->setRoles(filter_input(INPUT_POST, $role));
+                $user->setRoles((int)filter_input(INPUT_POST, 'role'));
             }
         }
         $this->show('/user/update', [

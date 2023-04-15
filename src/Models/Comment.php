@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use PDO;
@@ -17,6 +19,15 @@ class Comment extends CoreModel
      */
     private $status;
 
+    /**
+     * @var int
+     */
+    private $users;
+
+    /**
+     * @var int
+     */
+    private $posts;
 
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
@@ -27,12 +38,22 @@ class Comment extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
 
-        $sql = 'SELECT * FROM comment';
+        $sql = "
+            SELECT c.content, c.status, c.created_at, c.updated_at, u.pseudo AS user, p.id, p.title AS post
+            FROM comment c
+            LEFT JOIN user u
+            ON u.id = c.users
+            LEFT JOIN post p
+            ON p.id = c.posts
+            WHERE c.users
+            ORDER BY created_at ASC
+            "
+        ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-
+     
         return $comments;
     }
     /**
@@ -41,40 +62,77 @@ class Comment extends CoreModel
      * @param [type] $commentId
      * @return Comment
      */
-    public static function findBy($commentId)
+    public static function findById($commentId)
     {
         $pdoDBConnexion = Database::getPDO();
-        $sql = '
-        SELECT * 
-        FROM comment 
-        WHERE id = :id';
+        $sql = "
+            SELECT * 
+            FROM comment 
+            WHERE id = :id
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            'id' => $commentId
-        ]);
+        $pdoStatement->bindValue(':id', $commentId, PDO::PARAM_INT);
+        $pdoStatement->execute();
+
         $comment = $pdoStatement->fetchObject(self::class);
 
         return $comment;
     }
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table comment.
-     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     * Permet de trouver tous les commentaires d'un Post
      *
-     * @return void
+     * @param [type] $slug
+     * @return Comment
      */
-    public function insert()
+    public static function findBySlugPost($slug)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-                INSERT INTO `comment` (content, status, created_at)
-                VALUES (:content, :status, :created_at)";
+            SELECT c.id, c.content, c.status, c.created_at, c.updated_at, p.slug AS slug, u.pseudo
+            FROM comment c
+            LEFT JOIN post p
+            ON p.id = c.posts
+            LEFT JOIN user u
+            ON u.id = c.users
+            WHERE slug = :slug
+            ORDER BY c.created_at ASC 
+            "
+        ;
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
+        $pdoStatement->execute();
+
+        $comments = [];
+        while($comment = $pdoStatement->fetchObject(self::class)) {
+            $comments[] = $comment;
+        }
+ 
+        return $comments;
+    }
+
+    /**
+     * Méthode permettant d'ajouter un enregistrement dans la table comment.
+     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     *
+     * @return bool
+     */
+    public function insert(): bool
+    {
+        $pdoDBConnexion = Database::getPDO();
+        $sql = "
+                INSERT INTO `comment` (posts, users, content, status)
+                VALUES (:posts, :users, :content, :status)
+                "
+            ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            ':content' => $this->content,
-            ':status' => 0,
-            ':created_at' => $this->created_at
+            'posts' => $this->posts,
+            'users' => $this->users,
+            'content' => $this->content,
+            'status' => $this->status
         ]);
     
         if ($pdoStatement->rowCount() > 0) {
@@ -88,7 +146,7 @@ class Comment extends CoreModel
     /**
      * Méthode permettant l'édition d'un commentaire
      *
-     * @return void
+     * @return Comment
      */
     public function update()
     {
@@ -100,15 +158,14 @@ class Comment extends CoreModel
                 content = :content,
                 status = :status,
                 updated_at = NOW()
+            WHERE id = :id
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->execute([
-            ':content' => $this->content,
-            ':status' => $this->status,
-        ]);
+        $pdoStatement->bindValue(':content', $this->content, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_BOOL);
 
-        return $pdoStatement;
+        return $pdoStatement->execute();
     }
 
 
@@ -176,6 +233,54 @@ class Comment extends CoreModel
     public function setStatus(bool $status)
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of users
+     *
+     * @return  int
+     */ 
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * Set the value of users
+     *
+     * @param  int  $users
+     *
+     * @return  self
+     */ 
+    public function setUsers(int $users)
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of posts
+     *
+     * @return  int
+     */ 
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+
+    /**
+     * Set the value of posts
+     *
+     * @param  int  $posts
+     *
+     * @return  self
+     */ 
+    public function setPosts(int $posts)
+    {
+        $this->posts = $posts;
 
         return $this;
     }

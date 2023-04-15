@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+// declare(strict_types=1);
+
 namespace App\Models;
 
 use DateTime;
@@ -15,7 +18,6 @@ class CoreModel {
     protected $created_at;
     protected $updated_at;
     
-
     /**
      * Get the id of the entity
      *

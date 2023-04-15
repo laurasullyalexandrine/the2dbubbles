@@ -1,4 +1,7 @@
 <?php 
+
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Utils\Database;
@@ -27,16 +30,6 @@ class Post extends CoreModel {
     private $content;
 
     /**
-     * @var bool
-     */
-    private $status;
-
-    /**
-     * @var int
-     */
-    private $comments;
-
-    /**
      * @var int
      */
     private $users;
@@ -51,19 +44,22 @@ class Post extends CoreModel {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            SELECT post.id, title, chapo, post.content, post.slug, post.status, post.created_at, post.updated_at, user.id, user.pseudo AS user
-            FROM post
-            INNER JOIN user ON user.id = post.users
-            WHERE post.users
-            ORDER BY created_at ASC
+            SELECT p.id, title, chapo, p.content, p.slug, p.created_at, p.updated_at, u.id, u.pseudo AS user
+            FROM post p
+            INNER JOIN user u
+            ON u.id = p.users
+            WHERE p.users
+            ORDER BY created_at DESC
             "
         ;
+        
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
         $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
 
         return $posts;
     }
+    
     /**
      *  Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un id donné
      *
@@ -88,15 +84,20 @@ class Post extends CoreModel {
         return $post;
     }
 
-
-    public static function findBySlug($slug)
+    /**
+     * Undocumented function
+     *
+     * @param string $slug
+     * @return self
+     */
+    public static function findBySlug(string $slug): self
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            SELECT post.id, post.title, post.chapo, post.content, post.slug, post.status, post.created_at, post.updated_at, comment.id AS comment, user.pseudo AS user
-            FROM post
-            LEFT JOIN comment ON comment.id = post.comments
-            INNER JOIN user ON user.id = post.users
+            SELECT p.id, p.title, p.chapo, p.content, p.slug, p.created_at, p.updated_at, u.pseudo AS user
+            FROM post p
+            LEFT JOIN user u
+            ON u.id = p.users
             WHERE slug = :slug
             "
         ;
@@ -120,9 +121,10 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            INSERT INTO `post` (users, title, chapo, content, status, slug)
-            VALUES (:users, :title, :chapo, :content, :status, :slug)"
-            ;
+            INSERT INTO `post` (users, title, chapo, content, slug)
+            VALUES (:users, :title, :chapo, :content, :slug)
+            "
+        ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
@@ -130,7 +132,6 @@ class Post extends CoreModel {
             'title' => $this->title,
             'chapo' => $this->chapo,
             'content' => $this->content,
-            'status' => $this->status,
             'slug' => $this->slug
         ]);
 
@@ -160,7 +161,6 @@ class Post extends CoreModel {
                 title = :title,
                 chapo = :chapo,
                 content = :content,
-                status = :status,
                 slug = :slug,
                 updated_at = NOW()
             WHERE id = :id
@@ -172,7 +172,6 @@ class Post extends CoreModel {
         $pdoStatement->bindValue(':title', $this->title, PDO::PARAM_STR);
         $pdoStatement->bindValue(':chapo', $this->chapo, PDO::PARAM_STR);
         $pdoStatement->bindValue(':content', $this->content, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_BOOL);
         $pdoStatement->bindValue(':slug', $this->slug, PDO::PARAM_STR);
 
         return $pdoStatement->execute();
@@ -285,50 +284,6 @@ class Post extends CoreModel {
     public function setContent(string $content)
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of status
-     *
-     * @return  bool
-     */ 
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * Set the value of status
-     *
-     * @param  bool  $status
-     *
-     * @return  self
-     */ 
-    public function setStatus(bool $status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of comments
-     */ 
-    public function getComments()
-    {
-        return $this->comments;
-    }
-
-    /**
-     * Set the value of comments
-     *
-     * @return  self
-     */ 
-    public function setComments($comments)
-    {
-        $this->comments = $comments;
 
         return $this;
     }

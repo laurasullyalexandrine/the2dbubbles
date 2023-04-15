@@ -11,11 +11,6 @@
     <p>
         <time datetime="{{post.createdAt|date('d-m-Y')}}">{{post.createdAt|date('d-m-Y')}}</time>
         <time datetime="{{post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time> 
-        {% if post.status == 1 %}
-            validé <i class="fa-regular fa-circle-check"></i>
-        {% else %}
-            non validé <i class="fa-regular fa-circle-xmark"></i>
-    {% endif %}
     </p>
 
     <p>{{post.content}}</p>
