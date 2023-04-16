@@ -11,20 +11,6 @@ use App\Models\User;
 class CommentController extends CoreController {
 
     /**
-     * reading des Comments
-     * @return void
-     */
-    public function list()
-    {
-        $comments = Comment::findAll();
-
-        // On les envoie à la vue
-        $this->show('/comment/list', [
-            'comments' => $comments
-        ]);
-    }
-
-    /**
      * Ajout d'un nouveau commentaire
      *
      * @return Comment

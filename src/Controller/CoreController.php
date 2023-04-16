@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use Twig\Extension\DebugExtension;
-use Twig\TwigFunction;
+
 
 class CoreController
 {
-
     protected function show($viewName, $viewVars = [])
     {
         // Charge le chemin absolu vers le dossier front
@@ -82,6 +81,11 @@ class CoreController
         return $string;
     }
 
+    /**
+     * Méthode permettant de récupérer le user connecté
+     *
+     * @return User
+     */
     protected function userIsConnected() 
     {
         $session = $_SESSION;
@@ -91,6 +95,12 @@ class CoreController
 
             return $user;
         }
+    }
+
+    protected function error403() 
+    {
+        $userCurrent = $this->userIsConnected();
+        dd($userCurrent);
     }
 
 }

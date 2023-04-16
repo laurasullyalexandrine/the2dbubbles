@@ -34,26 +34,28 @@ class Comment extends CoreModel
      *
      * @return Post
      */
-    public static function findAll()
+    public static function findAll($pseudo)
     {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            SELECT c.content, c.status, c.created_at, c.updated_at, u.pseudo AS user, p.id, p.title AS post
+            SELECT c.content, c.status, c.created_at, c.updated_at, u.pseudo AS pseudo, p.id, p.slug AS slug
             FROM comment c
             LEFT JOIN user u
             ON u.id = c.users
             LEFT JOIN post p
             ON p.id = c.posts
-            WHERE c.users
+            WHERE pseudo = :pseudo
             ORDER BY created_at ASC
             "
         ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
         $pdoStatement->execute();
+
         $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-     
+    
         return $comments;
     }
     /**
@@ -122,10 +124,20 @@ class Comment extends CoreModel
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-                INSERT INTO `comment` (posts, users, content, status)
-                VALUES (:posts, :users, :content, :status)
-                "
-            ;
+            INSERT INTO comment(
+                    posts, 
+                    users, 
+                    content, 
+                    status
+                )
+                VALUES (
+                    :posts, 
+                    :users, 
+                    :content, 
+                    :status
+                )
+            "
+        ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
@@ -153,7 +165,7 @@ class Comment extends CoreModel
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            UPDATE `comment`
+            UPDATE comment
             SET 
                 content = :content,
                 status = :status,
@@ -179,9 +191,11 @@ class Comment extends CoreModel
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            DELETE FROM `comment`
+            DELETE 
+            FROM comment
             WHERE id = :id
-        ";
+            "
+        ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();

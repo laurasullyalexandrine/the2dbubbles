@@ -43,7 +43,7 @@ class User extends CoreModel
         $sql = "
             SELECT u.id, pseudo, email, r.name AS role
             FROM user u
-            INNER JOIN role r
+            LEFT JOIN role r
             ON r.id = u.roles
             WHERE u.roles 
             ORDER BY u.pseudo ASC
@@ -92,8 +92,8 @@ class User extends CoreModel
 
         $sql = "
             SELECT *
-            FROM `user`
-            WHERE `email` = :email
+            FROM user
+            WHERE email = :email
             "
         ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -106,26 +106,29 @@ class User extends CoreModel
         return $user;
     }
 
-    public static function findByPostComment(string $pseudo) 
+    /**
+     * Méthode permettant de trouver les posts et commentaire par son pseudo
+     *
+     * @param string $pseudo
+     * @return User
+     */
+    public static function findByPseudo(string $pseudo) 
     {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            SELECT u.pseudo, c.content, c.created_at
-            FROM user u
-            LEFT JOIN comment c
-            ON u.id = c.users
-            LEFT JOIN post p
-            ON p.users = u.id
+            SELECT * 
+            FROM user 
+            WHERE pseudo = :pseudo
             "
         ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+        $pdoStatement->execute();
 
         $user = $pdoStatement->fetchObject(self::class);
 
-        // dd($user);
         return $user;
         
     }
@@ -140,20 +143,25 @@ class User extends CoreModel
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            INSERT INTO `user` (
+            INSERT INTO user (
+                pseudo,
                 email,
                 password,
                 roles
             )
             VALUES (
+                :pseudo,
                 :email,
                 :password,
                 :roles
-            )";
+            )
+        "
+    ;
 
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
         $pdoStatement = $pdoDBConnexion->prepare($sql);
             $pdoStatement->execute([
+                'pseudo' => $this->pseudo,
                 'email' => $this->email,
                 'password' => $this->password,
                 'roles' => $this->roles,
@@ -174,7 +182,7 @@ class User extends CoreModel
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            UPDATE `user`
+            UPDATE user
             SET 
                 pseudo = :pseudo,
                 email = :email,
@@ -206,11 +214,13 @@ class User extends CoreModel
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            DELETE FROM `user`
+            DELETE 
+            FROM user
             WHERE id = :id
-        ";
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+            "
+        ;
 
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
         // Permet d'associer une valeur à un paramètre et de contraindre la donnée attendue
         $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->execute();

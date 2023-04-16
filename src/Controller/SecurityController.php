@@ -84,12 +84,13 @@ class SecurityController extends CoreController
         if ($this->isPost()) {
 
             // Récupérer les données recues du formalaire d'inscription
+            $pseudo = filter_input(INPUT_POST, 'pseudo');
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $password_2 = filter_input(INPUT_POST, 'password_2');
             $hiddenRole = filter_input(INPUT_POST, 'role');
-            $user->setEmail($email);
-
+            $user->setPseudo($pseudo)
+                ->setEmail($email);
 
             // Vérifier que tous les champs ne sont pas vide 
             if (empty($email)) {
@@ -110,12 +111,14 @@ class SecurityController extends CoreController
 
 
             // Contrôler si le rôle soumis est un rôle existant en BDD 
+            $rolesIdArray = [];
             $roleExist = false;
             foreach ($roles as $existingRole) {
-                $getRoleName = $existingRole::findByName($hiddenRole);
-
+                $rolesIdArray[] = $existingRole->getId();
+                $getIdRoleSubmited = $existingRole::findByName($hiddenRole)->getId();
+             
                 // Si l'id du rôle soumis alors existe en base de données
-                if ($getRoleName->getName() === $hiddenRole) {
+                if (in_array($getIdRoleSubmited, $rolesIdArray)) {
                     $roleExist = true;
                     break;
                 }
@@ -136,7 +139,7 @@ class SecurityController extends CoreController
                     $option
                 );
                 $user->setPassword($password)
-                    ->setRoles($getRoleName->getId());
+                    ->setRoles($getIdRoleSubmited);
 
                 try {
                     if ($user->insert()) {

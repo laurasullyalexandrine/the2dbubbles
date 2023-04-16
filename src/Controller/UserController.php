@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Comment;
+use App\Controller\ErrorController;
 
 class UserController extends CoreController
 {
@@ -196,7 +199,7 @@ class UserController extends CoreController
      * @param [type] $userId
      * @return void
      */
-    public function delete($userId)
+    public function delete(int $userId)
     {
         $flashes = $this->addFlash();
         $user = User::findById($userId);
@@ -212,5 +215,27 @@ class UserController extends CoreController
             'user' => $user,
             'flashes' => $flashes
         ]);
+    }
+
+
+    public function list_comment(string $pseudo) 
+    {
+        $userCurrent = $this->userIsConnected();
+        $userOfComment = User::findByPseudo($pseudo);
+        $comments = Comment::findAll($pseudo);
+        
+        if (!$userCurrent) {
+            header('Location: /security/login');
+        } elseif ($userCurrent != $userOfComment) {
+            $error = new ErrorController();
+            $error->accessDenied();
+        } else {
+            // On les envoie à la vue
+            $this->show('/user/list_comment', [
+                'user' => $userCurrent,
+                'comments' => $comments,
+                'pseudo' => $pseudo
+            ]);
+        }
     }
 }

@@ -44,20 +44,21 @@ class PostController extends CoreController
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
-          
+
             // TODO: Ajouter l'access control en fonction du role et la generation du token
 
             if ($this->isPost()) {
                 $title = filter_input(INPUT_POST, 'title');
                 $slug = $this->slugify($title);
+  
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
+   
                 $post->setTitle($title)
                     ->setSlug($slug)
                     ->setContent($content)
                     ->setChapo($chapo);
                     
-
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
                 }
@@ -68,13 +69,10 @@ class PostController extends CoreController
                     $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
                 }
                 if (empty($flashes["messages"])) {
-                    $post->setTitle($title)
-                        ->setChapo($chapo)
-                        ->setContent($content)
-                        ->setSlug($slug);
+                 
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
-               
+
                     if ($post->insert()) {
                         header('Location: /post/list');
                         exit;
@@ -82,16 +80,15 @@ class PostController extends CoreController
                         $flashes = $this->addFlash('danger', "Le post n'a pas été créé!");
                     }
                 } else {
-                   $post->setTitle(filter_input(INPUT_POST, $title));
-                   $post->setTitle(filter_input(INPUT_POST, $chapo));
-                   $post->setTitle(filter_input(INPUT_POST, $content));
+                    $post->setTitle($title);
+                    $post->setTitle($chapo);
+                    $post->setTitle([$content]);
 
                     $this->show('/post/create', [
                         'post' => $post,
                         'user' => $userCurrent,
                         'flashes' => $flashes
                     ]);
-
                 }
             }
             $this->show('/post/create', [
@@ -131,11 +128,17 @@ class PostController extends CoreController
         ]);
     }
 
-    public function update($slug)
+    /**
+     * Méthode permettant d'éditer un Post (article)
+     *
+     * @param string $slug
+     * @return Post
+     */
+    public function update(string $slug)
     {
         $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
-
+       
         // Vérifier qu'il y a bien un user connecté
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
@@ -151,7 +154,12 @@ class PostController extends CoreController
                 $slug = $this->slugify($title);
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
-                
+
+                $post->setTitle($title)
+                ->setChapo($chapo)
+                ->setContent($content)
+                ->setSlug($slug);
+
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
                 }
@@ -163,11 +171,6 @@ class PostController extends CoreController
                 }
 
                 if (empty($flashes["messages"])) {
-                    $post->setTitle($title)
-                        ->setChapo($chapo)
-                        ->setContent($content)
-                        ->setSlug($title);
-
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
@@ -179,7 +182,7 @@ class PostController extends CoreController
                     }
                 } else {
                     $slug = $this->slugify($title);
-                } 
+                }
             }
         }
         // On affiche notre vue en transmettant les infos du post et des messages d'alerte
@@ -195,16 +198,17 @@ class PostController extends CoreController
      * @param [type] $postId
      * @return void
      */
-    public function delete($slug)
+    public function delete(string $slug)
     {
         $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
 
         if ($post) {
+            // $flashes = $this->addFlash('success', "L'article a été supprimé");
             $post->delete();
-            $flashes = $this->addFlash('success', "L'article a été supprimé");
             header('Location: /post/list');
             exit;
+            
         } else {
             $flashes = $this->addFlash('danger', "Cet article n'existe pas!");
         }

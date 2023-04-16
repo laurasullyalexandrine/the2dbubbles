@@ -10,7 +10,7 @@
             <h2>{{ post.chapo }}</h2> 
                 <p class="fst-italic"> Publié le
                 <time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
-                <time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time> -
+                <time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
             </p>
                 <p class="text-justify">{{ post.content }}</p>
                 <p class="fw-bolder">Auteur : {{post.user}}</p>

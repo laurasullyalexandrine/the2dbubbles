@@ -112,7 +112,7 @@ class Post extends CoreModel {
 
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table post.
+     * Méthode permettant d'ajouter un enregistrement dans la table Post.
      * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      *
      * @return bool
@@ -121,8 +121,20 @@ class Post extends CoreModel {
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
-            INSERT INTO `post` (users, title, chapo, content, slug)
-            VALUES (:users, :title, :chapo, :content, :slug)
+            INSERT INTO post (
+                users, 
+                title, 
+                chapo, 
+                content, 
+                slug
+            )
+            VALUES (
+                :users, 
+                :title, 
+                :chapo, 
+                :content, 
+                :slug
+            )
             "
         ;
 
