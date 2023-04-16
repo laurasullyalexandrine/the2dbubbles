@@ -1,6 +1,6 @@
 <?php
 
-// declare(strict_types=1);
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -68,7 +68,11 @@ class CoreModel {
      */ 
     public function getUpdatedAt()
     {
-        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
+        if ($this->updated_at == null) {
+            return;
+        } else {
+            return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
+        }
     }
 
     /**

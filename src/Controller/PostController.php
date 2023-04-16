@@ -13,9 +13,9 @@ use App\Models\User;
  */
 class PostController extends CoreController
 {
-
     /**
-     * reading des posts
+     * Afficher tous les artilces de la base de données
+     * 
      * @return void
      */
     public function list()
@@ -30,8 +30,8 @@ class PostController extends CoreController
 
     /**
      * Ajout d'un nouveau post
-     *
-     * @return void
+     * 
+     * @return Post
      */
     public function create()
     {
@@ -50,15 +50,15 @@ class PostController extends CoreController
             if ($this->isPost()) {
                 $title = filter_input(INPUT_POST, 'title');
                 $slug = $this->slugify($title);
-  
+
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
-   
+
                 $post->setTitle($title)
                     ->setSlug($slug)
                     ->setContent($content)
                     ->setChapo($chapo);
-                    
+
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
                 }
@@ -69,7 +69,7 @@ class PostController extends CoreController
                     $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
                 }
                 if (empty($flashes["messages"])) {
-                 
+
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
@@ -100,7 +100,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Permet de voir un Post ses commentaires
+     * Voir un Post ses commentaires
      *
      * @param string $title
      * @return Post
@@ -129,7 +129,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Méthode permettant d'éditer un Post (article)
+     * Édition d'un Post (article)
      *
      * @param string $slug
      * @return Post
@@ -138,7 +138,7 @@ class PostController extends CoreController
     {
         $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
-       
+
         // Vérifier qu'il y a bien un user connecté
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
@@ -155,11 +155,6 @@ class PostController extends CoreController
                 $chapo = filter_input(INPUT_POST, 'chapo');
                 $content = filter_input(INPUT_POST, 'content');
 
-                $post->setTitle($title)
-                ->setChapo($chapo)
-                ->setContent($content)
-                ->setSlug($slug);
-
                 if (empty($title)) {
                     $flashes = $this->addFlash('warning', 'Le champ titre est vide');
                 }
@@ -171,6 +166,12 @@ class PostController extends CoreController
                 }
 
                 if (empty($flashes["messages"])) {
+
+                    $post->setTitle($title)
+                    ->setChapo($chapo)
+                    ->setContent($content)
+                    ->setSlug($slug);
+
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
@@ -182,18 +183,22 @@ class PostController extends CoreController
                     }
                 } else {
                     $slug = $this->slugify($title);
+
+                    $this->show('post/update', [
+                        'post' => $post,
+                        'flashes' => $flashes
+                    ]);
                 }
             }
         }
         // On affiche notre vue en transmettant les infos du post et des messages d'alerte
         $this->show('/post/update', [
             'post' => $post,
-            'flashes' => $flashes
         ]);
     }
 
     /**
-     * Permet de supprimer un post
+     * Suppression d'un post
      *
      * @param [type] $postId
      * @return void
@@ -208,7 +213,6 @@ class PostController extends CoreController
             $post->delete();
             header('Location: /post/list');
             exit;
-            
         } else {
             $flashes = $this->addFlash('danger', "Cet article n'existe pas!");
         }

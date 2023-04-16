@@ -10,11 +10,14 @@ use App\Models\User;
 use App\Models\Comment;
 use App\Controller\ErrorController;
 
+/**
+ * Controller dédié à la gestion des utilisateurs
+ */
 class UserController extends CoreController
 {
-
     /**
-     * reading des users
+     * Afficher tous les utilisateurs de la base de données
+     * 
      * @return void
      */
     public function read()
@@ -27,9 +30,9 @@ class UserController extends CoreController
 
 
     /**
-     * Page d'ajout d'user méthode GET
-     *
-     * @return void
+     * Ajout d'un nouvel utilisateur
+     * 
+     * @return User
      */
     public function create()
     {
@@ -125,12 +128,12 @@ class UserController extends CoreController
     }
 
     /**
-     * Éditer un utilisateur
+     * Édition d'un utilisateur
      *
      * @param [type] $userId
-     * @return void
+     * @return User
      */
-    public function update($userId)
+    public function update(int $userId)
     {
         $flashes = $this->addFlash();
         $user = User::findById($userId);
@@ -194,7 +197,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Permet de supprimer un utilisateur
+     * Suppression d'un utilisateur
      *
      * @param [type] $userId
      * @return void
@@ -217,7 +220,8 @@ class UserController extends CoreController
         ]);
     }
 
-
+    
+    // TODO: à revoir
     public function list_comment(string $pseudo) 
     {
         $userCurrent = $this->userIsConnected();

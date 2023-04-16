@@ -6,6 +6,11 @@ namespace App\Controller;
 
 class MainController extends CoreController {
     
+    /**
+     * Afficher la page d'accueil
+     *
+     * @return void
+     */
     public function home() {
         $session = $_SESSION;
         $this->show('main/home', [
@@ -17,7 +22,13 @@ class MainController extends CoreController {
         $this->show('main/contact');
     }
 
+    /**
+     * Traitement du formulaire de contact
+     * @return void
+     */
     public function contact() {
+
+
         if ($this->isPost()) {
 
             // dump($_SERVER['REQUEST_METHOD']);
@@ -27,6 +38,8 @@ class MainController extends CoreController {
             // $message = filter_input(INPUT_POST, 'message');
             // dd($firstname, $lastname, $email, $message);
         }
+
+        $this->show('main/contact');
 
 
     }

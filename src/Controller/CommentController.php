@@ -12,10 +12,10 @@ class CommentController extends CoreController {
 
     /**
      * Ajout d'un nouveau commentaire
-     *
+     * 
      * @return Comment
      */
-    public function create($slug)
+    public function create(string $slug)
     {
         $flashes = $this->addFlash();
 
@@ -68,10 +68,10 @@ class CommentController extends CoreController {
         }
     }
 
-
+    // TODO: à revoir
     /**
-     * Permet de voir un Post et d'y ajouter des commentaires
-     *
+     * Voir un Post et ses commentaires
+     * 
      * @param int $commentId
      * @return Comment
      */
@@ -86,12 +86,12 @@ class CommentController extends CoreController {
     }
 
     /**
-     * Undocumented function
+     * Édition d'un commentaire
      *
      * @param [type] $commentId
      * @return Comment
      */
-    public function update($commentId)
+    public function update(int $commentId)
     {
         $flashes = $this->addFlash();
         $comment = Comment::findById($commentId);
@@ -141,13 +141,15 @@ class CommentController extends CoreController {
     }
 
     /**
-     * Permet de supprimer un commentaire
-     *
+     * Suppression d'un commentaire
+     * 
      * @param [type] $commentId
      * @return void
      */
-    public function delete($commentId)
+    public function delete(int $commentId)
     {
+        // TODO: Ajouter la contrainte de connexion 
+        // TODO: Ajouter la contrainte d'access control'
         $flashes = $this->addFlash();
         $comment = Comment::findById($commentId);
 

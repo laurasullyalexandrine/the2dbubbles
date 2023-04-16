@@ -13,7 +13,8 @@ use App\Models\User;
 class SecurityController extends CoreController
 {
     /**
-     * Afficher le formulaire de connexion
+     * Traitement du formulaire de connexion
+     * @return void
      */
     public function login()
     {
@@ -72,7 +73,8 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Afficher le formulaire de connexion
+     * Traitement du formulaire d'inscription
+     * @return User
      */
     public function register()
     {
@@ -174,24 +176,9 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Inscription d'un user
-     *
+     * Déconnexion de l'utilisateur
      * @return void
      */
-    public function registerPost()
-    {
-    }
-
-
-    /**
-     * Valider le formulaire de connexion d'un user
-     *
-     * @return void
-     */
-    public function loginPost()
-    {
-    }
-
     public function logout()
     {
         session_destroy();
