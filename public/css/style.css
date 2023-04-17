@@ -17,7 +17,7 @@
     font-size: 1.3rem;
     font-family: 'Oswald', sans-serif;
     font-weight: lighter;
-    background-image: url("../images/bullebaniere-v2.png");
+    background-image: url("../image/bullebaniere-v2.png");
     background-repeat: no-repeat;
     box-shadow: 0px 2px 0px #1c1a19;;
     justify-content: space-around;
@@ -201,12 +201,12 @@ figcaption
     height: 118px;
     top: -160px;
     left: 260px;
-    background-image: url('../images/bulle-js-v2.png');
+    background-image: url('../image/bulle-js-v2.png');
 }
 .bulle-js:hover {
     top: -180px;
     left: 280px;
-    background-image: url('../images/bulle-js.png');
+    background-image: url('../image/bulle-js.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -215,12 +215,12 @@ figcaption
     height: 130px;
     top: -310px;
     left: 360px;
-    background-image: url('../images/bulle-php-v2.png');
+    background-image: url('../image/bulle-php-v2.png');
 }
 .bulle-php:hover {
     top: -330px;
     left: 380px;
-    background-image: url('../images/bulle-php.png');
+    background-image: url('../image/bulle-php.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -229,12 +229,12 @@ figcaption
     height: 120px;
     top: -470px;
     left: 160px;
-    background-image: url('../images/bulle-html-v2.png');
+    background-image: url('../image/bulle-html-v2.png');
 }
 .bulle-html:hover {
     top: -500px;
     left: 180px;
-    background-image: url('../images/bulle-html.png');
+    background-image: url('../image/bulle-html.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -243,12 +243,12 @@ figcaption
     height: 108px;
     top: -680px;
     left: 130px;
-    background-image: url('../images/bulle-css-v2.png');
+    background-image: url('../image/bulle-css-v2.png');
 }
 .bulle-css:hover {
     top: -700px;
     left: 150px;
-    background-image: url('../images/bulle-css.png');
+    background-image: url('../image/bulle-css.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -257,12 +257,12 @@ figcaption
     height: 140px;
     top: -870px;
     left: 260px;
-    background-image: url('../images/bulle-twig-v2.png');
+    background-image: url('../image/bulle-twig-v2.png');
 }
 .bulle-twig:hover {
     top: -885px;
     left: 280px;
-    background-image: url('../images/bulle-twig.png');
+    background-image: url('../image/bulle-twig.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -271,12 +271,12 @@ figcaption
     height: 200px;
     top: -1045px;
     left: 540px;
-    background-image: url('../images/bulle-vs-v2.png');
+    background-image: url('../image/bulle-vs-v2.png');
 }
 .bulle-vs:hover {
     top: -1055px;
     left: 560px;
-    background-image: url('../images/bulle-vs.png');
+    background-image: url('../image/bulle-vs.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -285,12 +285,12 @@ figcaption
     height: 110px;
     top: -1010px;
     left: 650px;
-    background-image: url('../images/bulle-slack-v2.png');
+    background-image: url('../image/bulle-slack-v2.png');
 }
 .bulle-slack:hover {
     top: -1040px;
     left: 680px;
-    background-image: url('../images/bulle-slack.png');
+    background-image: url('../image/bulle-slack.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -299,12 +299,12 @@ figcaption
     height: 110px;
     top: -1085px;
     left: 810px;
-    background-image: url('../images/bulle-discord-v2.png');
+    background-image: url('../image/bulle-discord-v2.png');
 }
 .bulle-discord:hover {
     top: -1100px;
     left: 830px;
-    background-image: url('../images/bulle-discord.png');
+    background-image: url('../image/bulle-discord.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -313,12 +313,12 @@ figcaption
     height: 140px;
     top: -1350px;
     left: 805px;
-    background-image: url('../images/bulle-symfony-v2.png');
+    background-image: url('../image/bulle-symfony-v2.png');
 }
 .bulle-symfony:hover {
     top: -1370px;
     left: 780px;
-    background-image: url('../images/bulle-symfony.png');
+    background-image: url('../image/bulle-symfony.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -327,12 +327,12 @@ figcaption
     height: 110px;
     top: -1390px;
     left: 925px;
-    background-image: url('../images/bulle-github-v2.png');
+    background-image: url('../image/bulle-github-v2.png');
 }
 .bulle-github:hover {
     top: -1400px;
     left: 945px;
-    background-image: url('../images/bulle-github.png');
+    background-image: url('../image/bulle-github.png');
     transition: ease-in-out 1.5s;
 }
 
@@ -341,12 +341,12 @@ figcaption
     height: 110px;
     top: -1430px;
     left: 970px;
-    background-image: url('../images/bulle-git-v2.png');
+    background-image: url('../image/bulle-git-v2.png');
 }
 .bulle-git:hover {
     top: -1460px;
     left: 990px;
-    background-image: url('../images/bulle-git.png');
+    background-image: url('../image/bulle-git.png');
 }
 
 /*----- LOGING -----*/
@@ -395,7 +395,7 @@ figcaption
 #footer {
     height: 100%;
     font-family: 'Oswald', sans-serif;
-    background-image: url('../images/bullebaniere.jpg');
+    background-image: url('../image/bullebaniere.jpg');
     padding-bottom: 5%;
     
 }
