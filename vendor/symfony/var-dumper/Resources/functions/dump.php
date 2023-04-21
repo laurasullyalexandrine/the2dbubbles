@@ -40,10 +40,6 @@ if (!function_exists('dd')) {
         if (!in_array(\PHP_SAPI, ['cli', 'phpdbg'], true) && !headers_sent()) {
             header('HTTP/1.1 500 Internal Server Error');
         }
-        
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        $caller = $trace[0];
-        VarDumper::dump($caller['file'].':'.$caller['line']);
 
         foreach ($vars as $v) {
             VarDumper::dump($v);

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Post;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Comment;
@@ -187,6 +186,7 @@ class UserController extends CoreController
                 $user->setRoles((int)filter_input(INPUT_POST, 'role'));
             }
         }
+        // dd($user, $roleCurrentUser, $roleNameUser);
         $this->show('/user/update', [
             'user' => $user,
             'role_current_user' => $roleCurrentUser,
