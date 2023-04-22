@@ -21,6 +21,13 @@ class Role extends CoreModel
      */
     private $roleString;
 
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
@@ -67,7 +74,7 @@ class Role extends CoreModel
      * @param [type] $roleId
      * @return Role
      */
-    public static function findBy(int $roleId)
+    public static function findById(int $roleId)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = '

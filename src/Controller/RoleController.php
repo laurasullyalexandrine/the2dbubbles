@@ -29,7 +29,7 @@ class RoleController extends CoreController {
      */
     public function create() 
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $role = new Role();
 
         if (!$this->userIsConnected()) {
@@ -82,8 +82,8 @@ class RoleController extends CoreController {
      */
     public function update(int $roleId)
     {
-        $flashes = $this->addFlash();
-        $role = role::findBy($roleId);
+        // $flashes = $this->addFlash();
+        $role = role::findById($roleId);
 
         // Vérifier qu'il y a bien un user connecté
         if (!$this->userIsConnected()) {
@@ -135,8 +135,8 @@ class RoleController extends CoreController {
      */
     public function delete(int $roleId) 
     {
-        $flashes = $this->addFlash();
-        $role = Role::findBy($roleId);
+        // $flashes = $this->addFlash();
+        $role = Role::findById($roleId);
 
         if ($role) {
             $role->delete();

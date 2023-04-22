@@ -17,7 +17,7 @@ class CommentController extends CoreController {
      */
     public function create(string $slug)
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
 
         $comment = new Comment();
 
@@ -93,7 +93,7 @@ class CommentController extends CoreController {
      */
     public function update(int $commentId)
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $comment = Comment::findById($commentId);
 
         // Vérifier qu'il y a bien un user connecté
@@ -150,7 +150,7 @@ class CommentController extends CoreController {
     {
         // TODO: Ajouter la contrainte de connexion 
         // TODO: Ajouter la contrainte d'access control'
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $comment = Comment::findById($commentId);
 
         if ($comment) {

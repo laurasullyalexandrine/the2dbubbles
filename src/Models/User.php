@@ -32,6 +32,12 @@ class User extends CoreModel
      */
     private $roles;
 
+
+    public function __toString()
+    {
+        return $this->pseudo;
+    }
+
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table user
      *

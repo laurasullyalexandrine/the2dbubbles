@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Models\Role;
 use SessionHandler;
 use Twig\Extension\DebugExtension;
 
@@ -21,10 +22,15 @@ class CoreController
         ]);
         $twig->addExtension(new DebugExtension());
       
-        $function = new \Twig\TwigFunction('session', function () {
-            return $_SESSION;
+        $userRole = new \Twig\TwigFunction('role', function () {
+            $user = $this->userIsConnected();
+
+            $userRoleId = $user->getRoles();
+            $role = Role::findById($userRoleId);
+
+            return $role;
         });
-        $twig->addFunction($function);
+        $twig->addFunction($userRole);
         
         // Dynamiser l'affichage des modèles
         $template = $twig->load($viewName . '.html.twig');
@@ -45,26 +51,26 @@ class CoreController
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
-    protected function addFlash(string $alert = null, string $message = null): array
+    protected function flashes(string $alert = null, string $message = null)
     {
-        $flashes = [
-            'alert' => $alert,
-            'messages' => $message
-        ];
-
-        // $flash = [
-        //     $alert => $message
+        // $flashes = [
+        //     'alert' => $alert,
+        //     'messages' => $message
         // ];
 
-        // $flashes = $_SESSION['flashes'] ?? [];
-        // $flashes[] = $flash;
+        $flash = [
+            $alert => $message
+        ];
+        dd($flash);
+        $flashes = $_SESSION['flashes'] ?? [];
+        $flashes[] = $flash;
 
-        // $_SESSION['flashes'] = $flashes;
+        $_SESSION['flashes'] = $flashes;
 
-        // Exemple de destructuration si $flash = [$alert, $message]: 
-        // [$alert, $message] = $flash; 
+        // Exemple de déstructuration si $flash = [$alert, $message]: 
+        [$alert, $message] = $flash; 
     
-        return $flashes;
+        // return $flashes;
     }
 
     /**

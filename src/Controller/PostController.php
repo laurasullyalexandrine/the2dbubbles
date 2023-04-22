@@ -35,7 +35,7 @@ class PostController extends CoreController
      */
     public function create()
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $post = new Post();
 
         if (!$this->userIsConnected()) {
@@ -136,7 +136,7 @@ class PostController extends CoreController
      */
     public function update(string $slug)
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
 
         // Vérifier qu'il y a bien un user connecté
@@ -205,7 +205,7 @@ class PostController extends CoreController
      */
     public function delete(string $slug)
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $post = Post::findBySlug($slug);
 
         if ($post) {

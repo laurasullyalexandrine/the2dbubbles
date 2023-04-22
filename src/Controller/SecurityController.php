@@ -18,7 +18,7 @@ class SecurityController extends CoreController
      */
     public function login()
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
 
         if ($this->isPost()) {
 
@@ -78,7 +78,7 @@ class SecurityController extends CoreController
      */
     public function register()
     {
-        $flashes = $this->addFlash();
+        // $flashes = $this->addFlash();
         $user = new User();
         $role = new Role();
         $roles = $role::findAll();
