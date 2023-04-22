@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use SessionHandler;
 use Twig\Extension\DebugExtension;
 
 
@@ -16,18 +17,21 @@ class CoreController
 
         // Crée l'environement des modèles charger avec ceux dans le dossier front
         $twig = new \Twig\Environment($loader, [
-            'debug' => true
+            'debug' => true,
         ]);
         $twig->addExtension(new DebugExtension());
+      
+        $function = new \Twig\TwigFunction('session', function () {
+            return $_SESSION;
+        });
+        $twig->addFunction($function);
         
-        // Dynamise l'affichage des modèles
+        // Dynamiser l'affichage des modèles
         $template = $twig->load($viewName . '.html.twig');
 
 
         // Affiche les modèles
-        require_once dirname(__DIR__) . '/../templates/_partial/_nav.html.twig';
         echo $template->render($viewVars);
-        require_once dirname(__DIR__) . '/../templates/_partial/_footer.html.twig';
     }
 
 
@@ -47,6 +51,18 @@ class CoreController
             'alert' => $alert,
             'messages' => $message
         ];
+
+        // $flash = [
+        //     $alert => $message
+        // ];
+
+        // $flashes = $_SESSION['flashes'] ?? [];
+        // $flashes[] = $flash;
+
+        // $_SESSION['flashes'] = $flashes;
+
+        // Exemple de destructuration si $flash = [$alert, $message]: 
+        // [$alert, $message] = $flash; 
     
         return $flashes;
     }

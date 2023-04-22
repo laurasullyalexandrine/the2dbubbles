@@ -104,6 +104,7 @@ class UserController extends CoreController
                 // Essayer de faire l'insertion du nouvel utilisateur 
                 try {
                     if ($user->insert()) {
+                        $flashes = $this->addFlash('danger', "Votre compte n'a pas été créé!");
                         header('Location: /user/read');
                         exit;
                     } // Sinon erreur lors de l'enregistrement
