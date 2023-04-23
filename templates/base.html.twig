@@ -13,12 +13,12 @@
     <title>{% block title %}2dbubbles{% endblock %}</title>
 </head>
 <body class="bg-light">
+
 {% include "/_partial/_nav.html.twig" %}
 	<main class="container pt-5"> 
         <div class="alert alert-{{flashes.alert}}">
-            {{flashes.messages}}
+            {{flashes.message}}
         </div>
-        
         {% block body %} {% endblock %}
     </main>
 {% include "/_partial/_footer.html.twig" %}	

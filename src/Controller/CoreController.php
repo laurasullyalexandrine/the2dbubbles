@@ -72,24 +72,12 @@ class CoreController
 
     protected function flashes(string $alert = null, string $message = null)
     {
-        // $flashes = [
-        //     'alert' => $alert,
-        //     'messages' => $message
-        // ];
-
         $flash = [
-            $alert => $message
-        ];
-        dd($flash);
-        $flashes = $_SESSION['flashes'] ?? [];
-        $flashes[] = $flash;
+            'alert' => $alert, 
+            'message' => $message];
+        $flashes = $_SESSION['flashes'] = $flash ?? [];
 
-        $_SESSION['flashes'] = $flashes;
-
-        // Exemple de déstructuration si $flash = [$alert, $message]: 
-        [$alert, $message] = $flash; 
-    
-        // return $flashes;
+        return $flashes;
     }
 
     /**

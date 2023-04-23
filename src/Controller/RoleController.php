@@ -16,9 +16,11 @@ class RoleController extends CoreController {
      */
     public function read()
     {
+        $flashes = $_SESSION["flashes"];
         $roles = Role::findAll();
         $this->show('role/read', [
-                'roles' => $roles
+                'roles' => $roles,
+                'flashes' => $flashes
             ]);
     }
 
@@ -29,7 +31,7 @@ class RoleController extends CoreController {
      */
     public function create() 
     {
-        // $flashes = $this->addFlash();
+        $flashes = $this->flashes();
         $role = new Role();
 
         if (!$this->userIsConnected()) {
@@ -45,31 +47,32 @@ class RoleController extends CoreController {
                 $roleName = filter_input(INPUT_POST, 'role');
 
                 if (empty($roleName)) {
-                    $flashes = $this->addFlash('warning', 'Le champ du rôle est vide');
+                    $flashes = $this->flashes('warning', 'Le champ du rôle est vide');
                 }
-            
-                if (empty($flashes["messages"])) {
+
+                if (empty($flashes["message"])) {
                     $role->setName($roleName)
                         ->setRoleString('ROLE_'. mb_strtoupper($roleName));
 
                     if ($role->insert()) {
                         header('Location: /role/read');
+                        $flashes = $this->flashes('success', 'Le rôle a été créé');
                         exit;
-                    }  else { 
-                        $flashes = $this->addFlash('danger', "Le rôle n'a pas été créé!");
-                        exit; 
+                    } else { 
+                        $flashes = $this->flashes('danger', "Le rôle n'a pas été créé!"); 
                     }
                 } else {
                         $role->setName($role);
                         $this->show('role/create', [
                             'user' => $userCurrent,
-                            'flashes' => $flashes
+                            'flashes' => $flashes,
                         ]);
                     }
                 }
             }
         $this->show('role/create', [
-                'role' => new role()
+                'role' => new role(),
+                'flashes' => $flashes
             ]);
     } 
 }
@@ -98,18 +101,19 @@ class RoleController extends CoreController {
                 $roleName = filter_input(INPUT_POST, 'role');
 
                 if (empty($roleName)) {
-                    $flashes = $this->addFlash('warning', 'Le champ du rôle est vide');
+                    $flashes = $this->flashes('warning', 'Le champ du rôle est vide');
                 }
 
-                if (empty($flashes["messages"])) {
+                if (empty($flashes["message"])) {
                     $role->setName($roleName)
                         ->setRoleString('ROLE_'. mb_strtoupper($roleName));
 
                     if ($role->update()) {
                         header('Location: /role/read');
+                        $flashes = $this->flashes('success', 'Le rôle a bien été modifié.');
                         exit;
                     } else {
-                        $flashes = $this->addFlash('danger', "Le rôle n'a pas été modifié!");
+                        $flashes = $this->flashes('danger', "Le rôle n'a pas été modifié!");
                     }
                 } else {
                     $role->setName($roleName);
@@ -141,12 +145,12 @@ class RoleController extends CoreController {
         if ($role) {
             $role->delete();
             header('Location: /role/read');
-            $flashes = $this->addFlash('success', "Le rôle a été supprimé");
-            echo $flashes;
+            $flashes = $this->flashes('success', "Le rôle a bien été supprimé");
+            exit;
         } else {
-            $flashes = $this->addFlash('danger', "Ce rôle n'existe pas!");
+            $flashes = $this->flashes('danger', "Ce rôle n'existe pas!");
         }
-
+        
         $this->show('/role/read', [
             'role' => $role,
             'flashes' => $flashes
