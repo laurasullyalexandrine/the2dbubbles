@@ -37,13 +37,15 @@ class CoreController
         });
         $twig->addFunction($isGranted);
         
+        /**
+         * Permet de savoir si il y a un user en session 
+         */
         $user = new \Twig\TwigFunction('user', function () {
             $userCurrent = $this->userIsConnected();
             if($userCurrent) {
                 
                 return $userCurrent;
             } else {
-                // dd($userCurrent);
                 return;
             }
         });
