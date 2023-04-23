@@ -1,0 +1,42 @@
+{% set role = role() %}
+<nav class="navbar navbar-expand-lg" style="background-color:#2c3e50 !important;">
+	<div class="container-fluid">
+		<div class="row d-flex flex-wrap">
+			<p class="col-ms-5 col-lg-5 col-xl-5 col-xxl-5 mt-4 text-center">
+				<a class="navbar-brand" href="/main/home">
+					<img class="logo_picture" src="/image/logo-2dbubble.png" width="120" alt="logo-2DBubble">
+				</a>
+			</p>
+		</div>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			<ul class="navbar-nav me-auto" style="color:#f9c500 !important;">
+				<li class="nav-item ">
+					<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/read">Rôle</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
+				</li>
+			</ul>
+		</div>
+		<li class="nav-item col-ms-7 col-lg-7 col-xl-7 col-xxl-7 text-center">
+			<a href="/main/home">
+				<img src="/image/dev-php.png" alt="developpeur_web_fullstack">
+			</a>
+		</li>
+	</div>
+</nav>

@@ -19,6 +19,13 @@
 }
 
 /*------ NAVBAR FOOTER ------*/
-.nav-principal {
-    background-color: #0000 !important;
+
+.active {
+    color: #FFC312 !important;
 }
+
+/* .active,
+.header-nav-top-link:hover {
+    transition: .3s;
+    background: #20bf6b;
+} */

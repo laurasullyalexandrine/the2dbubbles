@@ -22,16 +22,33 @@ class CoreController
         ]);
         $twig->addExtension(new DebugExtension());
       
-        $userRole = new \Twig\TwigFunction('role', function () {
+        /**
+         * Controle d'accès en fonction du rôle du user
+         */
+        $isGranted = new \Twig\TwigFunction('is_granted', function () {
             $user = $this->userIsConnected();
-
-            $userRoleId = $user->getRoles();
-            $role = Role::findById($userRoleId);
-
-            return $role;
+            if ($user) {
+                $userRoleId = $user->getRoles();
+                $role = Role::findById($userRoleId);
+                $roleName = $role->getName();
+                // dd($roleName);
+                return $roleName;
+            }
         });
-        $twig->addFunction($userRole);
+        $twig->addFunction($isGranted);
         
+        $user = new \Twig\TwigFunction('user', function () {
+            $userCurrent = $this->userIsConnected();
+            if($userCurrent) {
+                
+                return $userCurrent;
+            } else {
+                // dd($userCurrent);
+                return;
+            }
+        });
+        $twig->addFunction($user);
+
         // Dynamiser l'affichage des modèles
         $template = $twig->load($viewName . '.html.twig');
 
