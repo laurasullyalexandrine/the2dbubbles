@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Models\Comment;
 use App\Models\Post;
-use App\Models\User;
 
 /**
  * Controller dédié à la gestion des posts
@@ -20,11 +19,17 @@ class PostController extends CoreController
      */
     public function list()
     {
+        if (!isset($_SESSION["flashes"])) {
+            $flashes = $this->flashes();
+        } else {
+            $flashes = $_SESSION["flashes"];
+        }
         $posts = Post::findAll();
 
         // On les envoie à la vue
         $this->show('/post/list', [
-            'posts' => $posts
+            'posts' => $posts,
+            'flashes' => $flashes
         ]);
     }
 
@@ -35,7 +40,7 @@ class PostController extends CoreController
      */
     public function create()
     {
-        // $flashes = $this->addFlash();
+        $flashes = $this->flashes();
         $post = new Post();
 
         if (!$this->userIsConnected()) {
@@ -60,29 +65,30 @@ class PostController extends CoreController
                     ->setChapo($chapo);
 
                 if (empty($title)) {
-                    $flashes = $this->addFlash('warning', 'Le champ titre est vide');
+                    $flashes = $this->flashes('warning', 'Le champ titre est vide');
                 }
                 if (empty($chapo)) {
-                    $flashes = $this->addFlash('warning', 'Le champ chapô est vide');
+                    $flashes = $this->flashes('warning', 'Le champ chapô est vide');
                 }
                 if (empty($content)) {
-                    $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
+                    $flashes = $this->flashes('warning', 'Le champ contenu est vide');
                 }
-                if (empty($flashes["messages"])) {
+                if (empty($flashes["message"])) {
 
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
                     if ($post->insert()) {
                         header('Location: /post/list');
+                        $flashes = $this->flashes('success', "L'article a bien été créé");
                         exit;
                     } else {
-                        $flashes = $this->addFlash('danger', "Le post n'a pas été créé!");
+                        $flashes = $this->flashes('danger', "L'article n'a pas été créé!");
                     }
                 } else {
                     $post->setTitle($title);
-                    $post->setTitle($chapo);
-                    $post->setTitle([$content]);
+                    $post->setChapo($chapo);
+                    $post->setContent($content);
 
                     $this->show('/post/create', [
                         'post' => $post,
@@ -93,14 +99,13 @@ class PostController extends CoreController
             }
             $this->show('/post/create', [
                 'post' => new Post(),
-                'user' => $userCurrent,
-                'flashes' => $flashes
+                'user' => $userCurrent
             ]);
         }
     }
 
     /**
-     * Voir un Post ses commentaires
+     * Voir un Post et ses commentaires
      *
      * @param string $title
      * @return Post
@@ -136,7 +141,7 @@ class PostController extends CoreController
      */
     public function update(string $slug)
     {
-        // $flashes = $this->addFlash();
+        // $flashes = $this->flashes();
         $post = Post::findBySlug($slug);
 
         // Vérifier qu'il y a bien un user connecté
@@ -156,13 +161,13 @@ class PostController extends CoreController
                 $content = filter_input(INPUT_POST, 'content');
 
                 if (empty($title)) {
-                    $flashes = $this->addFlash('warning', 'Le champ titre est vide');
+                    $flashes = $this->flashes('warning', 'Le champ titre est vide');
                 }
                 if (empty($chapo)) {
-                    $flashes = $this->addFlash('warning', 'Le champ chapô est vide');
+                    $flashes = $this->flashes('warning', 'Le champ chapô est vide');
                 }
                 if (empty($content)) {
-                    $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
+                    $flashes = $this->flashes('warning', 'Le champ contenu est vide');
                 }
 
                 if (empty($flashes["messages"])) {
@@ -179,7 +184,7 @@ class PostController extends CoreController
                         header('Location: /post/list');
                         exit;
                     } else {
-                        $flashes = $this->addFlash('danger', "L'article n'a pas été modifié!");
+                        $flashes = $this->flashes('danger', "L'article n'a pas été modifié!");
                     }
                 } else {
                     $slug = $this->slugify($title);
@@ -205,16 +210,16 @@ class PostController extends CoreController
      */
     public function delete(string $slug)
     {
-        // $flashes = $this->addFlash();
+        // $flashes = $this->flashes();
         $post = Post::findBySlug($slug);
 
         if ($post) {
-            // $flashes = $this->addFlash('success', "L'article a été supprimé");
+            // $flashes = $this->flashes('success', "L'article a été supprimé");
             $post->delete();
             header('Location: /post/list');
             exit;
         } else {
-            $flashes = $this->addFlash('danger', "Cet article n'existe pas!");
+            $flashes = $this->flashes('danger', "Cet article n'existe pas!");
         }
 
         $this->show('/post/read', [

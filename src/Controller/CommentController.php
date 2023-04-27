@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -6,9 +6,9 @@ namespace App\Controller;
 
 use App\Models\Comment;
 use App\Models\Post;
-use App\Models\User;
 
-class CommentController extends CoreController {
+class CommentController extends CoreController
+{
 
     /**
      * Ajout d'un nouveau commentaire
@@ -17,8 +17,7 @@ class CommentController extends CoreController {
      */
     public function create(string $slug)
     {
-        // $flashes = $this->addFlash();
-
+        $flashes = $this->flashes();
         $comment = new Comment();
 
         // Trouver le Post à l'aide slug qui sera transmis à la vue
@@ -34,14 +33,14 @@ class CommentController extends CoreController {
         } else {
             // Si oui Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
-          
+
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
 
                 if (empty($content)) {
-                    $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
+                    $flashes = $this->flashes('warning', 'Le champ contenu est vide');
                 }
-                if (empty($flashes["messages"])) {
+                if (empty($flashes["message"])) {
                     $comment->setContent($content)
                         ->setPosts($postId)
                         ->setStatus(false);
@@ -49,11 +48,11 @@ class CommentController extends CoreController {
                     $comment->setUsers($userId);
 
                     if ($comment->insert()) {
-                        echo $flashes = $this->addFlash('warning', 'Votre commentaire est en attente de validation!');
-                        header('Location: /post/read/'. $post->getSlug());
+                        echo $flashes = $this->flashes('warning', 'Votre commentaire est en attente de validation!');
+                        header('Location: /post/read/' . $post->getSlug());
                         exit;
                     } else {
-                        $flashes = $this->addFlash('danger', "Le commentaire n'a pas été créé!");
+                        $flashes = $this->flashes('danger', "Le commentaire n'a pas été créé!");
                     }
                 } else {
                     $comment->setContent(filter_input(INPUT_POST, $content));
@@ -93,7 +92,7 @@ class CommentController extends CoreController {
      */
     public function update(int $commentId)
     {
-        // $flashes = $this->addFlash();
+        $flashes = $this->flashes();
         $comment = Comment::findById($commentId);
 
         // Vérifier qu'il y a bien un user connecté
@@ -109,15 +108,15 @@ class CommentController extends CoreController {
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
                 $status = (bool)filter_input(INPUT_POST, 'status');
-                
+
                 if (empty($content)) {
-                    $flashes = $this->addFlash('warning', 'Le champ contenu est vide');
+                    $flashes = $this->flashes('warning', 'Le champ contenu est vide.');
                 }
                 if (empty($status)) {
-                    $flashes = $this->addFlash('warning', 'Choisir un status');
+                    $flashes = $this->flashes('warning', 'Choisir un status.');
                 }
 
-                if (empty($flashes["messages"])) {
+                if (empty($flashes["message"])) {
                     $comment->setContent($content)
                         ->setStatus($status);
 
@@ -126,9 +125,10 @@ class CommentController extends CoreController {
 
                     if ($comment->update()) {
                         header('Location: /comment/list');
+                        $flashes = $this->flashes('success', "Le commentaire a bien été modifié.");
                         exit;
                     } else {
-                        $flashes = $this->addFlash('danger', "L'article n'a pas été modifié!");
+                        $flashes = $this->flashes('danger', "L'article n'a pas été modifié!");
                     }
                 }
             }
@@ -148,23 +148,24 @@ class CommentController extends CoreController {
      */
     public function delete(int $commentId)
     {
-        // TODO: Ajouter la contrainte de connexion 
-        // TODO: Ajouter la contrainte d'access control'
-        // $flashes = $this->addFlash();
-        $comment = Comment::findById($commentId);
-
-        if ($comment) {
-            $comment->delete();
-            $flashes = $this->addFlash('success', "L'article a été supprimé");
-            header('Location: /comment/list');
-            exit;
+        if (!$this->userIsConnected()) {
+            header('Location: /security/login');
         } else {
-            $flashes = $this->addFlash('danger', "Cet article n'existe pas!");
-        }
+            $comment = Comment::findById($commentId);
 
-        $this->show('/comment/read', [
-            'comment' => $comment,
-            'flashes' => $flashes
-        ]);
+            if ($comment) {
+                $comment->delete();
+                header('Location: /post/list');
+                $flashes = $this->flashes('success', "Le commentaire a bien été supprimé");
+                exit;
+            } else {
+                $flashes = $this->flashes('danger', "Ce commentaire n'existe pas!");
+            }
+
+            $this->show('/comment/read', [
+                'comment' => $comment,
+                'flashes' => $flashes
+            ]);
+        }
     }
 }

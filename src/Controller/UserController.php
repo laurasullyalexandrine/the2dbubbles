@@ -21,9 +21,15 @@ class UserController extends CoreController
      */
     public function read()
     {
+        if (!isset($_SESSION["flashes"])) {
+            $flashes = $this->flashes();
+        } else {
+            $flashes = $_SESSION["flashes"];
+        }
         $users = User::findAll();
         $this->show('user/read', [
-                'users' => $users
+                'users' => $users,
+                'flashes' => $flashes
             ]);
     }
 
@@ -35,7 +41,7 @@ class UserController extends CoreController
      */
     public function create()
     {
-        // // $flashes = $this->addFlash();
+        // // $flashes = $this->flashes();
         $user = new User();
         $role = new Role();
         $roles = $role::findAll();
@@ -56,22 +62,22 @@ class UserController extends CoreController
 
             // Vérifier que tous les champs ne sont pas vide 
             if (empty($pseudo)) {
-                // $flashes = $this->addFlash('warning', 'Le champ prénom/pseudo est vide');
+                $flashes = $this->flashes('warning', 'Le champ prénom/pseudo est vide');
             }
             if (empty($email)) {
-                // $flashes = $this->addFlash('warning', 'Le champ email est vide');
+                $flashes = $this->flashes('warning', 'Le champ email est vide');
             }
 
             if (empty($password_1)) {
-                // $flashes = $this->addFlash('warning', 'Le champ mot de passe est vide');
+                $flashes = $this->flashes('warning', 'Le champ mot de passe est vide');
             }
 
             if (empty($password_2)) {
-                $flashes = $this->addFlash('warning', 'Le champ confirmation de mot de passe est vide');
+                $flashes = $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
             }
 
             if ($password_1 !== $password_2) {
-                // $flashes = $this->addFlash('danger', 'Les mots de passe ne corresponde pas!');
+                $flashes = $this->flashes('danger', 'Les mots de passe ne corresponde pas!');
             }
 
             // Contrôler si le rôle soumis est un rôle existant en BDD 
@@ -86,7 +92,7 @@ class UserController extends CoreController
 
             // Si il n'existe pas on affiche le message d'alerte
             if (!$roleExist) {
-                // $flashes = $this->addFlash('warning', 'Le rôle choisi est invalide');
+                $flashes = $this->flashes('warning', 'Le rôle choisi est invalide');
             }
 
             // Si le formulaire est valide alors ...
@@ -104,18 +110,18 @@ class UserController extends CoreController
                 // Essayer de faire l'insertion du nouvel utilisateur 
                 try {
                     if ($user->insert()) {
-                        // $flashes = $this->addFlash('danger', "Votre compte n'a pas été créé!");
+                        $flashes = $this->flashes('danger', "Votre compte n'a pas été créé!");
                         header('Location: /user/read');
                         exit;
                     } // Sinon erreur lors de l'enregistrement
                     else {
-                        // $flashes = $this->addFlash('danger', "Votre compte n'a pas été créé!");
+                        $flashes = $this->flashes('danger', "Votre compte n'a pas été créé!");
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {
-                        // $flashes = $this->addFlash('danger', 'Il existe déjà un compte avec cet email!');
+                        $flashes = $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
                     } else {
-                        // $flashes = $this->addFlash('danger', $e->getMessage());
+                        $flashes = $this->flashes('danger', $e->getMessage());
                     }
                 }
             }
@@ -135,7 +141,7 @@ class UserController extends CoreController
      */
     public function update(int $userId)
     {
-        // $flashes = $this->addFlash();
+        // $flashes = $this->flashes();
         $user = User::findById($userId);
         $roleCurrentUser = $user->getRoles();
         $roles = Role::findAll();
@@ -158,13 +164,13 @@ class UserController extends CoreController
    
             // Vérifier que tous les champs ne sont pas vide 
             if (empty($pseudo)) {
-                // $flashes = $this->addFlash('warning', 'Le champ Prénom/Pseudo est vide');
+                $flashes = $this->flashes('warning', 'Le champ Prénom/Pseudo est vide');
             }
             if (empty($email)) {
-                // $flashes = $this->addFlash('warning', 'Le champ email est vide');
+                $flashes = $this->flashes('warning', 'Le champ email est vide');
             }
             if (empty($password_1)) {
-                // $flashes = $this->addFlash('warning', 'Le champ mot de passe est vide');
+                $flashes = $this->flashes('warning', 'Le champ mot de passe est vide');
             }
 
             if (empty($flashes["messages"])) {
@@ -179,7 +185,7 @@ class UserController extends CoreController
                     header('Location: /user/read');
                     exit;
                 } else {
-                    // $flashes = $this->addFlash('danger', "L'utilisateur n'a pas été modifié!");
+                    $flashes = $this->flashes('danger', "L'utilisateur n'a pas été modifié!");
                 }
             } else {
                 $user->setPseudo(filter_input(INPUT_POST, $pseudo));
@@ -193,7 +199,7 @@ class UserController extends CoreController
             'role_current_user' => $roleCurrentUser,
             'role_name_user' => $roleNameUser,
             'roles' => $roles,
-            // 'flashes' => $flashes
+            'flashes' => $flashes
         ]);
     }
 
@@ -205,19 +211,19 @@ class UserController extends CoreController
      */
     public function delete(int $userId)
     {
-        // $flashes = $this->addFlash();
+        $flashes = $this->flashes();
         $user = User::findById($userId);
 
         if ($user) {
             $user->delete();
             header('Location: /user/read');
         } else {
-            // $flashes = $this->addFlash('danger', "L'utilisateur n'existe pas!");
+            $flashes = $this->flashes('danger', "L'utilisateur n'existe pas!");
         }
 
         $this->show('/user/read', [
             'user' => $user,
-            // 'flashes' => $flashes
+            'flashes' => $flashes
         ]);
     }
 

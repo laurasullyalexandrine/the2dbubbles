@@ -72,10 +72,14 @@ class CoreController
 
     protected function flashes(string $alert = null, string $message = null)
     {
-        $flash = [
-            'alert' => $alert, 
-            'message' => $message];
-        $flashes = $_SESSION['flashes'] = $flash ?? [];
+            $flash = [
+                'alert' => $alert, 
+                'message' => $message];
+            
+            $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
+            
+            $flashes = $flash;
+            $_SESSION['flashes'] = $flashes;
 
         return $flashes;
     }
@@ -118,11 +122,12 @@ class CoreController
     protected function userIsConnected() 
     {
         $session = $_SESSION;
-        
-        if (!empty($session)) {
-            $user = $session["userObject"];
 
+        if (isset($session["userObject"])) {
+            $user = $session["userObject"];
             return $user;
+        } else {
+            return;
         }
     }
 

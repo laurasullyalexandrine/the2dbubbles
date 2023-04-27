@@ -18,7 +18,7 @@ class SecurityController extends CoreController
      */
     public function login()
     {
-        // $flashes = $this->addFlash();
+        // $flashes = $this->flashes();
 
         if ($this->isPost()) {
 
@@ -31,32 +31,32 @@ class SecurityController extends CoreController
             // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
             // Contrôle mot de passe
             if (empty($password)) {
-                $flashes = $this->addFlash('warning', 'Merci de saisir votre mot de passe!');
+                $flashes = $this->flashes('warning', 'Merci de saisir votre mot de passe!');
             } elseif (
                 $userCurrent
                 && !empty($password)
                 && !password_verify($password, $userCurrent->getPassword()) // Si la vérification du mot de passe échoue
             ) {
-                $flashes = $this->addFlash('danger', 'Mot de passe incorrect!');
+                $flashes = $this->flashes('danger', 'Mot de passe incorrect!');
             }
 
             // Contrôle email
             if (empty($email)) {
-                $flashes = $this->addFlash('warning', 'Merci de saisir votre email');
+                $flashes = $this->flashes('warning', 'Merci de saisir votre email');
             } elseif (
                 $userCurrent
                 && $email !== $userCurrent->getEmail()
             ) {
-                $flashes = $this->addFlash('danger', 'Email incorrect!');
+                $flashes = $this->flashes('danger', 'Email incorrect!');
             }
 
             // Contrôle du user
             if (!$userCurrent) {
-                $flashes = $this->addFlash('danger', "Cet utilisateur n'existe pas!");
+                $flashes = $this->flashes('danger', "Cet utilisateur n'existe pas!");
             }
 
             // Si il y a des erreurs on les affiches sinon ...
-            if (!empty($flashes['messages'])) {
+            if (!empty($flashes['message'])) {
 
                 $this->show('security/login', [
                     'user' => $userCurrent,
@@ -78,7 +78,7 @@ class SecurityController extends CoreController
      */
     public function register()
     {
-        // $flashes = $this->addFlash();
+        $flashes = $this->flashes();
         $user = new User();
         $role = new Role();
         $roles = $role::findAll();
@@ -96,19 +96,19 @@ class SecurityController extends CoreController
 
             // Vérifier que tous les champs ne sont pas vide 
             if (empty($email)) {
-                $flashes = $this->addFlash('warning', 'Le champ email est vide');
+                $flashes = $this->flashes('warning', 'Le champ email est vide');
             }
 
             if (empty($password_1)) {
-                $flashes = $this->addFlash('warning', 'Le champ mot de passe est vide');
+                $flashes = $this->flashes('warning', 'Le champ mot de passe est vide');
             }
 
             if (empty($password_2)) {
-                $flashes = $this->addFlash('warning', 'Le champ confirmation de mot de passe est vide');
+                $flashes = $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
             }
             if ($password_1 === $password_2) {
             } else {
-                $flashes = $this->addFlash('danger', 'Les mots de passe de corresponde pas!');
+                $flashes = $this->flashes('danger', 'Les mots de passe de corresponde pas!');
             }
 
 
@@ -128,11 +128,11 @@ class SecurityController extends CoreController
 
             // Si il n'existe pas on affiche le message d'alerte
             if (!$roleExist) {
-                $flashes = $this->addFlash('danger', 'Erreur lors du traitement!');
+                $flashes = $this->flashes('danger', 'Erreur lors du traitement!');
             }
 
             // Si le formulaire est valide alors ...
-            if (empty($flashes['messages'])) {
+            if (empty($flashes['message'])) {
                 // Hasher le mot de passe 
                 $option = ['cost' => User::HASH_COST];
                 $password = password_hash(
@@ -149,13 +149,13 @@ class SecurityController extends CoreController
                         exit;
                     } // Si erreur lors de l'enregistrement
                     else {
-                        $flashes = $this->addFlash('danger', "Votre compte n'a pas été créé!");
+                        $flashes = $this->flashes('danger', "Votre compte n'a pas été créé!");
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {
-                        $flashes = $this->addFlash('danger', 'Il existe déjà un compte avec cet email!');
+                        $flashes = $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
                     } else {
-                        $flashes = $this->addFlash('danger', $e->getMessage());
+                        $flashes = $this->flashes('danger', $e->getMessage());
                     }
                 }
             } // Si le formulaire est soumis mais pas valide alors ... 

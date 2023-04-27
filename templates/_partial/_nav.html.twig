@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg" style="background-color:#2c3e50 !important;">
 	<div class="container-fluid">
 		<div class="row d-flex flex-wrap">
@@ -13,16 +12,27 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarColor01">
 			<ul class="navbar-nav me-auto" style="color:#f9c500 !important;">
-			
-			{% if user() != null %}
-				<li class="nav-item ">
-					<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Actualité</a>
-				</li>
-			{% endif %}
-			
+				{% if user() != null %}
+					<li class="nav-item ">
+						<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
+					</li>
+					{% if is_granted() == "Utilisateur" %}
+						<li class="nav-item">
+							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Actualité</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/read">Rôle</a>
+						</li>
+					{% endif %}
+				{% endif %}
+
 				{% if user() == null %}
 					<li class="nav-item">
 						<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
@@ -36,17 +46,17 @@
 					</li>
 				{% endif %}
 
-				{% if is_granted() == "Super_admin" %}
+				{% if is_granted() == "Super_admin" or is_granted() == "Administrateur" %}
 					<li class="nav-item">
 						<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
 					</li>
 				{% endif %}
 			</ul>
 		</div>
-					<p class="col-ms-7 col-lg-7 col-xl-7 col-xxl-7 text-center">
-				<a href="/main/home">
-					<img src="/image/dev-php.png" alt="developpeur_web_fullstack">
-				</a>
-			</p>
+		<p class="col-ms-7 col-lg-7 col-xl-7 col-xxl-7 text-center">
+			<a href="/main/home">
+				<img src="/image/dev-php.png" alt="developpeur_web_fullstack">
+			</a>
+		</p>
 	</div>
 </nav>
