@@ -19,11 +19,7 @@ class PostController extends CoreController
      */
     public function list()
     {
-        if (!isset($_SESSION["flashes"])) {
-            $flashes = $this->flashes();
-        } else {
-            $flashes = $_SESSION["flashes"];
-        }
+        $flashes = $this->displayFlashes();
         $posts = Post::findAll();
 
         // On les envoie à la vue
@@ -112,6 +108,8 @@ class PostController extends CoreController
      */
     public function read(string $slug)
     {
+        $flashes = $this->displayFlashes();
+
         $post = Post::findBySlug($slug);
         $postId = $post->getId();
 
@@ -129,7 +127,8 @@ class PostController extends CoreController
         $this->show('/post/read', [
             'post' => $post,
             'comments' => $comments,
-            'commentsCheck' => $commentsCheck
+            'commentsCheck' => $commentsCheck,
+            'flashes' => $flashes
         ]);
     }
 

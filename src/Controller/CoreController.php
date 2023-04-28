@@ -84,6 +84,15 @@ class CoreController
         return $flashes;
     }
 
+    protected function displayFlashes() {
+        if (!isset($_SESSION["flashes"])) {
+            $flashes = $this->flashes();
+        } else {
+            $flashes = $_SESSION["flashes"];
+        }
+        return $flashes;
+    }
+
     /**
      * Permet de créer un slug 
      *

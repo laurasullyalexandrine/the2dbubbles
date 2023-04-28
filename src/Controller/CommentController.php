@@ -9,7 +9,6 @@ use App\Models\Post;
 
 class CommentController extends CoreController
 {
-
     /**
      * Ajout d'un nouveau commentaire
      * 
@@ -48,7 +47,7 @@ class CommentController extends CoreController
                     $comment->setUsers($userId);
 
                     if ($comment->insert()) {
-                        echo $flashes = $this->flashes('warning', 'Votre commentaire est en attente de validation!');
+                        $flashes = $this->flashes('warning', 'Votre commentaire est bien enregistré et est attente de validation!');
                         header('Location: /post/read/' . $post->getSlug());
                         exit;
                     } else {

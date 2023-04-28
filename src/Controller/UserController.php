@@ -21,11 +21,7 @@ class UserController extends CoreController
      */
     public function read()
     {
-        if (!isset($_SESSION["flashes"])) {
-            $flashes = $this->flashes();
-        } else {
-            $flashes = $_SESSION["flashes"];
-        }
+        $flashes = $this->displayFlashes();
         $users = User::findAll();
         $this->show('user/read', [
                 'users' => $users,
@@ -41,7 +37,7 @@ class UserController extends CoreController
      */
     public function create()
     {
-        // // $flashes = $this->flashes();
+        $flashes = $this->flashes();
         $user = new User();
         $role = new Role();
         $roles = $role::findAll();

@@ -119,8 +119,9 @@ class SecurityController extends CoreController
                 $rolesIdArray[] = $existingRole->getId();
                 $getIdRoleSubmited = $existingRole::findByName($hiddenRole)->getId();
              
-                // Si l'id du rôle soumis alors existe en base de données
+                // Si l'id du rôle soumis existe en base de données alors
                 if (in_array($getIdRoleSubmited, $rolesIdArray)) {
+                    // la valeur de la variable roleExist devient true
                     $roleExist = true;
                     break;
                 }
@@ -142,7 +143,8 @@ class SecurityController extends CoreController
                 );
                 $user->setPassword($password)
                     ->setRoles($getIdRoleSubmited);
-
+                    
+                // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
                     if ($user->insert()) {
                         header('Location: /security/login');
@@ -161,7 +163,7 @@ class SecurityController extends CoreController
             } // Si le formulaire est soumis mais pas valide alors ... 
             else {
                 // Afficher le formulaire pré-rempli avec les erreurs 
-                $user->setEmail(filter_input(INPUT_POST, $email));
+                $user->setEmail($email);
                 $this->show('security/register', [
                     'user' => $user,
                     'flashes' => $flashes
@@ -171,7 +173,6 @@ class SecurityController extends CoreController
         $this->show('security/register', [
             'user' => $user,
             'roles' => $roles,
-            'flashes' => $flashes
         ]);
     }
 
