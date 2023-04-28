@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg" style="background-color:#000000 !important;">
 	<div class="container">
-		<div class="d-flex flex-wrap">
+		<div class="d-flex flex-wrap mt-3">
 			<p class="col-ms-5 col-lg-5 col-xl-5 col-xxl-5 mt-lg-2 mt-xl-2 mt-xxl-2 mt-sm-5">
 				<a class="navbar-brand text-center" href="/main/home">
 					<img class="logo_picture" src="/image/logo-2dbubble.png" width="120" alt="logo-2DBubble">
@@ -13,6 +13,15 @@
 			</span>
 		</button>
 		<div class="collapse navbar-collapse col-6" id="navbarColor01">
+			<ul class="navbar-nav me-auto">
+				{% if user() != null %}
+					<li class="nav-item">
+						<a class="nav-link fs-5 fw-semibold" href="/security/logout" style="color:#38ada9 !important;">Bonjour
+							{{ current_user().pseudo }}
+							!</a>
+					</li>
+				{% endif %}
+			</ul>
 			<ul class="navbar-nav me-auto">
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
 					{% if user() != null %}
@@ -55,20 +64,21 @@
 							<a class="nav-link btn {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link btn-green {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
-						</li>
-					{% elseif user() != null %}
-						<li class="nav-item">
-							<a class="nav-link btn-green {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
+							<a class="nav-link btn {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
 						</li>
 					{% endif %}
 				</div>
-
-
 			</ul>
-		</div class="d-flex align-items-center col-ms-5 col-lg-5 col-xl-5 col-xxl-5">
+			<ul class="navbar-nav me-auto">
+				{% if user() != null %}
+					<li class="nav-item">
+						<a class="nav-link btn {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+		<div class="d-flex w-100 justify-content-center col-ms-5 col-lg-5 col-xl-5 col-xxl-5" style="background-color:#000000 !important;">
 			<a href="/main/home">
 				<img src="/image/dev-php.png" alt="developpeur_web_fullstack">
 			</a>
-	</div>
-</nav>
+		</div>

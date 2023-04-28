@@ -42,7 +42,7 @@ class PostController extends CoreController
         } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
-            
+        } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
 
@@ -140,6 +140,9 @@ class PostController extends CoreController
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
+        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied(); 
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
@@ -204,16 +207,22 @@ class PostController extends CoreController
     public function delete(string $slug)
     {
         $post = Post::findBySlug($slug);
-        dd($post);
-        if ($post) {
-            $this->flashes('success', "L'article a bien été supprimé.");
-            $post->delete();
-            header('Location: /post/list');
-            exit;
+        if (!$this->userIsConnected()) {
+            // Sinon le rediriger vers la page de login
+            header('Location: /security/login');
+        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied(); 
         } else {
-            $this->flashes('danger', "Cet article n'existe pas!");
+            if ($post) {
+                $this->flashes('success', "L'article a bien été supprimé.");
+                $post->delete();
+                header('Location: /post/list');
+                exit;
+            } else {
+                $this->flashes('danger', "Cet article n'existe pas!");
+            }
         }
-
         $this->show('/post/read', [
             'post' => $post
         ]);

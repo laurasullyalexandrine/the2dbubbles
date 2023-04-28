@@ -20,8 +20,10 @@
                 </p>
             
             <div class="d-flex">
-            	<a class="btn" href="/post/update/{{ post.slug }}">éditer</a>
-				{{ include('post/_delete.html.twig') }}
+                {% if is_granted() == "Super_admin" %}
+                    <a class="btn" href="/post/update/{{ post.slug }}">éditer</a>
+                    {{ include('post/_delete.html.twig') }}
+                {% endif %}
             </div>
         </section>
 

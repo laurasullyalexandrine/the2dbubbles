@@ -64,7 +64,7 @@ class CoreController
         });
         $twig->addFunction($user);
 
-        $displayFlashes = new \Twig\TwigFunction('displayFlashes', function () {
+        $displayFlashes = new \Twig\TwigFunction('display_flashes', function () {
 
             $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
             

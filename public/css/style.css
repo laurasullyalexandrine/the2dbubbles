@@ -6,7 +6,7 @@
 }
 .btn,
 .btn-grey, 
-.btn-green {
+.btn {
     color: #ffffff;
     text-align: center;
     border: 0 !important; 
@@ -16,11 +16,7 @@
 }
 
 .btn {
-    background-color: #ffc312 !important;
-}
-
-.btn-green {
-    background-color: #38ada9;
+    background-color: #38ada9 !important;
 }
 
 .btn-grey {
@@ -28,7 +24,7 @@
 }
 
 .gold {
-    /* color: #84754e; */
+    /* color: #84754e gold; #60c904 vert*/
     color: #b43b1c;
 }
 
@@ -36,7 +32,7 @@
 
 .navbar-toggler,
 .navbar-toggler-icon {
-    color: #ffc312 !important;
+    color: #38ada9 !important;
     border: none !important;
 }
 
@@ -47,15 +43,11 @@
 .nav-link {
     color: #ffffff !important;
     text-align: center !important;
-    padding: 5px 15px !important;
+    padding: 5px 25px !important;
 }
 
 .active {
-    color: #FFC312 !important;
+    transition: .3s;
+    background: #38ada9 !important;
 }
 
-/* .active,
-.header-nav-top-link:hover {
-    transition: .3s;
-    background: #20bf6b;
-} */

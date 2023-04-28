@@ -3,10 +3,10 @@
 	active
 {% endblock %}
 {% block body %}
-	
-
 	<div class="d-flex justify-content-between my-3">
-		<h1>Liste des articles <a class="btn" href="/main/home">Retour</a></h1>
+		<h1>Liste des articles
+			<a class="btn" href="/main/home">Retour</a>
+		</h1>
 	</div>
 
 	<table class="table">
@@ -14,7 +14,7 @@
 			<tr>
 				<th>Titre</th>
 				<th>Contenu</th>
-                <th>Auteur</th>
+				<th>Auteur</th>
 				<th>Publié le</th>
 				<th>Modifié le</th>
 				<th>Action</th>
@@ -25,11 +25,11 @@
 				{% set user = post.user %}
 				<tr>
 					<td>{{ post.title }}</td>
-                    <td class="w-25">{{ post.content }}</td>
+					<td class="w-25">{{ post.content }}</td>
 					<td>{{ user }}</td>
-					<td> 
+					<td>
 						<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
-						 <time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+						<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
 					</td>
 					<td>
 						<time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
@@ -38,7 +38,9 @@
 					<td class="d-flex flex-column">
 						<a class="btn mx-4 my-4" href="/post/read/{{post.slug}}">voir</a>
 						<a class="btn mx-4 my-4" href="/post/update/{{post.slug}}">edit</a>
-						{{ include('post/_delete.html.twig') }}
+						{% if is_granted() == "Super_admin" %}
+							{{ include('post/_delete.html.twig') }}
+						{% endif %}
 					</td>
 				</tr>
 			{% else %}
@@ -49,6 +51,10 @@
 		</tbody>
 	</table>
 
-	<a class="btn mb-5" href="/post/create">Ajouter un article</a>
+	<div>
+		{% if is_granted() == "Super_admin" %}
+			<a class="btn mb-5" href="/post/create">Ajouter un Bubble Post !</a>
+		{% endif %}
+	</div>
 
 {% endblock %}

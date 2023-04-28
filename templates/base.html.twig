@@ -1,10 +1,8 @@
 
-
-
 {% include "/_partial/_head.html.twig" %}
 {% include "/_partial/_nav.html.twig" %}
 	<main class="container d-flex justify-content-center p-5"> 
-        {% for flash in displayFlashes() %}
+        {% for flash in display_flashes() %}
             <div class="alert alert-{{ flash.alert }}">
                 {{ flash.message }}
             </div>
