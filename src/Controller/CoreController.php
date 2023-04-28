@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Models\Role;
 use Exception;
-use SessionHandler;
 use Twig\Extension\DebugExtension;
 
 
@@ -22,7 +21,7 @@ class CoreController
             'debug' => true,
         ]);
         $twig->addExtension(new DebugExtension());
-      
+
         /**
          * Controle d'accès en fonction du rôle du user
          */
@@ -50,14 +49,14 @@ class CoreController
             }
         });
         $twig->addFunction($curentUser);
-        
+
         /**
          * Permet de savoir si il y a un user en session 
          */
         $user = new \Twig\TwigFunction('user', function () {
             $userCurrent = $this->userIsConnected();
-            if($userCurrent) {
-                
+            if ($userCurrent) {
+
                 return $userCurrent;
             } else {
                 return;
@@ -65,9 +64,18 @@ class CoreController
         });
         $twig->addFunction($user);
 
+        $displayFlashes = new \Twig\TwigFunction('displayFlashes', function () {
+
+            $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
+            
+            $_SESSION["flashes"] = [];
+
+            return $flashes;
+        });
+        $twig->addFunction($displayFlashes);
+
         // Dynamiser l'affichage des modèles
         $template = $twig->load($viewName . '.html.twig');
-
 
         // Affiche les modèles
         echo $template->render($viewVars);
@@ -84,27 +92,17 @@ class CoreController
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
-    protected function flashes(string $alert = null, string $message = null)
+    protected function flashes(string $alert = null, string $message = null): void
     {
-            $flash = [
-                'alert' => $alert, 
-                'message' => $message];
-            
-            $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
-            
-            $flashes = $flash;
-            $_SESSION['flashes'] = $flashes;
+        $flash = [
+            'alert' => $alert,
+            'message' => $message
+        ];
 
-        return $flashes;
-    }
+        $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
 
-    protected function displayFlashes() {
-        if (!isset($_SESSION["flashes"])) {
-            $flashes = $this->flashes();
-        } else {
-            $flashes = $_SESSION["flashes"];
-        }
-        return $flashes;
+        $flashes[] = $flash;
+        $_SESSION['flashes'] = $flashes;
     }
 
     /**
@@ -133,7 +131,7 @@ class CoreController
         $string = preg_replace("/[^a-z0-9-]+/", "-", $string);
         $string = preg_replace("/\-{2,}/", "-", $string);
         $string = trim($string, "-");
-        
+
         return $string;
     }
 
@@ -142,7 +140,7 @@ class CoreController
      *
      * @return User
      */
-    protected function userIsConnected() 
+    protected function userIsConnected()
     {
         $session = $_SESSION;
 
@@ -152,12 +150,6 @@ class CoreController
         } else {
             return;
         }
-    }
-
-    protected function error403() 
-    {
-        $userCurrent = $this->userIsConnected();
-        dd($userCurrent);
     }
 
 }

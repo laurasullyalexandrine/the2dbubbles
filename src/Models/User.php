@@ -57,7 +57,7 @@ class User extends CoreModel
             LEFT JOIN role r
             ON r.id = u.roles
             WHERE u.roles 
-            ORDER BY u.pseudo ASC
+            ORDER BY u.roles ASC
             "
         ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);

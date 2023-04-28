@@ -31,28 +31,28 @@ class SecurityController extends CoreController
             // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
             // Contrôle mot de passe
             if (empty($password)) {
-                $flashes = $this->flashes('warning', 'Merci de saisir votre mot de passe!');
+                $this->flashes('warning', 'Merci de saisir votre mot de passe!');
             } elseif (
                 $userCurrent
                 && !empty($password)
                 && !password_verify($password, $userCurrent->getPassword()) // Si la vérification du mot de passe échoue
             ) {
-                $flashes = $this->flashes('danger', 'Mot de passe incorrect!');
+                $this->flashes('danger', 'Mot de passe incorrect!');
             }
 
             // Contrôle email
             if (empty($email)) {
-                $flashes = $this->flashes('warning', 'Merci de saisir votre email');
+                $this->flashes('warning', 'Merci de saisir votre email');
             } elseif (
                 $userCurrent
                 && $email !== $userCurrent->getEmail()
             ) {
-                $flashes = $this->flashes('danger', 'Email incorrect!');
+                $this->flashes('danger', 'Email incorrect!');
             }
 
             // Contrôle du user
             if (!$userCurrent) {
-                $flashes = $this->flashes('danger', "Cet utilisateur n'existe pas!");
+                $this->flashes('danger', "Cet utilisateur n'existe pas!");
             }
 
             // Si il y a des erreurs on les affiches sinon ...
@@ -78,7 +78,6 @@ class SecurityController extends CoreController
      */
     public function register()
     {
-        $flashes = $this->flashes();
         $user = new User();
         $role = new Role();
         $roles = $role::findAll();
@@ -97,19 +96,19 @@ class SecurityController extends CoreController
 
             // Vérifier que tous les champs ne sont pas vide 
             if (empty($email)) {
-                $flashes = $this->flashes('warning', 'Le champ email est vide');
+                $this->flashes('warning', 'Le champ email est vide');
             }
 
             if (empty($password_1)) {
-                $flashes = $this->flashes('warning', 'Le champ mot de passe est vide');
+                $this->flashes('warning', 'Le champ mot de passe est vide');
             }
 
             if (empty($password_2)) {
-                $flashes = $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
+                $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
             }
             if ($password_1 === $password_2) {
             } else {
-                $flashes = $this->flashes('danger', 'Les mots de passe de corresponde pas!');
+                $this->flashes('danger', 'Les mots de passe de corresponde pas!');
             }
 
 
@@ -130,7 +129,7 @@ class SecurityController extends CoreController
 
             // Si il n'existe pas on affiche le message d'alerte
             if (!$roleExist) {
-                $flashes = $this->flashes('danger', 'Erreur lors du traitement!');
+                $this->flashes('danger', 'Erreur lors du traitement!');
             }
 
             // Si le formulaire est valide alors ...
@@ -149,11 +148,12 @@ class SecurityController extends CoreController
                 // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
                     if ($user->insert()) {
+                        $this->flashes('success', 'Votre compte a bien été créé, merci de vous connecter.');
                         header('Location: /security/login');
                         exit;
                     } // Si erreur lors de l'enregistrement
                     else {
-                        $flashes = $this->flashes('danger', "Votre compte n'a pas été créé!");
+                        $this->flashes('danger', "Votre compte n'a pas été créé!");
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {
@@ -167,8 +167,7 @@ class SecurityController extends CoreController
                 // Afficher le formulaire pré-rempli avec les erreurs 
                 $user->setEmail($email);
                 $this->show('security/register', [
-                    'user' => $user,
-                    'flashes' => $flashes
+                    'user' => $user
                 ]);
             }
         }

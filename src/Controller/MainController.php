@@ -12,10 +12,8 @@ class MainController extends CoreController {
      * @return void
      */
     public function home() {
-        $session = $_SESSION;
-        $this->show('main/home', [
-            'sessions' => $session
-        ]);
+        
+        $this->show('main/home');
     }
 
     public function displayContact() {
@@ -27,7 +25,6 @@ class MainController extends CoreController {
      * @return void
      */
     public function contact() {
-
 
         if ($this->isPost()) {
 

@@ -1,8 +1,12 @@
 
 /*------ BODY ------*/
 
+#wrapper {
+    background-color: #ffffff !important;
+}
+
 .btn,
-., 
+.btn-grey, 
 .btn-green {
     color: #ffffff;
     text-align: center;
@@ -20,8 +24,8 @@
     background-color: #38ada9;
 }
 
-. {
-    background-color: #eb2f06;
+.btn-grey {
+    background-color: #4b6584;
 }
 
 /*------ NAVBAR FOOTER ------*/

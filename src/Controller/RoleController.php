@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Role;
+use Exception;
 
 class RoleController extends CoreController
 {
-
     /**
      * Afficher tous les rôles de la base de données 
      * 
@@ -36,7 +36,6 @@ class RoleController extends CoreController
      */
     public function create()
     {
-        $flashes = $this->flashes();
         $role = new Role();
 
         if (!$this->userIsConnected()) {
@@ -44,13 +43,11 @@ class RoleController extends CoreController
         } else {
             $userCurrent = $this->userIsConnected(); {
 
-                // TODO: Ajouter l'access control en fonction du role et la generation du token
-
                 if ($this->isPost()) {
                     $roleName = filter_input(INPUT_POST, 'role');
 
                     if (empty($roleName)) {
-                        $flashes = $this->flashes('warning', 'Le champ du rôle est vide');
+                        $this->flashes('warning', 'Le champ du rôle est vide.');
                     }
 
                     if (empty($flashes["message"])) {
@@ -58,17 +55,16 @@ class RoleController extends CoreController
                             ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
                         if ($role->insert()) {
+                            $this->flashes('success', 'Le rôle a bien été créé.');
                             header('Location: /role/read');
-                            $flashes = $this->flashes('success', 'Le rôle a bien été créé');
                             exit;
                         } else {
-                            $flashes = $this->flashes('danger', "Le rôle n'a pas été créé!");
+                            $this->flashes('danger', "Le rôle n'a pas été créé!");
                         }
                     } else {
                         $role->setName($role);
                         $this->show('role/create', [
-                            'user' => $userCurrent,
-                            'flashes' => $flashes,
+                            'user' => $userCurrent
                         ]);
                     }
                 }
@@ -98,12 +94,11 @@ class RoleController extends CoreController
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
 
-            // TODO: Ajouter l'access control en fonction du role et la generation du token
             if ($this->isPost()) {
                 $roleName = filter_input(INPUT_POST, 'role');
 
                 if (empty($roleName)) {
-                    $flashes = $this->flashes('warning', 'Le champ du rôle est vide');
+                    $this->flashes('warning', 'Le champ du rôle est vide.');
                 }
 
                 if (empty($flashes["message"])) {
@@ -112,17 +107,16 @@ class RoleController extends CoreController
 
                     if ($role->update()) {
                         header('Location: /role/read');
-                        $flashes = $this->flashes('success', 'Le rôle a bien été modifié.');
+                        $this->flashes('success', 'Le rôle a bien été modifié.');
                         exit;
                     } else {
-                        $flashes = $this->flashes('danger', "Le rôle n'a pas été modifié!");
+                       $this->flashes('danger', "Le rôle n'a pas été modifié!");
                     }
                 } else {
                     $role->setName($roleName);
 
                     $this->show('role/update', [
-                        'user' => $userCurrent,
-                        'flashes' => $flashes
+                        'user' => $userCurrent
                     ]);
                 }
             }
@@ -131,7 +125,6 @@ class RoleController extends CoreController
             'role' => $role
         ]);
     }
-
 
     /**
      * Suppression d'un rôle
@@ -143,13 +136,16 @@ class RoleController extends CoreController
     {
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
+        } elseif ($this->userIsConnected()->getRoles() !== "Super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } else {
             $role = Role::findById($roleId);
+
             if ($role) {
                 $role->delete();
+                $this->flashes('success', "Le rôle a bien été supprimé.");
                 header('Location: /role/read');
-                $flashes = $this->flashes('success', "Le rôle a bien été supprimé.");
-                // dd($flashes);
                 exit;
             } else {
                 $flashes = $this->flashes('danger', "Ce rôle n'existe pas!");
@@ -157,7 +153,6 @@ class RoleController extends CoreController
 
             $this->show('/role/read', [
                 'role' => $role,
-                'flashes' => $flashes
             ]);
         }
     }

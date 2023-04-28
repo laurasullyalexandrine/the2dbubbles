@@ -19,13 +19,11 @@ class PostController extends CoreController
      */
     public function list()
     {
-        $flashes = $this->displayFlashes();
         $posts = Post::findAll();
 
         // On les envoie à la vue
         $this->show('/post/list', [
-            'posts' => $posts,
-            'flashes' => $flashes
+            'posts' => $posts
         ]);
     }
 
@@ -36,17 +34,17 @@ class PostController extends CoreController
      */
     public function create()
     {
-        $flashes = $this->flashes();
         $post = new Post();
 
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } else {
+        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied(); 
+            
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
-
-            // TODO: Ajouter l'access control en fonction du role et la generation du token
 
             if ($this->isPost()) {
                 $title = filter_input(INPUT_POST, 'title');
@@ -61,13 +59,13 @@ class PostController extends CoreController
                     ->setChapo($chapo);
 
                 if (empty($title)) {
-                    $flashes = $this->flashes('warning', 'Le champ titre est vide');
+                    $this->flashes('warning', 'Le champ titre est vide.');
                 }
                 if (empty($chapo)) {
-                    $flashes = $this->flashes('warning', 'Le champ chapô est vide');
+                    $this->flashes('warning', 'Le champ chapô est vide.');
                 }
                 if (empty($content)) {
-                    $flashes = $this->flashes('warning', 'Le champ contenu est vide');
+                    $this->flashes('warning', 'Le champ contenu est vide.');
                 }
                 if (empty($flashes["message"])) {
 
@@ -75,11 +73,11 @@ class PostController extends CoreController
                     $post->setUsers($userId);
 
                     if ($post->insert()) {
+                        $this->flashes('success', "L'article a bien été créé.");
                         header('Location: /post/list');
-                        $flashes = $this->flashes('success', "L'article a bien été créé");
                         exit;
                     } else {
-                        $flashes = $this->flashes('danger', "L'article n'a pas été créé!");
+                        $this->flashes('danger', "L'article n'a pas été créé!");
                     }
                 } else {
                     $post->setTitle($title);
@@ -88,13 +86,12 @@ class PostController extends CoreController
 
                     $this->show('/post/create', [
                         'post' => $post,
-                        'user' => $userCurrent,
-                        'flashes' => $flashes
+                        'user' => $userCurrent
                     ]);
                 }
             }
             $this->show('/post/create', [
-                'post' => new Post(),
+                'post' => $post,
                 'user' => $userCurrent
             ]);
         }
@@ -108,8 +105,6 @@ class PostController extends CoreController
      */
     public function read(string $slug)
     {
-        $flashes = $this->displayFlashes();
-
         $post = Post::findBySlug($slug);
         // $postId = $post->getId();
 
@@ -127,8 +122,7 @@ class PostController extends CoreController
         $this->show('/post/read', [
             'post' => $post,
             'comments' => $comments,
-            'commentsCheck' => $commentsCheck,
-            'flashes' => $flashes
+            'commentsCheck' => $commentsCheck
         ]);
     }
 
@@ -140,7 +134,6 @@ class PostController extends CoreController
      */
     public function update(string $slug)
     {
-        // $flashes = $this->flashes();
         $post = Post::findBySlug($slug);
 
         // Vérifier qu'il y a bien un user connecté
@@ -160,30 +153,31 @@ class PostController extends CoreController
                 $content = filter_input(INPUT_POST, 'content');
 
                 if (empty($title)) {
-                    $flashes = $this->flashes('warning', 'Le champ titre est vide');
+                    $this->flashes('warning', 'Le champ titre est vide.');
                 }
                 if (empty($chapo)) {
-                    $flashes = $this->flashes('warning', 'Le champ chapô est vide');
+                    $this->flashes('warning', 'Le champ chapô est vide.');
                 }
                 if (empty($content)) {
-                    $flashes = $this->flashes('warning', 'Le champ contenu est vide');
+                    $this->flashes('warning', 'Le champ contenu est vide.');
                 }
 
-                if (empty($flashes["messages"])) {
+                if (empty($flashes["message"])) {
 
                     $post->setTitle($title)
-                    ->setChapo($chapo)
-                    ->setContent($content)
-                    ->setSlug($slug);
+                        ->setChapo($chapo)
+                        ->setContent($content)
+                        ->setSlug($slug);
 
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
                     if ($post->update()) {
+                        $this->flashes('success', "L'article a bien été modifié.");
                         header('Location: /post/list');
                         exit;
                     } else {
-                        $flashes = $this->flashes('danger', "L'article n'a pas été modifié!");
+                        $this->flashes('danger', "L'article n'a pas été modifié!");
                     }
                 } else {
                     $slug = $this->slugify($title);
@@ -209,21 +203,19 @@ class PostController extends CoreController
      */
     public function delete(string $slug)
     {
-        $flashes = $this->flashes();
         $post = Post::findBySlug($slug);
         dd($post);
         if ($post) {
-            // $flashes = $this->flashes('success', "L'article a été supprimé");
+            $this->flashes('success', "L'article a bien été supprimé.");
             $post->delete();
             header('Location: /post/list');
             exit;
         } else {
-            $flashes = $this->flashes('danger', "Cet article n'existe pas!");
+            $this->flashes('danger', "Cet article n'existe pas!");
         }
 
         $this->show('/post/read', [
-            'post' => $post,
-            'flashes' => $flashes
+            'post' => $post
         ]);
     }
 }

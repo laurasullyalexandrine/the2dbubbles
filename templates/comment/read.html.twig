@@ -4,15 +4,21 @@
 	<article class="d-flex flex-column justify-content-center">
 		<div class="text-center mb-4">
 			<h1>Bienvenue dans votre espace</h1>
-			<h6>Ici vous pourrez gérer vos commentaires.</h6>
+			<h6>C'est ici que vous pouvez gérer vos commentaires.</h6>
 		</div>
 			<section class="d-flex flex-wrap">
 		{% for comment in comments %}
-				<div class="card" style="width: 20rem; min-height: 12rem;">
+				<div class="card mb-3" style="width: 20rem; min-height: 12rem;">
 					<div class="card-body">
 						<p class="card-text fw-bold">Commentaire :
 							<br>
-							{{ comment.content }}</p>
+							{{ comment.content }}
+							{% if comment.status == 1 %}
+								<i class="fa-solid fa-circle-check" style="color: #17cf1a;"></i>
+							{% else %}
+								<i class="fa-solid fa-circle-check" style="color: #eb2f06;"></i>
+							{% endif %}
+							</p>
 						<h6 class="card-subtitle mb-2 text-muted">
 							Titre article :
 							{{comment.post}} <br>
@@ -23,8 +29,10 @@
 							<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
 							<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
 						</h6>
-                            <a href="#" class="card-link">Modifier</a>
+						<div class="d-flex justify-content-center">
+                            <a class="btn-green me-3" href="/comment/update/{{ comment.id }}" class="card-link">Modifier</a>
                             {{ include('comment/_delete.html.twig') }}
+						</div>
 					</div>
 				</div>
 			</section>

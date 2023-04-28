@@ -12,13 +12,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>{% block title %}2dbubbles{% endblock %}</title>
 </head>
-<body class="bg-light">
+<body class="bg-light" id="wrapper">
 
 {% include "/_partial/_nav.html.twig" %}
 	<main class="container pt-5"> 
-        <div class="alert alert-{{flashes.alert}}">
-            {{flashes.message}}
-        </div>
+
+        {% for flash in displayFlashes() %}
+            <div class="alert alert-{{ flash.alert }}">
+                {{ flash.message }}
+            </div>
+        {% endfor %}
+
         {% block body %} {% endblock %}
     </main>
 {% include "/_partial/_footer.html.twig" %}	

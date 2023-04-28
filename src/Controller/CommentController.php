@@ -67,7 +67,6 @@ class CommentController extends CoreController
         }
     }
 
-    // TODO: Afficher la liste des posts sur lesquesls le user connecté à fait des commentaires
     /**
      * Voir un Post et ses commentaires
      * 
@@ -80,9 +79,8 @@ class CommentController extends CoreController
         $comments = Comment::findByUser($pseudo);
         $posts = [];
         foreach ($comments as $comment) {
-            // dd($comment->post, $this->slugify($comment->post));
             $posts[] = Post::findBySlug($this->slugify($comment->post));
-            // dd($posts);
+            
             foreach ($posts as $post) {
                 $author = User::findByPseudo($post->user);
             }
