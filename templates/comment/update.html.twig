@@ -1,7 +1,34 @@
 {% extends "/base.html.twig" %}
 
 {% block body %}
+	<article class="d-flex flex-column justify-content-center">
+		<div class="text-center mb-4">
+			<h1>Bienvenue dans votre espace</h1>
+			<h6>Ici vous pourrez gérer vos commentaires</h6>
+		</div>
+			<section class="d-flex flex-wrap">
+		{% for comment in comments %}
+				<div class="card" style="width: 20rem; min-height: 12rem;">
+					<div class="card-body">
+						<p class="card-text fw-bold">Commentaire :
+							<br>
+							{{ comment.content }}</p>
+						<h6 class="card-subtitle mb-2 text-muted">
+							Titre article :
+							{{comment.post}} <br>
+							Auteur :
+							{{ author.pseudo }}
+							<br>
+							Publié le :
+							<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
+							<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+						</h6>
+                            <a href="#" class="card-link">Modifier</a>
+                            {{ include('comment/_delete.html.twig') }}
+					</div>
+				</div>
+			</section>
 
-
+		{% endfor %}
+	</article>
 {% endblock %}
-

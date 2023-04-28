@@ -30,35 +30,6 @@ class Comment extends CoreModel
     private $posts;
 
     /**
-     * Méthode permettant de récupérer tous les enregistrements de la table post
-     *
-     * @return Post
-     */
-    public static function findAll($pseudo)
-    {
-        $pdoDBConnexion = Database::getPDO();
-
-        $sql = "
-            SELECT c.content, c.status, c.created_at, c.updated_at, u.pseudo AS pseudo, p.id, p.slug AS slug
-            FROM comment c
-            LEFT JOIN user u
-            ON u.id = c.users
-            LEFT JOIN post p
-            ON p.id = c.posts
-            WHERE pseudo = :pseudo
-            ORDER BY created_at ASC
-            "
-        ;
-
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
-        $pdoStatement->execute();
-
-        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-    
-        return $comments;
-    }
-    /**
      *  Méthode permettant de récupérer un enregistrement de la table Comment en fonction d'un id donné
      *
      * @param [type] $commentId
@@ -83,6 +54,36 @@ class Comment extends CoreModel
     }
 
     /**
+     * Méthode permettant de récupérer tous les commentaires d'un même auteur
+     *
+     * @return Post
+     */
+    public static function findByUser($pseudo)
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            SELECT c.id, c.content, c.status, c.created_at, c.updated_at, u.pseudo AS pseudo, p.title AS post
+            FROM comment c
+            LEFT JOIN user u
+            ON u.id = c.users
+            LEFT JOIN post p
+            ON p.id = c.posts
+            WHERE pseudo = :pseudo
+            ORDER BY created_at ASC
+            "
+        ;
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+        $pdoStatement->execute();
+
+        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+    
+        return $comments;
+    }
+
+    /**
      * Permet de trouver tous les commentaires d'un Post
      *
      * @param [type] $slug
@@ -98,7 +99,7 @@ class Comment extends CoreModel
             ON p.id = c.posts
             LEFT JOIN user u
             ON u.id = c.users
-            WHERE slug = :slug
+            WHERE p.slug = :slug
             ORDER BY c.created_at ASC 
             "
         ;

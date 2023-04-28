@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Comment;
 
 class CommentController extends CoreController
 {
@@ -66,20 +67,29 @@ class CommentController extends CoreController
         }
     }
 
-    // TODO: à revoir
+    // TODO: Afficher la liste des posts sur lesquesls le user connecté à fait des commentaires
     /**
      * Voir un Post et ses commentaires
      * 
      * @param int $commentId
      * @return Comment
      */
-    public function read(int $commentId)
+    public function comment_user($pseudo)
     {
-        $comment = Comment::findById($commentId);
+        $comments = Comment::findByUser($pseudo);
+        $posts = [];
+        foreach ($comments as $comment) {
+            // dd($comment->post, $this->slugify($comment->post));
+            $posts[] = Post::findBySlug($this->slugify($comment->post));
+            // dd($posts);
+            foreach ($posts as $post) {
+                $author = User::findByPseudo($post->user);
+            }
+        }
 
-        // On les envoie à la vue
-        $this->show('/comment/read', [
-            'comment' => $comment
+        $this->show('/comment/update', [
+            'comments' => $comments,
+            'author' => $author
         ]);
     }
 

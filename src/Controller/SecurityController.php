@@ -87,6 +87,7 @@ class SecurityController extends CoreController
 
             // Récupérer les données recues du formalaire d'inscription
             $pseudo = filter_input(INPUT_POST, 'pseudo');
+            $slug = $this->slugify($pseudo);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $password_2 = filter_input(INPUT_POST, 'password_2');
@@ -141,7 +142,8 @@ class SecurityController extends CoreController
                     PASSWORD_BCRYPT,
                     $option
                 );
-                $user->setPassword($password)
+                $user->setSlug($slug)
+                    ->setPassword($password)
                     ->setRoles($getIdRoleSubmited);
                     
                 // Permettra de vérifier si l'email soumis n'exite pas en base

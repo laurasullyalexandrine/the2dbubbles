@@ -98,7 +98,7 @@ class Post extends CoreModel {
             FROM post p
             LEFT JOIN user u
             ON u.id = p.users
-            WHERE slug = :slug
+            WHERE p.slug = :slug
             "
         ;
 

@@ -111,7 +111,7 @@ class PostController extends CoreController
         $flashes = $this->displayFlashes();
 
         $post = Post::findBySlug($slug);
-        $postId = $post->getId();
+        // $postId = $post->getId();
 
         // Récupérer les tableaux des commentaires
         $comments = Comment::findBySlugPost($slug);

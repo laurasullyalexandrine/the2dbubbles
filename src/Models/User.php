@@ -20,6 +20,11 @@ class User extends CoreModel
     /**
      * @var string
      */
+    private $slug;
+
+    /**
+     * @var string
+     */
     private $email;
 
     /**
@@ -255,6 +260,29 @@ class User extends CoreModel
     public function setPseudo(string $pseudo)
     {
         $this->pseudo = $pseudo;
+
+        return $this;
+    }
+    /**
+     * Get the value of slug
+     *
+     * @return  string
+     */ 
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the value of slug
+     *
+     * @param  string  $slug
+     *
+     * @return  self
+     */ 
+    public function setSlug(string $slug)
+    {
+        $this->slug = $slug;
 
         return $this;
     }

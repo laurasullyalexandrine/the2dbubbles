@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Role;
+use Exception;
 use SessionHandler;
 use Twig\Extension\DebugExtension;
 
@@ -31,11 +32,24 @@ class CoreController
                 $userRoleId = $user->getRoles();
                 $role = Role::findById($userRoleId);
                 $roleName = $role->getName();
-                // dd($roleName);
+
                 return $roleName;
             }
         });
         $twig->addFunction($isGranted);
+
+        /**
+         * 
+         */
+        $curentUser = new \Twig\TwigFunction('current_user', function () {
+            $user = $this->userIsConnected();
+            if ($user) {
+                return $user;
+            } else {
+                throw new Exception('Aucun utilisateur connecté!');
+            }
+        });
+        $twig->addFunction($curentUser);
         
         /**
          * Permet de savoir si il y a un user en session 

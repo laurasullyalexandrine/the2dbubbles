@@ -45,8 +45,9 @@ class UserController extends CoreController
         if ($this->isPost()) {
 
             // Récupérer les données recues du formalaire d'inscription
-            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $pseudo = filter_input(INPUT_POST, 'pseudo');
+            $slug = $this->slugify($pseudo);
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $password_1 = filter_input(INPUT_POST, 'password_1');
             $password_2 = filter_input(INPUT_POST, 'password_2');
             // Contraindre le type de la valeur soumis 
@@ -101,7 +102,9 @@ class UserController extends CoreController
                     $option
                 );
                 // Mettre à jour les propriétés de l'instance
-                $user->setPassword($password);
+                
+                $user->setSlug($slug)
+                    ->setPassword($password);
 
                 // Essayer de faire l'insertion du nouvel utilisateur 
                 try {
@@ -221,28 +224,5 @@ class UserController extends CoreController
             'user' => $user,
             'flashes' => $flashes
         ]);
-    }
-
-    
-    // TODO: à revoir
-    public function list_comment(string $pseudo) 
-    {
-        $userCurrent = $this->userIsConnected();
-        $userOfComment = User::findByPseudo($pseudo);
-        $comments = Comment::findAll($pseudo);
-        
-        if (!$userCurrent) {
-            header('Location: /security/login');
-        } elseif ($userCurrent != $userOfComment) {
-            $error = new ErrorController();
-            $error->accessDenied();
-        } else {
-            // On les envoie à la vue
-            $this->show('/user/list_comment', [
-                'user' => $userCurrent,
-                'comments' => $comments,
-                'pseudo' => $pseudo
-            ]);
-        }
     }
 }

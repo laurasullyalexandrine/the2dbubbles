@@ -2,8 +2,10 @@
 /*------ BODY ------*/
 
 .btn,
-.btn-delete {
-    color: #fff;
+., 
+.btn-green {
+    color: #ffffff;
+    text-align: center;
     border: 0 !important; 
     cursor: pointer !important;
     padding: 5px 15px !important;
@@ -11,14 +13,34 @@
 }
 
 .btn {
-    background-color: #FFC312 !important;
+    background-color: #ffc312 !important;
 }
 
-.btn-delete {
-    background-color: #B33771;
+.btn-green {
+    background-color: #38ada9;
+}
+
+. {
+    background-color: #eb2f06;
 }
 
 /*------ NAVBAR FOOTER ------*/
+
+.navbar-toggler,
+.navbar-toggler-icon {
+    color: #ffc312 !important;
+    border: none !important;
+}
+
+.navbar-nav {
+    text-align: center !important;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 5px 15px !important;
+}
 
 .active {
     color: #FFC312 !important;
