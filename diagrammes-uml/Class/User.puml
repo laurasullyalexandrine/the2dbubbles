@@ -3,6 +3,7 @@
 Class User {
     
     - pseudo : string
+    - slug : string
     - email : string
     - password: string
     

@@ -9,14 +9,11 @@ use App\Controller\CoreController;
 class AdminController extends CoreController {
 
     /**
-     * Afficher la page admin
+     * Afficher la page admin réservé au rôle Super_admin et l'admin
      *
      * @return void
      */
     public function dashboard() {
-        $session = $_SESSION;
-        $this->show('admin/dashboard', [
-            'sessions' => $session
-        ]);
+        $this->show('admin/dashboard');
     }
 }

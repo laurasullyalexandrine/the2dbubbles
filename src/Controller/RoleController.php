@@ -10,27 +10,20 @@ use Exception;
 class RoleController extends CoreController
 {
     /**
-     * Afficher tous les rôles de la base de données 
+     * Afficher tous les rôles de la base de données au role Super_admin et l'admin
      * 
      * @return void
      */
     public function read()
     {
-        if (!isset($_SESSION["flashes"])) {
-            $flashes = $this->flashes();
-        } else {
-            $flashes = $_SESSION["flashes"];
-        }
-
         $roles = Role::findAll();
         $this->show('role/read', [
-            'roles' => $roles,
-            'flashes' => $flashes
+            'roles' => $roles
         ]);
     }
 
     /**
-     * Ajout d'un nouveau rôle
+     * Ajout d'un nouveau rôle réservé au role Super_admin
      * 
      * @return Role
      */
@@ -40,6 +33,9 @@ class RoleController extends CoreController
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
+        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied(); 
         } else {
             $userCurrent = $this->userIsConnected(); {
 
@@ -76,20 +72,20 @@ class RoleController extends CoreController
     }
 
     /**
-     * Édition d'un rôle 
+     * Édition d'un rôle réservé au role Super_admin
      * 
      * @param [type] $roleId
      * @return Role
      */
     public function update(int $roleId)
     {
-        // $flashes = $this->addFlash();
         $role = role::findById($roleId);
 
-        // Vérifier qu'il y a bien un user connecté
         if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
             header('Location: /security/login');
+        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied(); 
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
@@ -127,7 +123,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Suppression d'un rôle
+     * Suppression d'un rôle au role Super_admin
      *
      * @param [type] $roleId
      * @return void

@@ -10,6 +10,7 @@
 Class Post {
     
     - title : string
+    - slug : string
     - chapo : string
     - content : string
     - date : DateTime 
