@@ -204,14 +204,14 @@ class PostController extends CoreController
     /**
      * Suppression d'un post
      *
-     * @param [type] $postId
+     * @param string $slug
      * @return void
      */
     public function delete(string $slug)
     {
-        // $flashes = $this->flashes();
+        $flashes = $this->flashes();
         $post = Post::findBySlug($slug);
-
+        dd($post);
         if ($post) {
             // $flashes = $this->flashes('success', "L'article a été supprimé");
             $post->delete();

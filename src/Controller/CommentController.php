@@ -76,6 +76,7 @@ class CommentController extends CoreController
      */
     public function comment_user($pseudo)
     {
+        $flashes = $this->displayFlashes();
         $comments = Comment::findByUser($pseudo);
         $posts = [];
         foreach ($comments as $comment) {
@@ -87,9 +88,10 @@ class CommentController extends CoreController
             }
         }
 
-        $this->show('/comment/update', [
+        $this->show('/comment/read', [
             'comments' => $comments,
-            'author' => $author
+            'author' => $author, 
+            'flashes' => $flashes
         ]);
     }
 
@@ -161,11 +163,11 @@ class CommentController extends CoreController
             header('Location: /security/login');
         } else {
             $comment = Comment::findById($commentId);
-
+            // dd($comment);
             if ($comment) {
                 $comment->delete();
-                header('Location: /post/list');
                 $flashes = $this->flashes('success', "Le commentaire a bien été supprimé");
+                header('Location: /comment/comment_user/'. $this->userIsConnected()->getPseudo());
                 exit;
             } else {
                 $flashes = $this->flashes('danger', "Ce commentaire n'existe pas!");
