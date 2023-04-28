@@ -1,10 +1,9 @@
 
 /*------ BODY ------*/
-
 #wrapper {
     background-color: #ffffff !important;
+    font-family: 'Instrument' sans-serif !important;
 }
-
 .btn,
 .btn-grey, 
 .btn-green {
@@ -26,6 +25,11 @@
 
 .btn-grey {
     background-color: #4b6584;
+}
+
+.gold {
+    /* color: #84754e; */
+    color: #b43b1c;
 }
 
 /*------ NAVBAR FOOTER ------*/
