@@ -18,8 +18,6 @@ class SecurityController extends CoreController
      */
     public function login()
     {
-        // $flashes = $this->flashes();
-
         if ($this->isPost()) {
 
             $email =  filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -27,9 +25,8 @@ class SecurityController extends CoreController
 
             // Vérifier l'existence du user
             $userCurrent = User::findByEmail($email);
-
+            
             // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
-            // Contrôle mot de passe
             if (empty($password)) {
                 $this->flashes('warning', 'Merci de saisir votre mot de passe!');
             } elseif (
@@ -53,14 +50,13 @@ class SecurityController extends CoreController
             // Contrôle du user
             if (!$userCurrent) {
                 $this->flashes('danger', "Cet utilisateur n'existe pas!");
+                header('Location: /security/login');
             }
 
             // Si il y a des erreurs on les affiches sinon ...
             if (!empty($flashes['message'])) {
-
                 $this->show('security/login', [
-                    'user' => $userCurrent,
-                    'flashes' => $flashes
+                    'user' => $userCurrent
                 ]);
             } // Connecter le user
             else {
@@ -173,7 +169,7 @@ class SecurityController extends CoreController
         }
         $this->show('security/register', [
             'user' => $user,
-            'roles' => $roles,
+            'roles' => $roles
         ]);
     }
 

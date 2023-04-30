@@ -17,7 +17,6 @@ class CommentController extends CoreController
      */
     public function create(string $slug)
     {
-        $flashes = $this->flashes();
         $comment = new Comment();
 
         // Trouver le Post à l'aide slug qui sera transmis à la vue
@@ -38,7 +37,7 @@ class CommentController extends CoreController
                 $content = filter_input(INPUT_POST, 'content');
 
                 if (empty($content)) {
-                    $flashes = $this->flashes('warning', 'Le champ contenu est vide');
+                    $this->flashes('warning', 'Le champ contenu est vide');
                 }
                 if (empty($flashes["message"])) {
                     $comment->setContent($content)
@@ -48,11 +47,11 @@ class CommentController extends CoreController
                     $comment->setUsers($userId);
 
                     if ($comment->insert()) {
-                        $flashes = $this->flashes('warning', 'Votre commentaire est bien enregistré et est attente de validation!');
+                        $this->flashes('warning', 'Votre commentaire est bien enregistré et est attente de validation!');
                         header('Location: /post/read/' . $post->getSlug());
                         exit;
                     } else {
-                        $flashes = $this->flashes('danger', "Le commentaire n'a pas été créé!");
+                        $this->flashes('danger', "Le commentaire n'a pas été créé!");
                     }
                 } else {
                     $comment->setContent(filter_input(INPUT_POST, $content));
@@ -61,8 +60,7 @@ class CommentController extends CoreController
             $this->show('/Comment/create', [
                 'Comment' => new Comment(),
                 'user' => $userCurrent,
-                'post' => $post,
-                'flashes' => $flashes
+                'post' => $post
             ]);
         }
     }
@@ -75,7 +73,6 @@ class CommentController extends CoreController
      */
     public function comment_user($pseudo)
     {
-        $flashes = $this->displayFlashes();
         $comments = Comment::findByUser($pseudo);
         $posts = [];
         foreach ($comments as $comment) {
@@ -88,8 +85,7 @@ class CommentController extends CoreController
 
         $this->show('/comment/read', [
             'comments' => $comments,
-            'author' => $author, 
-            'flashes' => $flashes
+            'author' => $author
         ]);
     }
 
@@ -101,7 +97,6 @@ class CommentController extends CoreController
      */
     public function update(int $commentId)
     {
-        $flashes = $this->flashes();
         $comment = Comment::findById($commentId);
 
         // Vérifier qu'il y a bien un user connecté
@@ -112,8 +107,6 @@ class CommentController extends CoreController
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
 
-            // TODO: Ajouter l'access control en fonction du role et la generation du token
-
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
                 $status = (bool)filter_input(INPUT_POST, 'status');
@@ -122,7 +115,7 @@ class CommentController extends CoreController
                     $flashes = $this->flashes('warning', 'Le champ contenu est vide.');
                 }
                 if (empty($status)) {
-                    $flashes = $this->flashes('warning', 'Choisir un status.');
+                    $this->flashes('warning', 'Choisir un status.');
                 }
 
                 if (empty($flashes["message"])) {
@@ -134,18 +127,17 @@ class CommentController extends CoreController
 
                     if ($comment->update()) {
                         header('Location: /comment/list');
-                        $flashes = $this->flashes('success', "Le commentaire a bien été modifié.");
+                        $this->flashes('success', "Le commentaire a bien été modifié.");
                         exit;
                     } else {
-                        $flashes = $this->flashes('danger', "L'article n'a pas été modifié!");
+                        $this->flashes('danger', "L'article n'a pas été modifié!");
                     }
                 }
             }
         }
         // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
         $this->show('/Comment/update', [
-            'Comment' => $comment,
-            'flashes' => $flashes
+            'Comment' => $comment
         ]);
     }
 

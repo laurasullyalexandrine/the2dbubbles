@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Comment;
 use App\Models\Post;
+use App\Models\Role;
+use App\Models\Comment;
 
 /**
  * Controller dédié à la gestion des posts
@@ -35,11 +36,11 @@ class PostController extends CoreController
     public function create()
     {
         $post = new Post();
-
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
@@ -85,14 +86,12 @@ class PostController extends CoreController
                     $post->setContent($content);
 
                     $this->show('/post/create', [
-                        'post' => $post,
-                        'user' => $userCurrent
+                        'post' => $post
                     ]);
                 }
             }
             $this->show('/post/create', [
-                'post' => $post,
-                'user' => $userCurrent
+                'post' => $post
             ]);
         }
     }
@@ -106,7 +105,6 @@ class PostController extends CoreController
     public function read(string $slug)
     {
         $post = Post::findBySlug($slug);
-        // $postId = $post->getId();
 
         // Récupérer les tableaux des commentaires
         $comments = Comment::findBySlugPost($slug);
@@ -136,11 +134,11 @@ class PostController extends CoreController
     {
         $post = Post::findBySlug($slug);
 
-        // Vérifier qu'il y a bien un user connecté
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
@@ -199,7 +197,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Suppression d'un post
+     * Suppression d'un post uniquement avec le rôle Super_admin
      *
      * @param string $slug
      * @return void
@@ -207,10 +205,12 @@ class PostController extends CoreController
     public function delete(string $slug)
     {
         $post = Post::findBySlug($slug);
+
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {

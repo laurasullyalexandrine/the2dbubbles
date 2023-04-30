@@ -38,7 +38,7 @@ class CoreController
         $twig->addFunction($isGranted);
 
         /**
-         * 
+         * Permet d'avoir l'utilisateur connecté en permanence dans la surper globale $_SESSION
          */
         $curentUser = new \Twig\TwigFunction('current_user', function () {
             $user = $this->userIsConnected();
@@ -64,6 +64,9 @@ class CoreController
         });
         $twig->addFunction($user);
 
+        /**
+         * Permet d'avoir la clé flashes en permanence dans la session
+         */
         $displayFlashes = new \Twig\TwigFunction('display_flashes', function () {
 
             $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
