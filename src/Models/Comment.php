@@ -175,8 +175,9 @@ class Comment extends CoreModel
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
         $pdoStatement->bindValue(':content', $this->content, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_BOOL);
+        $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_INT);
 
         return $pdoStatement->execute();
     }

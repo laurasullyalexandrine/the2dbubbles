@@ -117,7 +117,7 @@ class CommentController extends CoreController
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
                 $status = (int)filter_input(INPUT_POST, 'status');
-
+        
                 if (empty($content)) {
                     $this->flashes('warning', 'Le champ contenu est vide.');
                 }
@@ -129,11 +129,8 @@ class CommentController extends CoreController
                     $comment->setContent($content)
                         ->setStatus($status);
 
-                    $userId = $userCurrent->getId();
-                    $comment->setUsers($userId);
-
                     if ($comment->update()) {
-                        header('Location: /comment/list');
+                        header('Location: /comment/comment_user/'. $userCurrent->getSlug());
                         $this->flashes('success', "Le commentaire a bien été modifié.");
                         exit;
                     } else {

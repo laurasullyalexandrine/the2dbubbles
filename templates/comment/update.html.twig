@@ -7,69 +7,100 @@
 			<h1>Modifie ton Bubbles Comment</h1>
 			<h6>Tu veux revoir ta copie ? C'est ici que ça se passe 😉</h6>
 		</section>
-		<div>
-			<a class="btn" href="/comment/comment_user/{{ user.slug }}">Retour</a>
-		</div>
-
-		<form action="/comment/update/{{ comment.slug }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
-			<div class="col-6 mb-4">
-			<p>Status</p>
-				{% if is_granted() == "Utilisateur" %}
+		<a class="btn" href="/comment/comment_user/{{ user.slug }}">Retour</a>
+	
+		<form action="/comment/update/{{ comment.id }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
+			<div class="d-flex flex-xs-column flex-sm-column mb-4">
+				<p class="h6">Status</p>
+				{% if is_granted() != "Utilisateur" %}
 				{# Status Validé #}
 					{% if comment.status == 1 %}
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}" checked>
-						<label class="form-check-label" for="status">
-							Validé<i class="fa-solid fa-circle-check" style="color: #17cf1a;"></i>
-						</label>
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}">
-						<label class="form-check-label" for="status">
-							Rejeté<i class="fa-solid fa-circle-check" style="color: #eb2f06;"></i>
-						</label>
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}">
-						<label class="form-check-label" for="status">
-							En attente<i class="fa-solid fa-circle-check" style="color:#f39c12;"></i>
-						</label>
+						<div class="form-check">
+							<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+							<label class="form-check-label" for="status">
+								Validé &ensp;
+							</label>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="1" checked>
+						</div>
+
+						<div class="form-check">
+							<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
+							<label class="form-check-label" for="status">
+								En attente
+							</label>
+						</div>
+
+						<div class="form-check">
+							<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
+							<label class="form-check-label" for="status">
+								Rejeté
+							</label>
+						</div>
 				{# Status en attente #}
 					{% elseif  comment.status == 2 %}
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}">
-						<label class="form-check-label" for="status">
-							Validé<i class="fa-solid fa-circle-check" style="color: #17cf1a;"></i>
-						</label>
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}" checked>
-						<label class="form-check-label" for="status">
-							En attente<i class="fa-solid fa-circle-check" style="color:#f39c12;"></i>
-						</label>
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}">
-						<label class="form-check-label" for="status">
-							Rejeté<i class="fa-solid fa-circle-check" style="color: #eb2f06;"></i>
-						</label>
-				{# Status rejété #}
-					{% elseif comment.status == 0 %}
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}">
-						<label class="form-check-label" for="status">
-							Validé<i class="fa-solid fa-circle-check" style="color: #17cf1a;"></i>
-						</label>
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}">
-						<label class="form-check-label" for="status">
-							En attente<i class="fa-solid fa-circle-check" style="color:#f39c12;"></i>
-						</label>
-						<input class="form-check-input" type="checkbox" name="status" id="status" value="{{ comment.status }}" checked>
-						<label class="form-check-label" for="status">
-							Rejeté<i class="fa-solid fa-circle-check" style="color: #eb2f06;"></i>
-						</label>
-					{% endif %}
+						<div class="form-check">
+						<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+							<label class="form-check-label" for="status">
+								Validé &ensp;
+							</label>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
+						</div>
+
+						<div class="form-check">
+						<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="2" checked>
+							<label class="form-check-label" for="status">
+								En attente
+							</label>
+						</div>
+
+						<div class="form-check">
+						<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
+							<label class="form-check-label" for="status">
+								Rejeté
+							</label>
+						</div>
+
+					{# Status rejété #}
+				{% elseif comment.status == 0 %}
+						<div class="form-check">
+							<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+							<label class="form-check-label" for="status">
+								Validé &ensp;
+							</label>
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
+						</div>
+
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
+							<label class="form-check-label" for="status">
+								En attente
+								<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
+							</label>
+						</div>
+
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" name="status" id="status" value="0" checked>
+							<label class="form-check-label" for="status">
+								Rejeté
+								<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
+							</label>
+						</div>
 				{% endif %}
-			</div>
+			{% endif %}
+		</div>
 
-			<div class="col-md-6">
-				<textarea class="form-control" name="content" id="Content" rows="8" value="{{ comment.content }}">{{ comment.content }}</textarea>
-				<label for="Contenu" class="form-label">Contenu</label>
-			</div>
+		<div class="col-md-6">
+			<textarea class="form-control" name="content" id="Content" rows="8" value="{{ comment.content }}">{{ comment.content }}</textarea>
+			<label for="Contenu" class="form-label h6">Contenu</label>
+		</div>
 
-			<div class="col-12">
-				<button class="btn" type="submit">Modifie ton Bubbles Comment</button>
-			</div>
-		</form>
+		<div class="col-12">
+			<button class="btn" type="submit">Modifie ton Bubbles Comment</button>
+		</div>
+	</form>
 
-	</article>
-{% endblock %}
+</article>{% endblock %}
