@@ -15,7 +15,7 @@ class Comment extends CoreModel
     private $content;
 
     /**
-     * @var bool
+     * @var int
      */
     private $status;
 
@@ -58,28 +58,28 @@ class Comment extends CoreModel
      *
      * @return Post
      */
-    public static function findByUser($pseudo)
+    public static function findByUser($slug)
     {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
-            SELECT c.id, c.content, c.status, c.created_at, c.updated_at, u.pseudo AS pseudo, p.title AS post
+            SELECT c.id, c.content, c.status, c.created_at, c.updated_at, u.slug AS user, p.title AS post
             FROM comment c
             LEFT JOIN user u
             ON u.id = c.users
             LEFT JOIN post p
             ON p.id = c.posts
-            WHERE pseudo = :pseudo
+            WHERE u.slug = :slug
             ORDER BY created_at ASC
             "
         ;
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
 
         $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
-    
+
         return $comments;
     }
 
@@ -227,11 +227,11 @@ class Comment extends CoreModel
 
         return $this;
     }
-
+    
     /**
-     * Get the status of the entities Post and Comment
+     * Get the value of status
      *
-     * @return  bool
+     * @return  int
      */ 
     public function getStatus()
     {
@@ -239,13 +239,13 @@ class Comment extends CoreModel
     }
 
     /**
-     * Set the status of the entities Post and Comment
+     * Set the value of status
      *
-     * @param  bool  $status  The status of the entities Post and Comment
+     * @param  int  $status
      *
      * @return  self
      */ 
-    public function setStatus(bool $status)
+    public function setStatus(int $status)
     {
         $this->status = $status;
 

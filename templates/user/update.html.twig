@@ -5,12 +5,9 @@
 {% endblock %}
 
 {% block body %}
-
-
 	<article class="row" style="background-color:pink;">
-		<h1 class="text-center mb-5">Nouveau Bubbles utilisateur!</h1>
-		<form action="create" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4 " style="background-color:grey;">
-		{# <div class="col-lg-4 col-xl-4 col-xxl-4"></div> #}
+		<h1 class="text-center mb-5">Nouveau Bubbles user!</h1>
+		<form action="create" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4" style="background-color:grey;">
 			<section class="col-lg-6 col-xl-6 col-xxl-6 col-xs-12 col-sm-12">
 				<div class="d-flex flex-column mb-4">
 					<select class="form-select" name="role" id="Role">
@@ -101,7 +98,7 @@
 
 								<i class="fas fa-user fa-lg me-3 fa-fw"></i>
 								<label class="form-label fs-5 fw-bolder" for="Role">Rôle</label>
-								<div class="">
+								<div>
 									{% for role in roles %}
 										{% if role.id == role_current_user %}
 											<div class="form-check ms-1">

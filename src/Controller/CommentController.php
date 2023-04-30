@@ -42,12 +42,12 @@ class CommentController extends CoreController
                 if (empty($flashes["message"])) {
                     $comment->setContent($content)
                         ->setPosts($postId)
-                        ->setStatus(false);
+                        ->setStatus(2);
                     $userId = $userCurrent->getId();
                     $comment->setUsers($userId);
 
                     if ($comment->insert()) {
-                        $this->flashes('warning', 'Votre commentaire est bien enregistré et est attente de validation!');
+                        $this->flashes('warning', 'Ton Bubbles Comment est bien enregistré. Il est maintenant attente de validation!');
                         header('Location: /post/read/' . $post->getSlug());
                         exit;
                     } else {
@@ -71,9 +71,9 @@ class CommentController extends CoreController
      * @param int $commentId
      * @return Comment
      */
-    public function comment_user($pseudo)
+    public function comment_user($slug)
     {
-        $comments = Comment::findByUser($pseudo);
+        $comments = Comment::findByUser($slug);
         $posts = [];
         foreach ($comments as $comment) {
             $posts[] = Post::findBySlug($this->slugify($comment->post));
@@ -99,20 +99,27 @@ class CommentController extends CoreController
     {
         $comment = Comment::findById($commentId);
 
+        // Récupérer l'id de lauteur du commentaire
+        $idAuthorComment = $comment->getUsers();
+
         // Vérifier qu'il y a bien un user connecté
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
+        } elseif($this->userIsConnected()->getId() !== $idAuthorComment) {
+            // Si le user connecté n'est pas l'auteur du commentaire
+            $error403 = new ErrorController;
+            $error403->accessDenied(); 
         } else {
-            // Récupérer le user connecté
+            // Stocker le user connecté
             $userCurrent = $this->userIsConnected();
 
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
-                $status = (bool)filter_input(INPUT_POST, 'status');
+                $status = (int)filter_input(INPUT_POST, 'status');
 
                 if (empty($content)) {
-                    $flashes = $this->flashes('warning', 'Le champ contenu est vide.');
+                    $this->flashes('warning', 'Le champ contenu est vide.');
                 }
                 if (empty($status)) {
                     $this->flashes('warning', 'Choisir un status.');
@@ -137,7 +144,7 @@ class CommentController extends CoreController
         }
         // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
         $this->show('/Comment/update', [
-            'Comment' => $comment
+            'comment' => $comment
         ]);
     }
 
@@ -149,23 +156,27 @@ class CommentController extends CoreController
      */
     public function delete(int $commentId)
     {
+        $comment = Comment::findById($commentId);
+        $idAuthorComment = $comment->getUsers();
+
         if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
+        } elseif($this->userIsConnected()->getId() !== $idAuthorComment) {
+             // Si le user connecté n'est pas l'auteur du commentaire
+             $error403 = new ErrorController;
+             $error403->accessDenied();
         } else {
-            $comment = Comment::findById($commentId);
-            // dd($comment);
             if ($comment) {
                 $comment->delete();
-                $flashes = $this->flashes('success', "Le commentaire a bien été supprimé");
-                header('Location: /comment/comment_user/'. $this->userIsConnected()->getPseudo());
+                $this->flashes('success', "Le commentaire a bien été supprimé.");
+                header('Location: /comment/comment_user/'. $this->userIsConnected()->getSlug());
                 exit;
             } else {
-                $flashes = $this->flashes('danger', "Ce commentaire n'existe pas!");
+                $this->flashes('danger', "Ce commentaire n'existe pas!");
             }
-
             $this->show('/comment/read', [
-                'comment' => $comment,
-                'flashes' => $flashes
+                'comment' => $comment
             ]);
         }
     }

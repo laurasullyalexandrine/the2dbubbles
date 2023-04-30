@@ -34,7 +34,7 @@
 							</li>
 							<li class="nav-item">
 								{% set user = current_user() %}
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.pseudo }}">Mes commentaires</a>
+								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.slug }}">Mes commentaires</a>
 							</li>
 						{% else %}
 							<li class="nav-item">

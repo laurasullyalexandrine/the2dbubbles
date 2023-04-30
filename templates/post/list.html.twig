@@ -37,8 +37,8 @@
 					</td>
 					<td class="d-flex flex-column">
 						<a class="btn mx-4 my-4" href="/post/read/{{post.slug}}">voir</a>
-						<a class="btn mx-4 my-4" href="/post/update/{{post.slug}}">edit</a>
 						{% if is_granted() == "Super_admin" %}
+							<a class="btn mx-4 my-4" href="/post/update/{{post.slug}}">edit</a>
 							{{ include('post/_delete.html.twig') }}
 						{% endif %}
 					</td>

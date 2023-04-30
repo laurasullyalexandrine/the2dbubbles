@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Comment;
 use App\Controller\ErrorController;
 
 /**
@@ -138,7 +137,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Édition d'un utilisateur
+     * Édition d'un utilisateur seulement par le rôle Super_admin
      *
      * @param [type] $userId
      * @return User
@@ -150,9 +149,8 @@ class UserController extends CoreController
         $roles = Role::findAll();
 
         $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
-        // dd($currentUserRole->getName() !== "Super_admin");
+
         if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
             header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
@@ -167,6 +165,7 @@ class UserController extends CoreController
 
             if ($this->isPost()) {
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
+                $slug = $this->slugify($pseudo);
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
                 $password_1 = filter_input(INPUT_POST, 'password_1');
                 $role = (int)filter_input(INPUT_POST, 'role');
@@ -192,7 +191,8 @@ class UserController extends CoreController
                         PASSWORD_BCRYPT,
                         $option
                     );
-                    $user->setPassword($password);
+                    $user->setSlug($slug)
+                        ->setPassword($password);
                     if ($user->update()) {
                         header('Location: /user/read');
                         exit;
