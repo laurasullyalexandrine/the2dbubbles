@@ -26,7 +26,7 @@ $url = $_SERVER['REQUEST_URI'];
 
 $url = trim($url, '/');
 // Ajout d'une condition tempon si aucune url n'est trouvée
-$url = $url ?: 'main/home';
+$url = $url ?: 'security/login';
 
 $params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
 
