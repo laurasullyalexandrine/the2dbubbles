@@ -1,16 +1,16 @@
 {% block body %}
 	<article>
 		<div class="d-flex justify-content-between my-3">
-			<h2>Laissez un commentaire</h2>
+			<h2>Laisse un Bubble Comment</h2>
 		</div>
 		<section>
 			<form action="/comment/create/{{ post.slug }}" method="post" class="row g-3">
 				<div class="col-md-6">
 					<textarea class="form-control" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
-					<label for="Contenu" class="form-label">Contenu</label>
+					<label for="Contenu" class="form-label h6">Contenu</label>
 				</div>
 				<div class="col-12">
-					<button class="btn" type="submit">Publier un Bubble Comment !</button>
+					<button class="btn" type="submit">Publier</button>
 				</div>
 			</form>
 		</section>

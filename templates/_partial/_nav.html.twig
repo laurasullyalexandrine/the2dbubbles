@@ -30,11 +30,11 @@
 						</li>
 						{% if is_granted() == "Utilisateur" %}
 							<li class="nav-item">
-								<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Actualité</a>
+								<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubble Actu</a>
 							</li>
 							<li class="nav-item">
 								{% set user = current_user() %}
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.slug }}">Mes commentaires</a>
+								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.slug }}">Mes Bubble Comment</a>
 							</li>
 						{% else %}
 							<li class="nav-item">

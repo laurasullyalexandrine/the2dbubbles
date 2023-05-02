@@ -8,18 +8,18 @@ actor User as User #Plum
 entity Post as Post #LightYellow
 entity Comment as Comment #LightYellow
 
-database 2dbubbles as 2dbubbles #YellowGreen
+database 2dbubbleas 2dbubble#YellowGreen
 
 User -> 2dbubbles: créer un compte
 alt cas réussi
-2dbubbles -> User: valider création du compte
+2dbubble-> User: valider création du compte
 else email déjà existant 
-2dbubbles -> User: échec de l'inscription
+2dbubble-> User: échec de l'inscription
 
 User -> 2dbubbles: demander authentification 
-2dbubbles -> User: valider authentification 
+2dbubble-> User: valider authentification 
 else identification invalides
-2dbubbles -> User: échec de l'authentification
+2dbubble-> User: échec de l'authentification
 
 
 User -> Comment: ajouter commentaire

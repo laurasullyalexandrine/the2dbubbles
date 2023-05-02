@@ -5,7 +5,7 @@ left to right direction
 
 actor "SuperAdmin" as SuperAdmin #OliveDrab
 
-rectangle 2dbubbles {
+rectangle 2dbubble{
   usecase "Créer un compte" as UC1
   usecase "Se connecter" as UC2
   usecase "Ajouter des posts" as UC3

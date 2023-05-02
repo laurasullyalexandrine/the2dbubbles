@@ -5,7 +5,7 @@ left to right direction
 
 actor "User" as User #Plum
 
-rectangle 2dbubbles {
+rectangle 2dbubble{
   usecase "S'inscrire" as UC1
   usecase "Se connecter" as UC2
   usecase "Consulter les posts" as UC3

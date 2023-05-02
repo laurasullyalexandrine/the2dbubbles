@@ -21,7 +21,7 @@
             
             <div class="d-flex">
                 {% if is_granted() == "Super_admin" %}
-                    <a class="btn" href="/post/update/{{ post.slug }}">éditer</a>
+                    <a class="btn" href="/post/update/{{ post.slug }}">Modifier</a>
                     {{ include('post/_delete.html.twig') }}
                 {% endif %}
             </div>
@@ -34,10 +34,10 @@
 
         {# Liste des commentaires déjà postés et validés #}
         <section class="py-3" style="background-color:orange">
-        <h2>Commentaires</h2> 
+        <h2>Bubble Comments</h2> 
             {% if comments is empty %}
-                <p>Cet article n'a pas encore de commentaire. <br>
-                Donnez votre avis.</p>
+                <p>Cet article n'a pas encore de Bubble Comment. <br>
+                A ton clavier 😄</p>
             {% else %}
                 {% for commentCheck in commentsCheck %}
                     <p class="text-justify fs-5 pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }} <br>
@@ -45,7 +45,7 @@
                     <time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
                     <time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
                     {% if commentCheck.status == 1 %}
-                        Validé <i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+                        Bubble Comment Validé <i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
                     {% endif %}
                 </p>
                 {% endfor %}

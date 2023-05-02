@@ -47,7 +47,7 @@ class CommentController extends CoreController
                     $comment->setUsers($userId);
 
                     if ($comment->insert()) {
-                        $this->flashes('warning', 'Ton Bubbles Comment est bien enregistré. Il est maintenant attente de validation!');
+                        $this->flashes('warning', 'Ton bubbleComment est bien enregistré. Il est maintenant attente de validation!');
                         header('Location: /post/read/' . $post->getSlug());
                         exit;
                     } else {

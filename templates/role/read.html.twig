@@ -3,7 +3,7 @@
 	active
 {% endblock %}
 {% block body %}
-	<h1>Rôles</h1>
+	<h1>Bubble Rôles</h1>
 	<div class="d-flex justify-content-around my-3">
 		<a class="btn" href="/main/home">Retour</a>
 	</div>
@@ -22,7 +22,7 @@
 					<td>{{ role.id }}</td>
 					<td>{{ role.name }}</td>
 					<td class="d-flex">
-						<a class="btn" href="/role/update/{{ role.id }}">éditer</a>
+						<a class="btn" href="/role/update/{{ role.id }}">Modifer un Bubble Role</a>
 						{{ include('role/_delete.html.twig') }}
 					</td>
 				</tr>
@@ -31,10 +31,10 @@
 	</tr>
 {% else %}
 	<tr>
-		<td colspan="5">no records found</td>
+		<td colspan="5">Aucun enregistrement trouvé</td>
 	</tr>
 {% endfor %}
 </tbody>
 </table>
-<a class="btn mb-5" href="/role/create">Ajouter</a>
+<a class="btn mb-5" href="/role/create">Ajouter Bubble Role</a>
 {% endblock %}

@@ -4,7 +4,7 @@
 	{% set user = current_user() %}
 	<article class="d-flex flex-column justify-content-center">
 		<section class="text-center mb-4">
-			<h1>Modifie ton Bubbles Comment</h1>
+			<h1>Modifie ton Bubble Comment</h1>
 			<h6>Tu veux revoir ta copie ? C'est ici que ça se passe 😉</h6>
 		</section>
 		<a class="btn" href="/comment/comment_user/{{ user.slug }}">Retour</a>
@@ -18,7 +18,7 @@
 						<div class="form-check">
 							<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 							<label class="form-check-label" for="status">
-								Validé &ensp;
+								Bubble Comment Validé &ensp;
 							</label>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="1" checked>
 						</div>
@@ -27,7 +27,7 @@
 							<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
 							<label class="form-check-label" for="status">
-								En attente
+								Bubble Comment En attente
 							</label>
 						</div>
 
@@ -35,7 +35,7 @@
 							<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
 							<label class="form-check-label" for="status">
-								Rejeté
+								Bubble Comment Rejeté
 							</label>
 						</div>
 				{# Status en attente #}
@@ -43,7 +43,7 @@
 						<div class="form-check">
 						<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 							<label class="form-check-label" for="status">
-								Validé &ensp;
+								Bubble Comment Validé &ensp;
 							</label>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
 						</div>
@@ -52,7 +52,7 @@
 						<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="2" checked>
 							<label class="form-check-label" for="status">
-								En attente
+								Bubble Comment En attente
 							</label>
 						</div>
 
@@ -60,7 +60,7 @@
 						<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
 							<label class="form-check-label" for="status">
-								Rejeté
+								Bubble Comment Rejeté
 							</label>
 						</div>
 
@@ -69,7 +69,7 @@
 						<div class="form-check">
 							<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 							<label class="form-check-label" for="status">
-								Validé &ensp;
+								Bubble Comment Validé &ensp;
 							</label>
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
 						</div>
@@ -77,7 +77,7 @@
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
 							<label class="form-check-label" for="status">
-								En attente
+								Bubble Comment En attente
 								<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 							</label>
 						</div>
@@ -85,7 +85,7 @@
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" name="status" id="status" value="0" checked>
 							<label class="form-check-label" for="status">
-								Rejeté
+								Bubble Comment Rejeté
 								<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 							</label>
 						</div>
@@ -99,7 +99,7 @@
 		</div>
 
 		<div class="col-12">
-			<button class="btn" type="submit">Modifie ton Bubbles Comment</button>
+			<button class="btn" type="submit">Modifier</button>
 		</div>
 	</form>
 

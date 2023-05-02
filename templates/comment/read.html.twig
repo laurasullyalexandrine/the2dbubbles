@@ -3,12 +3,12 @@
 {% block body %}
 	<article class="d-flex flex-column justify-content-center">
 		<div class="text-center mb-4">
-			<h1>Bienvenue dans ton <span class="marker">Bubbles Space</span></h1>
-			<h6>C'est ici que tu peux gérer tes <span class="marker">Bubbles Comment</span>.</h6>
+			<h1>Bienvenue dans ton <span class="marker">Bubble Space</span></h1>
+			<h6>C'est ici que tu peux gérer tes <span class="marker">Bubble Comment</span>.</h6>
 		</div>
 			{% if comments|length == 0 %}
 			<div class="d-flex flex-column text-center my-5">
-			<p class="fs-6">Tu n'as pas encore de <span class="marker">Bubbles Comment</span>!</p>
+			<p class="fs-6">Tu n'as pas encore de <span class="marker">Bubble Comment</span>!</p>
 			<p class="fs-5">A toi de jouer!</p>
 			</div>
 			{% else %}
@@ -16,7 +16,7 @@
 				{% for comment in comments %}
 					<div class="card mb-3" style="width: 20rem; min-height: 12rem;">
 						<div class="card-body">
-							<p class="card-text fw-bold">Bubbles Comment :
+							<p class="card-text fw-bold">Bubble Comment :
 								<br>
 								{{ comment.content }}
 								{% if comment.status == 1 %}

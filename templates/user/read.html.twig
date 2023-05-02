@@ -1,7 +1,7 @@
 {% extends "/base.html.twig" %}
 {% block menu_user %} active {% endblock %}
 {% block body %}
-    <h1>Bubbles utilisateurs</h1>
+    <h1>bubbleUser </h1>
    	<div class="d-flex justify-content-around my-3">
 		<a class="btn" href="/main/home">Retour</a>
 	</div>
@@ -22,13 +22,13 @@
                 <td>{{ user.pseudo }}</td>
                 <td>{{ user.email }}</td>
                 {% if role is empty %}
-                    <td>aucun rôle attribué</td>
+                    <td>aucun Bubble Role attribué</td>
                 {% else %}
                     <td>{{ role|capitalize }}</td>
                 {% endif %}
                 <td  class="d-flex">
                     {% if is_granted() == "Super_admin" %}
-                        <a class="btn" href="/user/update/{{ user.id }}">éditer</a>
+                        <a class="btn" href="/user/update/{{ user.id }}">Modifier</a>
                         {{ include('user/_delete.html.twig') }}
                     {% endif %}
                 </td>
@@ -41,6 +41,6 @@
         </tbody>
     </table>
 
-    <a class="btn mb-5" href="/user/create">Ajouter</a>
+    <a class="btn mb-5" href="/user/create">Ajoute un Bubble User</a>
     
 {% endblock %}
