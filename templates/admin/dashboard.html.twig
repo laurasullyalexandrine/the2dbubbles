@@ -1,12 +1,41 @@
-{% extends "/base.html.twig" %}
-{% block menu_admin %} active {% endblock %}
+{% extends "/base_admin.html.twig" %}
+{% block menu_admin %}
+	active
+{% endblock %}
 
 {% block body %}
-    <article class="col">
-        <h1>Administration 2dbubble</h1>
-        <section class="row">
-            <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit.</h2>
-            <p>Quam architecto ad porro assumenda et quas, libero aut. Laboriosam maiores laborum illo esse. Assumenda, tempora atque illum eum eligendi dignissimos labore!</p>
-        </section>
-    </article>
+	<article class="row text-center">
+		<h1>Administration 2dbubble</h1>
+		<h2>Que souhaites tu faire ?!</h2>
+		<section class="row">
+        <div class="card-border d-flex flex-wrap justify-content-between border border-primary-subtle rounded p-4 my-4">
+			<div class="card ms-2 mb-3" style="width: 18rem;">
+				<img src="..." class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">Bubble Post</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					<a href="#" class="btn btn-primary">Go somewhere</a>
+				</div>
+			</div>
+
+            <div class="card ms-2 mb-3"style="width: 18rem;">
+				<img src="..." class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">Bubble Role</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					<a href="#" class="btn btn-primary">Go somewhere</a>
+				</div>
+			</div>
+
+            <div class="card ms-2 mb-3" style="width: 18rem;">
+				<img src="..." class="card-img-top" alt="...">
+				<div class="card-body">
+					<h5 class="card-title">Bubble User</h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+					<a href="#" class="btn btn-primary">Go somewhere</a>
+				</div>
+			</div>
+        </div>
+		</section>
+	</article>
 {% endblock %}

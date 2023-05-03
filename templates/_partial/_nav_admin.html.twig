@@ -28,15 +28,15 @@
 						<li class="nav-item">
 							<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
 						</li>
-						{% if is_granted() == "Utilisateur" %}
 							<li class="nav-item">
-								<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubble Actu</a>
+								<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
 							</li>
 							<li class="nav-item">
-								{% set user = current_user() %}
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.slug }}">Mes Bubble Comment</a>
+								<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
 							</li>
-						{% endif %}
+							<li class="nav-item">
+								<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/read">Rôle</a>
+							</li>
 					{% endif %}
 				</div>
 
