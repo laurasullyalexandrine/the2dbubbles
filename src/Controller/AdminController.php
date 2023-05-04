@@ -54,7 +54,7 @@ class AdminController extends CoreController
             }
         }
         // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
-        $this->show('/admin/read_comments', [
+        $this->show('/admin/comment/read', [
             'comments' => $comments
         ]);
     }
@@ -106,9 +106,7 @@ class AdminController extends CoreController
             } else {
                 $this->flashes('danger', "Ce Bubbles Comment n'existe pas!");
             }
-            // $this->show('/comment/read', [
-            //     'comment' => $comment
-            // ]);
+
         }
     }
 }

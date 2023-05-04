@@ -15,24 +15,10 @@
 		<div class="collapse navbar-collapse col-6" id="navbarColor01">
 			<ul class="navbar-nav me-auto">
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-					{# <li class="nav-item">
-						<a class="nav-link fs-5 fw-semibold" href="/security/logout" style="color:#38ada9 !important;">Bonjour
-							{{ current_user().pseudo }}
-							!</a>
-					</li> #}
 					{% if user() != null %}
 						<li class="nav-item">
 							<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
 						</li>
-						{# <li class="nav-item">
-							<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/read">Rôle</a> 
-						</li> #}
 					{% endif %}
 				</div>
 

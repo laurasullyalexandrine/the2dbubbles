@@ -12,7 +12,7 @@
 			{% for comment in comments %}
 				<div class="card m-1" style="width: 18rem;">
 					<div class="card-body">
-					 <h6 class="card-subtitle mb-2 text-muted">{{ comment.id }}</h6>
+					 <h6 class="card-subtitle mb-2 text-muted">Numéro {{ comment.id }}</h6>
 						<p class="card-text">{{ comment.content }}</p>
 						<div class="card-footer">
 							{% if is_granted() != "Utilisateur" %}
@@ -100,7 +100,7 @@
 					</div>
 						<button class="btn" type="submit">Modifier</button>
 						</form>
-						{{ include('admin/_delete_comment.html.twig') }}
+						{{ include('admin/comment/_delete.html.twig') }}
 				</div>
 			{% endfor %}
 
