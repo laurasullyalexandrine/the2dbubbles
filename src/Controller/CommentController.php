@@ -121,7 +121,6 @@ class CommentController extends CoreController
         } else {
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
-                $status = (int)filter_input(INPUT_POST, 'status');
         
                 if (empty($content)) {
                     $this->flashes('warning', 'Le champ contenu est vide.');
@@ -129,11 +128,11 @@ class CommentController extends CoreController
 
                 if (empty($flashes["message"])) {
                     $comment->setContent($content)
-                        ->setStatus($status);
+                        ->setStatus(2);
 
                     if ($comment->update()) {
                         header('Location: /comment/comment_user/'. $userCurrent->getSlug());
-                        $this->flashes('success', "Le Bubbles Comment a bien été modifié.");
+                        $this->flashes('success', "Le Bubbles Comment a bien été modifié. Il de nouveau en cours de validation.");
                         exit;
                     } else {
                         $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");

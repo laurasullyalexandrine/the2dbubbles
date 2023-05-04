@@ -13,7 +13,7 @@
 			</span>
 		</button>
 		<div class="collapse navbar-collapse col-6" id="navbarColor01">
-			<ul class="navbar-nav me-auto">
+			<ul class="navbar-nav me-auto text-center">
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
 					{% if user() != null %}
 
@@ -21,51 +21,50 @@
 							<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubble Actu</a>
+							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubbles Actualité</a>
 						</li>
 						{% if is_granted() == "Utilisateur" %}
 							<li class="nav-item">
-								{% set user = current_user() %}
+								{% set user = user() %}
 								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.slug }}">Mes Bubble Comment</a>
 							</li>
 						{% endif %}
 					{% endif %}
 				</div>
 				<div>
-					{% if is_granted() == "Super_admin" or is_granted() == "Administrateur" %}
-						<li class="nav-item">
-							<a class="nav-link me-xs-3 me-sm-3 mb-xs-3 mb-sm-3 {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
-						</li>
-					{% endif %}
-				</div>
 
-				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-					{% if user() == null %}
-						<li class="nav-item">
-							<a class="nav-link btn {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link btn {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
-						</li>
-					{% endif %}
-				</div>
-				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-					{% if user() != null %}
-						<li class="nav-item">
-							<a class="nav-link fs-5 " href="/security/logout" style="color:#38ada9 !important;">Bonjour
-								{{ current_user().pseudo }}!
-							</a>
-						</li>
-						<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
-							<a class="nav-link {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
-						</li>
+					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+						{% if user() == null %}
+							<li class="nav-item">
+								<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
+							</li>
+						{% endif %}
+					</div>
 
-					{% endif %}
-				</div>
-			</ul>
-		</nav>
-		<div class="d-flex w-100 justify-content-center col-ms-5 col-lg-5 col-xl-5 col-xxl-5" style="background-color:#000000 !important;">
-			<a href="/main/home">
-				<img src="/image/dev-php.png" alt="developpeur_web_fullstack">
-			</a>
-		</div>
+					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+						{% if user() != null %}
+							{% if is_granted() == "Super_admin" or is_granted() == "Administrateur" %}
+							 <li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="/admin/dashboard" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									Administration
+								</a>
+								<ul class="dropdown-menu" style="background-color:#000000 !important;">
+									<li><a class="dropdown-item text-light"  href="/admin/read_comments">Bubbles Comments</a></li>
+									<li><a class="dropdown-item text-light"href="/post/list">Bubbles Posts</a></li>
+									<li><a class="dropdown-item text-light" href="/role/read">Bubbles Roles</a></li>
+									<li><a class="dropdown-item text-light"  href="/user/read">Bubbles Users</a></li>
+								</ul>
+
+							{% endif %}
+							<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
+								<a class="nav-link {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
+							</li>
+						{% endif %}
+					</div>
+				</ul>
+				<img src="/image/dev-php.png" alt="picture-dev-php">
+	</nav>	
+

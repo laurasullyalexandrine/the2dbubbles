@@ -17,7 +17,7 @@ class RoleController extends CoreController
     public function read()
     {
         $roles = Role::findAll();
-        $this->show('role/read', [
+        $this->show('admin/role/read', [
             'roles' => $roles
         ]);
     }
@@ -52,20 +52,20 @@ class RoleController extends CoreController
 
                         if ($role->insert()) {
                             $this->flashes('success', 'Le rôle a bien été créé.');
-                            header('Location: /role/read');
+                            header('Location: /admin/role/read');
                             exit;
                         } else {
                             $this->flashes('danger', "Le rôle n'a pas été créé!");
                         }
                     } else {
                         $role->setName($role);
-                        $this->show('role/create', [
+                        $this->show('admin/role/create', [
                             'user' => $userCurrent
                         ]);
                     }
                 }
             }
-            $this->show('role/create', [
+            $this->show('admin/role/create', [
                 'role' => new role(),
             ]);
         }
@@ -102,7 +102,7 @@ class RoleController extends CoreController
                         ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
                     if ($role->update()) {
-                        header('Location: /role/read');
+                        header('Location: /admin/role/read');
                         $this->flashes('success', 'Le rôle a bien été modifié.');
                         exit;
                     } else {
@@ -111,7 +111,7 @@ class RoleController extends CoreController
                 } else {
                     $role->setName($roleName);
 
-                    $this->show('role/update', [
+                    $this->show('admin/role/update', [
                         'user' => $userCurrent
                     ]);
                 }
@@ -141,13 +141,13 @@ class RoleController extends CoreController
             if ($role) {
                 $role->delete();
                 $this->flashes('success', "Le rôle a bien été supprimé.");
-                header('Location: /role/read');
+                header('Location: /admin/role/read');
                 exit;
             } else {
                 $flashes = $this->flashes('danger', "Ce rôle n'existe pas!");
             }
 
-            $this->show('/role/read', [
+            $this->show('admin/role/read', [
                 'role' => $role,
             ]);
         }

@@ -37,7 +37,7 @@ $method = array_shift($params); // Permet de stocker le premier élément du tab
     // post->PostController
     // Reconstruction de nom de la classe 
     $controllerName = 'App\Controller\\'. ucfirst($controllerName).'Controller';
-    
+
     if (class_exists($controllerName)) {
         // Instancier bon contrôleur
         $controller = new $controllerName();

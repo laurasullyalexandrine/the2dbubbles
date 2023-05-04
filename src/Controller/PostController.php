@@ -85,12 +85,12 @@ class PostController extends CoreController
                     $post->setChapo($chapo);
                     $post->setContent($content);
 
-                    $this->show('/post/create', [
+                    $this->show('admin/post/create', [
                         'post' => $post
                     ]);
                 }
             }
-            $this->show('/post/create', [
+            $this->show('admin/post/create', [
                 'post' => $post
             ]);
         }
@@ -183,7 +183,7 @@ class PostController extends CoreController
                 } else {
                     $slug = $this->slugify($title);
 
-                    $this->show('post/update', [
+                    $this->show('admin/post/update', [
                         'post' => $post,
                         'flashes' => $flashes
                     ]);
@@ -191,7 +191,7 @@ class PostController extends CoreController
             }
         }
         // On affiche notre vue en transmettant les infos du post et des messages d'alerte
-        $this->show('/post/update', [
+        $this->show('admin/post/update', [
             'post' => $post,
         ]);
     }

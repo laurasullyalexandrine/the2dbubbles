@@ -23,15 +23,7 @@
 				</div>
 
 			
-					{% if is_granted() == "Super_admin" or is_granted() == "Administrateur" %}
-						<li class="nav-item">
-							<a class="nav-link me-xs-3 me-sm-3 mb-xs-3 mb-sm-3 {% block menu_read %} {% endblock %}"href="/admin/read">Bubbles Comments</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link me-xs-3 me-sm-3 mb-xs-3 mb-sm-3 {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
-						</li>
-	
-					{% endif %}
+
 	
 
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">

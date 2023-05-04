@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Role;
-use Exception;
 use Twig\Extension\DebugExtension;
-
 
 class CoreController
 {
@@ -38,19 +36,6 @@ class CoreController
         $twig->addFunction($isGranted);
 
         /**
-         * Permet d'avoir l'utilisateur connecté en permanence dans la surper globale $_SESSION
-         */
-        $curentUser = new \Twig\TwigFunction('current_user', function () {
-            $user = $this->userIsConnected();
-            if ($user) {
-                return $user;
-            } else {
-                throw new Exception('Aucun utilisateur connecté!');
-            }
-        });
-        $twig->addFunction($curentUser);
-
-        /**
          * Permet de savoir si il y a un user en session 
          */
         $user = new \Twig\TwigFunction('user', function () {
@@ -76,6 +61,13 @@ class CoreController
             return $flashes;
         });
         $twig->addFunction($displayFlashes);
+
+        $request_uri = new \Twig\TwigFunction('request_uri', function () {
+     
+            $serverRoad = $_SERVER["REQUEST_URI"];
+            return $serverRoad;
+        });
+        $twig->addFunction($request_uri);
 
         // Dynamiser l'affichage des modèles
         $template = $twig->load($viewName . '.html.twig');

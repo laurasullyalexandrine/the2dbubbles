@@ -1,11 +1,10 @@
-{% extends "/base_admin.html.twig" %}
+{% extends "/base.html.twig" %}
 
 {% block body %}
-	{% set user = current_user() %}
+	{% set user = user() %}
 	<article class="d-flex flex-column justify-content-center">
-		<section class="text-center mb-4">
-			<h1>Traitement des Bubbles Comments</h1>
-		</section>
+		<h1 class="text-center mb-4">Traitement des Bubbles Comments</h1>
+
 		<a class="btn mb-3" href="/admin/dashboard">Retour</a>
 
 		<section class="d-flex flex-wrap border border-dark-subtle border-2 rounded p-3">
@@ -103,17 +102,6 @@
 						{{ include('admin/comment/_delete.html.twig') }}
 				</div>
 			{% endfor %}
-
-
 		</section>
-
-		<div class="d-flex flex-xs-column flex-sm-column mb-4"></div>
-
-		<div class="col-md-6">
-			<textarea class="form-control" name="content" id="Content" rows="8" value="{{ comment.content }}">{{ comment.content }}</textarea>
-			<label for="Contenu" class="form-label h6">Contenu</label>
-		</div>
-
-
 	</article>
 {% endblock %}

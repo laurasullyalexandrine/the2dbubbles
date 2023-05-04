@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Models\Role;
 use App\Models\Comment;
 use App\Controller\CoreController;
+use App\Controller\ErrorController;
 
 class AdminController extends CoreController
 {
@@ -28,7 +29,7 @@ class AdminController extends CoreController
      * @param [type] $commentId
      * @return Comment
      */
-    public function read()
+    public function read_comments()
     {
         $comments = Comment::findAll();
         // Stocker le user en session
