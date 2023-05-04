@@ -156,12 +156,14 @@ class User extends CoreModel
         $sql = "
             INSERT INTO user (
                 pseudo,
+                slug,
                 email,
                 password,
                 roles
             )
             VALUES (
                 :pseudo,
+                :slug,
                 :email,
                 :password,
                 :roles
@@ -173,6 +175,7 @@ class User extends CoreModel
         $pdoStatement = $pdoDBConnexion->prepare($sql);
             $pdoStatement->execute([
                 'pseudo' => $this->pseudo,
+                'slug' => $this->slug,
                 'email' => $this->email,
                 'password' => $this->password,
                 'roles' => $this->roles,

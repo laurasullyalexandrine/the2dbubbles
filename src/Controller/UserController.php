@@ -21,7 +21,7 @@ class UserController extends CoreController
     public function read()
     {
         $users = User::findAll();
-        $this->show('user/read', [
+        $this->show('admin/user/read', [
             'users' => $users
         ]);
     }
@@ -129,7 +129,7 @@ class UserController extends CoreController
                     }
                 }
             }
-            $this->show('user/create', [
+            $this->show('admin/user/create', [
                 'user' => $user,
                 'roles' => $roles
             ]);
@@ -194,6 +194,7 @@ class UserController extends CoreController
                     $user->setSlug($slug)
                         ->setPassword($password);
                     if ($user->update()) {
+                        $this->flashes('success', 'Le Bubbles User'. ' ' . $user->getPseudo(). ' ' . 'a bien été modifié.');
                         header('Location: /user/read');
                         exit;
                     } else {
@@ -205,7 +206,7 @@ class UserController extends CoreController
                     $user->setRoles((int)filter_input(INPUT_POST, 'role'));
                 }
             }
-            $this->show('/user/update', [
+            $this->show('admin/user/update', [
                 'user' => $user,
                 'role_current_user' => $updatedRole,
                 'role_name_user' => $updatedRoleName,
@@ -233,13 +234,13 @@ class UserController extends CoreController
         } else {
             if ($user) {
                 $user->delete();
-                $this->flashes('success', "L'utilisateur a bien été supprimé.");
+                $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été supprimé!');
                 header('Location: /user/read');
             } else {
-                $this->flashes('danger', "L'utilisateur n'existe pas!");
+                $this->flashes('danger', "Ce Bubbles User n'existe pas!");
             }
 
-            $this->show('/user/read', [
+            $this->show('/admin/user/read', [
                 'user' => $user
             ]);
         }

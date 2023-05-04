@@ -5,9 +5,12 @@
 {% endblock %}
 
 {% block body %}
-	<article class="row" style="background-color:pink;">
-		<h1 class="text-center mb-5">Nouveau bubbleuser!</h1>
-		<form action="create" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4" style="background-color:grey;">
+	<article class="d-flex flex-column justify-content-center">
+		<h1 class="text-center mb-5">Modifier bubble User {{ user.pseudo }} !</h1>
+		<a class="btn mb-4" href="/user/read">Retour</a>
+
+		<div class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
+		<form action="/user/update/{{ user.id }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
 			<section class="col-lg-6 col-xl-6 col-xxl-6 col-xs-12 col-sm-12">
 				<div class="my-3">
 					{% for role in roles %}
@@ -27,7 +30,7 @@
 				</div>
 			</section>
 
-			<section class="col-lg-6 col-xl-6 col-xxl-6 col-xs-12 col-sm-12 d-flex flex-wrap justify-content-between">
+			<section class="">
 				<div class="d-flex flex-row align-items-center mb-4">
 					<div class="form-outline flex-fill mb-0">
 						<input type="text" name="pseudo" id="Pseudo" class="form-control" value="{{ user.pseudo }}"/>
@@ -43,7 +46,7 @@
 				</div>
 			</section>
 
-			<section class="col-lg-6 col-xl-6 col-xxl-6 col-xs-12 col-sm-12 d-flex flex-wrap justify-content-between">
+			<section>
 				<div class="d-flex flex-row align-items-center mb-4">
 					<div class="form-outline flex-fill mb-0">
 						<input type="password" name="password_1" id="password_1" class="form-control"/>
@@ -63,5 +66,6 @@
 				<button type="submit" class="btn">Modifier</button>
 			</div>
 		</form>
+		</div>
 	</article>
 {% endblock %}
