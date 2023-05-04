@@ -207,6 +207,7 @@ class PostController extends CoreController
         $post = Post::findBySlug($slug);
 
         $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
@@ -215,15 +216,15 @@ class PostController extends CoreController
             $error403->accessDenied(); 
         } else {
             if ($post) {
-                $this->flashes('success', "L'article a bien été supprimé.");
                 $post->delete();
+                $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
                 header('Location: /post/list');
                 exit;
             } else {
                 $this->flashes('danger', "Cet article n'existe pas!");
             }
         }
-        $this->show('/post/read', [
+        $this->show('/admin/post/read', [
             'post' => $post
         ]);
     }

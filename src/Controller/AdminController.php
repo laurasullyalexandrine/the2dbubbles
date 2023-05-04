@@ -29,7 +29,7 @@ class AdminController extends CoreController
      * @param [type] $commentId
      * @return Comment
      */
-    public function read_comments()
+    public function comments()
     {
         $comments = Comment::findAll();
         // Stocker le user en session
@@ -102,7 +102,7 @@ class AdminController extends CoreController
             if ($comment) {
                 $comment->delete();
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été supprimé.");
-                header('Location: /admin/read');
+                header('Location: /admin/comments');
                 exit;
             } else {
                 $this->flashes('danger', "Ce Bubbles Comment n'existe pas!");

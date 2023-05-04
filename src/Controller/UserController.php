@@ -226,6 +226,7 @@ class UserController extends CoreController
         $user = User::findById($userId);
 
         $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "Super_admin") {
@@ -234,8 +235,9 @@ class UserController extends CoreController
         } else {
             if ($user) {
                 $user->delete();
-                $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été supprimé!');
+                $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été supprimé.');
                 header('Location: /user/read');
+                exit;
             } else {
                 $this->flashes('danger', "Ce Bubbles User n'existe pas!");
             }

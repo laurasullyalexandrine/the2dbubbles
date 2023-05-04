@@ -17,19 +17,20 @@
                         <p class="card-text">{{ user.email }}</p>
                         
                         {% if role is empty %}
-                            <p class="card-text">aucun Bubble Role attribué</p>
+                            <p class="card-text">aucun Bubbles Role attribué</p>
                         {% else %}
                              <p class="card-text">{{ role }}</p>
                         {% endif %}
+
                        <div class="d-flex">
-                            <a class="btn me-3" href="/user/update/{{ user.id }}">Modifier</a>
+							<a class="btn me-3" href="/user/update/{{ user.id }}">Modifier</a>
                             {{ include('admin/user/_delete.html.twig') }}
                        </div>
                     </div>
                 </div>
             {% endfor %}
         </section>
-        <a class="btn my-4" href="/user/create">Nouveau Bubble User</a>
+        <a class="btn my-4" href="/user/create">Nouveau Bubbles User</a>
     </article>
 
 {% endblock %}

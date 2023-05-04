@@ -30,10 +30,11 @@ class RoleController extends CoreController
     public function create()
     {
         $role = new Role();
-
-        if (!$this->userIsConnected()) {
+        $userCurrent = $this->userIsConnected();
+        $currentUserRole = Role::findById($userCurrent->getRoles());
+        if (!$userCurrent) {
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
@@ -52,7 +53,7 @@ class RoleController extends CoreController
 
                         if ($role->insert()) {
                             $this->flashes('success', 'Le rôle a bien été créé.');
-                            header('Location: /admin/role/read');
+                            header('Location: /role/read');
                             exit;
                         } else {
                             $this->flashes('danger', "Le rôle n'a pas été créé!");
@@ -65,7 +66,7 @@ class RoleController extends CoreController
                     }
                 }
             }
-            $this->show('admin/role/create', [
+            $this->show('/admin/role/create', [
                 'role' => new role(),
             ]);
         }
@@ -81,11 +82,13 @@ class RoleController extends CoreController
     {
         $role = role::findById($roleId);
 
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getRoles() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
-            $error403->accessDenied(); 
+            $error403->accessDenied();
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
@@ -102,7 +105,7 @@ class RoleController extends CoreController
                         ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
                     if ($role->update()) {
-                        header('Location: /admin/role/read');
+                        header('Location: /role/read');
                         $this->flashes('success', 'Le rôle a bien été modifié.');
                         exit;
                     } else {
@@ -117,7 +120,7 @@ class RoleController extends CoreController
                 }
             }
         }
-        $this->show('/role/update', [
+        $this->show('/admin/role/update', [
             'role' => $role
         ]);
     }
@@ -130,21 +133,23 @@ class RoleController extends CoreController
      */
     public function delete(int $roleId)
     {
+        $role = Role::findById($roleId);
+
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
-        } elseif ($this->userIsConnected()->getRoles() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "Super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
-            $role = Role::findById($roleId);
-
             if ($role) {
                 $role->delete();
-                $this->flashes('success', "Le rôle a bien été supprimé.");
-                header('Location: /admin/role/read');
+                $this->flashes('success', 'Le Bubbles Role' . ' ' . $role->getName() . ' ' . 'a bien été supprimé.');
+                header('Location: /role/read');
                 exit;
             } else {
-                $flashes = $this->flashes('danger', "Ce rôle n'existe pas!");
+                $this->flashes('danger', "Ce Bubbles Role n'existe pas!");
             }
 
             $this->show('admin/role/read', [

@@ -48,11 +48,12 @@
 						{% if user() != null %}
 							{% if is_granted() == "Super_admin" or is_granted() == "Administrateur" %}
 							 <li class="nav-item dropdown">
-								<a class="nav-link dropdown-toggle" href="/admin/dashboard" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-									Administration
+							 <a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Administration</a>
+								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								
 								</a>
-								<ul class="dropdown-menu" style="background-color:#000000 !important;">
-									<li><a class="dropdown-item text-light"  href="/admin/read_comments">Bubbles Comments</a></li>
+								<ul class="dropdown-menu text-center" style="background-color:#000000 !important;">
+									<li><a class="dropdown-item text-light"  href="/admin/comments">Bubbles Comments</a></li>
 									<li><a class="dropdown-item text-light"href="/post/list">Bubbles Posts</a></li>
 									<li><a class="dropdown-item text-light" href="/role/read">Bubbles Roles</a></li>
 									<li><a class="dropdown-item text-light"  href="/user/read">Bubbles Users</a></li>

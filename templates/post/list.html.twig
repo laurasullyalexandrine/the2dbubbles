@@ -7,9 +7,6 @@
 		<h1 class="text-center">
 			Bubbles Posts
 			<br>
-			{% if is_granted() == "Super_admin" %}
-				<a class="btn ms-lg-5 ms-xl-5 ms-xxl-5 my-3" href="/post/create">Nouveau Bubble Post</a>
-			{% endif %}
 		</h1>
 		<a class="btn mb-5" href="/main/home">Retour</a>
 		<section class="d-flex flex-wrap border border-2 border-dark-subtle rounded p-4">
@@ -21,14 +18,15 @@
 						<p class="card-text">{{ post.content }}</p>
 						<ul class="list-group fst-italic">
 							<li class="list-group-item">
-								Auteur : {{user}}
-							</li> 
+								Auteur :
+								{{user}}
+							</li>
 							<br>
 							<li class="list-group-item">
 								Publié le :
 								<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
 								<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
-							</li> 
+							</li>
 						</ul>
 
 					</div>
@@ -44,5 +42,8 @@
 				</div>
 			{% endfor %}
 		</section>
+		{% if is_granted() == "Super_admin" %}
+			<a class="btn my-4" href="/post/create">Nouveau Bubble Post</a>
+		{% endif %}
 	</article>
 {% endblock %}
