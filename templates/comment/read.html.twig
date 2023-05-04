@@ -3,29 +3,41 @@
 {% block body %}
 	<article class="d-flex flex-column justify-content-center">
 		<div class="text-center mb-4">
-			<h1>Bienvenue dans ton <span class="marker">Bubble Space</span></h1>
-			<h6>C'est ici que tu peux gérer tes <span class="marker">Bubble Comment</span>.</h6>
+			<h1>Bienvenue dans ton
+				<span class="marker">Bubble Space</span>
+			</h1>
+			<h6>C'est ici que tu peux gérer tes
+				<span class="marker">Bubble Comment</span>.</h6>
 		</div>
-			{% if comments|length == 0 %}
+		{% if comments|length == 0 %}
 			<div class="d-flex flex-column text-center my-5">
-			<p class="fs-6">Tu n'as pas encore de <span class="marker">Bubble Comment</span>!</p>
-			<p class="fs-5">A toi de jouer!</p>
+				<p class="fs-6">Tu n'as pas encore de
+					<span class="marker">Bubble Comment</span>!</p>
+				<p class="fs-5">A toi de jouer!</p>
 			</div>
-			{% else %}
-		<section class="d-flex flex-wrap">
+		{% else %}
+			<section class="d-flex flex-wrap border rounded p-3">
 				{% for comment in comments %}
 					<div class="card mb-3" style="width: 20rem; min-height: 12rem;">
 						<div class="card-body">
-							<p class="card-text fw-bold">Bubble Comment :
-								<br>
-								{{ comment.content }}
+
+							<h6 class="card-title text-center">
 								{% if comment.status == 1 %}
+									Bubble Comment validé 
 									<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 								{% elseif comment.status == 2 %}
+								Bubble Comment en attente 
 									<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 								{% elseif comment.status == 0 %}
+								Bubble Comment rejeté 
 									<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 								{% endif %}
+
+							</h6>
+							<p class="card-text fw-bold">
+								<br>
+								{{ comment.content }}
+
 							</p>
 							<h6 class="card-subtitle mb-2 text-muted">
 								Titre article :
@@ -38,7 +50,7 @@
 								<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
 								<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
 							</h6>
-							<div class="d-flex justify-content-center">
+							<div class="d-flex justify-content-center mt-4">
 								<a class="btn me-3" href="/comment/update/{{ comment.id }}" class="card-link">Modifier</a>
 								{{ include('comment/_delete.html.twig') }}
 							</div>

@@ -1,55 +1,79 @@
 {% extends "/base.html.twig" %}
-{% block menu_post %} active {% endblock %}
+{% block menu_post %}
+	active
+{% endblock %}
 
 {% block body %}
-    <article class="row">
-        <section class="col-6" style="background-color:pink">
-            <div class="d-flex justify-content-between my-3">
-                <h1>{{ post.title }}<a class="btn ms-5" href="/post/list">Retour</a></h1>
-            </div>
-            <h2>{{ post.chapo }}</h2> 
-                <p class="fst-italic"> Publié le
-                <time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
-                <time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
-            </p>
-                <p class="text-justify">{{ post.content }}</p>
-                <p class="fw-bolder">Auteur : {{post.user}}</p>
-                <p> <span class="fw-bolder">Modifié le : </span>
-                    <time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
-                    <time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
-                </p>
-            
-            <div class="d-flex">
-                {% if is_granted() == "Super_admin" %}
-                    <a class="btn" href="/post/update/{{ post.slug }}">Modifier</a>
-                    {{ include('post/_delete.html.twig') }}
-                {% endif %}
-            </div>
-        </section>
+	<article class="row">
+		<a class="btn mb-5" href="/post/list">Retour</a>
 
-        {# Formulaire d'ajout de commenatire #}
-        <section class="col-6" style="background-color:grey">
-            {{ include('comment/create.html.twig') }}
-        </section>
+		<section class="col-5 p-3 text-light rounded" style="background-color:#4b6584;">
+			<h1 class="text-center">{{ post.title }}</h1>
+			<h2 class="fs-5">{{ post.chapo }}</h2>
+			<p class="fst-italic">
+				Publié le
+				<time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
+				<time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
+			</p>
+			<p class="text-justify">{{ post.content }}</p>
+			<p class="fst-italic">Auteur :
+				{{post.user}}</p>
+			{% if post.updatedAt != null %}
+				<p>
+					<span class="st-italic">Modifié le :
+					</span>
+					<time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
+					<time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
+				{% endif %}
+			</p>
 
-        {# Liste des commentaires déjà postés et validés #}
-        <section class="py-3" style="background-color:orange">
-        <h2>Bubble Comments</h2> 
-            {% if comments is empty %}
-                <p>Cet article n'a pas encore de Bubble Comment. <br>
-                A ton clavier 😄</p>
-            {% else %}
-                {% for commentCheck in commentsCheck %}
-                    <p class="text-justify fs-5 pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }} <br>
-                    Publié par <span class="fw-bolder">{{ commentCheck.user }}</span> le
-                    <time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
-                    <time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
-                    {% if commentCheck.status == 1 %}
-                        Bubble Comment Validé <i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-                    {% endif %}
-                </p>
-                {% endfor %}
-            {% endif %}
-        </section>
-</article>
+			<div class="d-flex justify-content-center">
+				{% if is_granted() == "Super_admin" %}
+					<a class="btn me-1" href="/post/update/{{ post.slug }}">Modifier</a>
+					{{ include('post/_delete.html.twig') }}
+				{% endif %}
+			</div>
+		</section>
+
+		{# Formulaire d'ajout de commentaire #}
+		<section class="col-7 h-100">
+			{{ include('comment/create.html.twig') }}
+		</section>
+
+		{# Liste des commentaires déjà postés et validés #}
+		<section class="py-5">
+			<h2>Bubble Comments</h2>
+			<div>
+			    {% if comments is empty %}
+				    <p>Cet article n'a pas encore de Bubble Comment.
+					    <br>
+					    A ton clavier 😄</p>
+			    {% elseif commentsCheck == 0 %}
+				    <p>Cet article n'a pas encore de Bubble Comment validé!
+					    <br>
+                    </p>
+			    {% else %}
+					{% for commentCheck in commentsCheck %}
+						<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}
+							<br><br>
+							Publié par
+							<span class="fw-bolder">{{ commentCheck.user }}</span>
+							le
+							<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
+							<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
+							<br>
+							{% if commentCheck.status == 1 %}
+								Bubble Comment Validé
+								<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+							{% endif %}
+						</p>
+
+						{% if is_granted() == "Administrateur" or is_granted() == "Super_admin" %}
+							<a class="btn" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</section>
+	</article>
 {% endblock %}

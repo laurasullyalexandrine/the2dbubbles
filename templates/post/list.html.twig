@@ -3,58 +3,48 @@
 	active
 {% endblock %}
 {% block body %}
-	<div class="d-flex justify-content-between my-3">
-		<h1>Liste des articles
-			<a class="btn" href="/main/home">Retour</a>
+	<article class="row">
+		<h1 class="text-center">
+			Bubble Post
+			<br>
+			{% if is_granted() == "Super_admin" %}
+				<a class="btn ms-lg-5 ms-xl-5 ms-xxl-5 my-3" href="/post/create">Nouveau Bubble Post</a>
+			{% endif %}
 		</h1>
-	</div>
-
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Titre</th>
-				<th>Contenu</th>
-				<th>Auteur</th>
-				<th>Publié le</th>
-				<th>Modifié le</th>
-				<th>Action</th>
-			</tr>
-		</thead>
-		<tbody>
+		<a class="btn mb-5" href="/main/home">Retour</a>
+		<section class="d-flex flex-wrap justify-content-center border border-2 border-dark-subtle rounded p-4">
 			{% for post in posts %}
 				{% set user = post.user %}
-				<tr>
-					<td>{{ post.title }}</td>
-					<td class="w-25">{{ post.content }}</td>
-					<td>{{ user }}</td>
-					<td>
-						<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
-						<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
-					</td>
-					<td>
-						<time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
-						<time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
-					</td>
-					<td class="d-flex flex-column">
-						<a class="btn mx-4 my-4" href="/post/read/{{post.slug}}">voir</a>
-						{% if is_granted() == "Super_admin" %}
-							<a class="btn mx-4 my-4" href="/post/update/{{post.slug}}">edit</a>
-							{{ include('post/_delete.html.twig') }}
+				<div class="card m-1" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">{{ post.title }}</h5>
+						<p class="card-text">{{ post.content }}</p>
+						<ul class="list-group fst-italic">
+							<li class="list-group-item">
+								Auteur : {{user}}
+							</li> 
+							<br>
+							<li class="list-group-item">
+								Publié le :
+								<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
+								<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+							</li> 
+						</ul>
+
+					</div>
+					<div class="card-footer fst-italic text-light py-3" style="background-color:#4b6584;">
+
+
+						<div class="d-flex justify-content-center my-3">
+							<a class="btn me-2" href="/post/read/{{ post.slug }}">voir</a>
+							{% if is_granted() == "Super_admin" %}
+								<a class="btn" href="/post/update/{{post.slug}}">modifier</a>
+								{{ include('post/_delete.html.twig') }}
+							</div>
 						{% endif %}
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="5">Aucun enregistrement trouvé</td>
-				</tr>
+					</div>
+				</div>
 			{% endfor %}
-		</tbody>
-	</table>
-
-	<div>
-		{% if is_granted() == "Super_admin" %}
-			<a class="btn mb-5" href="/post/create">Ajouter un Bubble Post !</a>
-		{% endif %}
-	</div>
-
+		</section>
+	</article>
 {% endblock %}

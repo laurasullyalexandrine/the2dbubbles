@@ -4,103 +4,21 @@
 	{% set user = current_user() %}
 	<article class="d-flex flex-column justify-content-center">
 		<section class="text-center mb-4">
-			<h1>Modifie ton Bubble Comment</h1>
-			<h6>Tu veux revoir ta copie ? C'est ici que ça se passe 😉</h6>
+			<h1>Modifies ton Bubble Comment</h1>
+			<h6>Tu veux revoir ta copie ? C'est ici que ça se passe! 😉</h6>
 		</section>
 		<a class="btn" href="/comment/comment_user/{{ user.slug }}">Retour</a>
-	
+		{# TODO: Mettre la div border #}
 		<form action="/comment/update/{{ comment.id }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
-			<div class="d-flex flex-xs-column flex-sm-column mb-4">
-				<p class="h6">Status</p>
-				{% if is_granted() != "Utilisateur" %}
-				{# Status Validé #}
-					{% if comment.status == 1 %}
-						<div class="form-check">
-							<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-							<label class="form-check-label" for="status">
-								Bubble Comment Validé &ensp;
-							</label>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="1" checked>
-						</div>
+			<div class="col-md-6">
+				<textarea class="form-control" name="content" id="Content" rows="8" value="{{ comment.content }}">{{ comment.content }}</textarea>
+				<label for="Contenu" class="form-label h6">Contenu</label>
+			</div>
 
-						<div class="form-check">
-							<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
-							<label class="form-check-label" for="status">
-								Bubble Comment En attente
-							</label>
-						</div>
+			<div class="col-12">
+				<button class="btn" type="submit">Modifier</button>
+			</div>
+		</form>
 
-						<div class="form-check">
-							<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
-							<label class="form-check-label" for="status">
-								Bubble Comment Rejeté
-							</label>
-						</div>
-				{# Status en attente #}
-					{% elseif  comment.status == 2 %}
-						<div class="form-check">
-						<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-							<label class="form-check-label" for="status">
-								Bubble Comment Validé &ensp;
-							</label>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
-						</div>
-
-						<div class="form-check">
-						<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="2" checked>
-							<label class="form-check-label" for="status">
-								Bubble Comment En attente
-							</label>
-						</div>
-
-						<div class="form-check">
-						<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
-							<label class="form-check-label" for="status">
-								Bubble Comment Rejeté
-							</label>
-						</div>
-
-					{# Status rejété #}
-				{% elseif comment.status == 0 %}
-						<div class="form-check">
-							<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-							<label class="form-check-label" for="status">
-								Bubble Comment Validé &ensp;
-							</label>
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
-						</div>
-
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
-							<label class="form-check-label" for="status">
-								Bubble Comment En attente
-								<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
-							</label>
-						</div>
-
-						<div class="form-check">
-							<input class="form-check-input" type="checkbox" name="status" id="status" value="0" checked>
-							<label class="form-check-label" for="status">
-								Bubble Comment Rejeté
-								<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
-							</label>
-						</div>
-				{% endif %}
-			{% endif %}
-		</div>
-
-		<div class="col-md-6">
-			<textarea class="form-control" name="content" id="Content" rows="8" value="{{ comment.content }}">{{ comment.content }}</textarea>
-			<label for="Contenu" class="form-label h6">Contenu</label>
-		</div>
-
-		<div class="col-12">
-			<button class="btn" type="submit">Modifier</button>
-		</div>
-	</form>
-
-</article>{% endblock %}
+	</article>
+{% endblock %}

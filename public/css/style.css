@@ -4,28 +4,47 @@
     background-color: #ffffff !important;
     font-family: 'Instrument' sans-serif !important;
 }
-.btn,
-.btn-grey, 
-.btn {
-    color: #ffffff;
-    text-align: center;
+
+.green {
+    color: #ffffff !important;
+    text-align: center !important;
     border: 0 !important; 
     cursor: pointer !important;
     padding: 5px 15px !important;
-    border-radius: 3px;
+    border-radius: 3px !important;
+}
+
+.btn {
+    color: #ffffff !important;
+    text-align: center !important;
+    border: 0 !important; 
+    cursor: pointer !important;
+    padding: 5px 15px !important;
+    border-radius: 3px !important;
 }
 
 .btn {
     background-color: #38ada9 !important;
 }
 
-.btn-grey {
-    background-color: #4b6584;
+.green {
+    background-color: #78e08f !important;
 }
 
 .marker {
     color: #38ada9 
 }
+
+.card-link {
+    text-decoration: none !important;
+    color: #000000 !important;
+    /* margin-top: 15px; */
+    padding: 5px 15px !important;
+}
+ .card-link :hover {
+    color: #4b6584 !important;
+}
+
 
 /*------ NAVBAR FOOTER ------*/
 

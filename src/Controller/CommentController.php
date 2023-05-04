@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Post;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Comment;
 
@@ -57,7 +58,7 @@ class CommentController extends CoreController
                     $comment->setContent(filter_input(INPUT_POST, $content));
                 }
             }
-            $this->show('/Comment/create', [
+            $this->show('/comment/create', [
                 'Comment' => new Comment(),
                 'user' => $userCurrent,
                 'post' => $post
@@ -99,30 +100,31 @@ class CommentController extends CoreController
     {
         $comment = Comment::findById($commentId);
 
+        // Stocker le user en session
+        $userCurrent = $this->userIsConnected();
+
+        // Récupérer le role du user en session
+        $roleId = $userCurrent->getRoles();
+        $role = Role::findById($roleId);
+
         // Récupérer l'id de lauteur du commentaire
         $idAuthorComment = $comment->getUsers();
 
         // Vérifier qu'il y a bien un user connecté
-        if (!$this->userIsConnected()) {
+        if (!$userCurrent) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getId() !== $idAuthorComment) {
+        } elseif($userCurrent->getId() !== $idAuthorComment) {
             // Si le user connecté n'est pas l'auteur du commentaire
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
-            // Stocker le user connecté
-            $userCurrent = $this->userIsConnected();
-
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
                 $status = (int)filter_input(INPUT_POST, 'status');
         
                 if (empty($content)) {
                     $this->flashes('warning', 'Le champ contenu est vide.');
-                }
-                if (empty($status)) {
-                    $this->flashes('warning', 'Choisir un status.');
                 }
 
                 if (empty($flashes["message"])) {
@@ -131,16 +133,16 @@ class CommentController extends CoreController
 
                     if ($comment->update()) {
                         header('Location: /comment/comment_user/'. $userCurrent->getSlug());
-                        $this->flashes('success', "Le commentaire a bien été modifié.");
+                        $this->flashes('success', "Le Bubbles Comment a bien été modifié.");
                         exit;
                     } else {
-                        $this->flashes('danger', "L'article n'a pas été modifié!");
+                        $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");
                     }
                 }
             }
         }
         // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
-        $this->show('/Comment/update', [
+        $this->show('/comment/update', [
             'comment' => $comment
         ]);
     }

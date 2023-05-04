@@ -14,39 +14,39 @@
 		</button>
 		<div class="collapse navbar-collapse col-6" id="navbarColor01">
 			<ul class="navbar-nav me-auto">
-				{% if user() != null %}
-					<li class="nav-item">
+				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+					{# <li class="nav-item">
 						<a class="nav-link fs-5 fw-semibold" href="/security/logout" style="color:#38ada9 !important;">Bonjour
 							{{ current_user().pseudo }}
 							!</a>
-					</li>
-				{% endif %}
-			</ul>
-			<ul class="navbar-nav me-auto">
-				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+					</li> #}
 					{% if user() != null %}
 						<li class="nav-item">
 							<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
 						</li>
-							<li class="nav-item">
-								<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/read">Rôle</a>
-							</li>
+						{# <li class="nav-item">
+							<a class="nav-link {% block menu_post %} {% endblock %}" href="/post/list">Article</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% block menu_user %} {% endblock %}" href="/user/read">Utilisateur</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% block menu_role %} {% endblock %}" href="/role/read">Rôle</a> 
+						</li> #}
 					{% endif %}
 				</div>
 
-				<div>
+			
 					{% if is_granted() == "Super_admin" or is_granted() == "Administrateur" %}
+						<li class="nav-item">
+							<a class="nav-link me-xs-3 me-sm-3 mb-xs-3 mb-sm-3 {% block menu_read %} {% endblock %}"href="/admin/read">Bubbles Comments</a>
+						</li>
 						<li class="nav-item">
 							<a class="nav-link me-xs-3 me-sm-3 mb-xs-3 mb-sm-3 {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Adminstration</a>
 						</li>
+	
 					{% endif %}
-				</div>
+	
 
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
 					{% if user() == null %}
@@ -58,8 +58,6 @@
 						</li>
 					{% endif %}
 				</div>
-			</ul>
-			<ul class="navbar-nav me-auto">
 				{% if user() != null %}
 					<li class="nav-item">
 						<a class="nav-link btn {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>

@@ -1,0 +1,119 @@
+{% extends "/base_admin.html.twig" %}
+
+{% block body %}
+	{% set user = current_user() %}
+	<article class="d-flex flex-column justify-content-center">
+		<section class="text-center mb-4">
+			<h1>Traitement des Bubbles Comments</h1>
+		</section>
+		<a class="btn mb-3" href="/admin/dashboard">Retour</a>
+
+		<section class="d-flex flex-wrap border border-dark-subtle border-2 rounded p-3">
+			{% for comment in comments %}
+				<div class="card m-1" style="width: 18rem;">
+					<div class="card-body">
+					 <h6 class="card-subtitle mb-2 text-muted">{{ comment.id }}</h6>
+						<p class="card-text">{{ comment.content }}</p>
+						<div class="card-footer">
+							{% if is_granted() != "Utilisateur" %}
+								<p class="h6">Status Bubbles Comment</p>
+								{# Status Validé #}
+								<form action="/admin/update/{{ comment.id }}" method="post">
+									{% if comment.status == 1 %}
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+												<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+												Validé
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="1" checked>
+										</div>
+
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+												<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
+												En attente
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
+										</div>
+
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+												<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
+												Rejeté
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
+										</div>
+										{# Status en attente #}
+									{% elseif  comment.status == 2 %}
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+											<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+												Validé &ensp;
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
+										</div>
+
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+											<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
+												En attente
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="2" checked>
+										</div>
+
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+											<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
+												Rejeté
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
+										</div>
+
+										{# Status rejété #}
+									{% elseif comment.status == 0 %}
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+											<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+												Validé &ensp;
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
+										</div>
+
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+												<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
+												En attente
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
+										</div>
+
+										<div class="form-check">
+											<label class="form-check-label" for="status">
+												<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
+												Rejeté
+											</label>
+											<input class="form-check-input" type="checkbox" name="status" id="status" value="0" checked>
+										</div>
+									{% endif %}
+								{% endif %}
+						</div>
+					</div>
+						<button class="btn" type="submit">Modifier</button>
+						</form>
+						{{ include('admin/_delete_comment.html.twig') }}
+				</div>
+			{% endfor %}
+
+
+		</section>
+
+		<div class="d-flex flex-xs-column flex-sm-column mb-4"></div>
+
+		<div class="col-md-6">
+			<textarea class="form-control" name="content" id="Content" rows="8" value="{{ comment.content }}">{{ comment.content }}</textarea>
+			<label for="Contenu" class="form-label h6">Contenu</label>
+		</div>
+
+
+	</article>
+{% endblock %}

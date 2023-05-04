@@ -29,6 +29,24 @@ class Comment extends CoreModel
      */
     private $posts;
 
+
+    public static function findAll() 
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            SELECT *
+            FROM comment
+            "
+        ;
+        
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->execute();
+        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+
+        return $comments;
+    }
+
     /**
      *  Méthode permettant de récupérer un enregistrement de la table Comment en fonction d'un id donné
      *
