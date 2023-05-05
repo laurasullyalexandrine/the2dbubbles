@@ -71,7 +71,7 @@ class AdminController extends CoreController
 
                 if ($comment->update()) {
                     $this->flashes('success', "Le commentaire $commentId a bien été modifié.");
-                    header('Location: /admin/comment/read');
+                    header('Location: /admin/comments');
                     exit;
                 } else {
                     $this->flashes('danger', "L'article n'a pas été modifié!");
@@ -94,10 +94,10 @@ class AdminController extends CoreController
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "Super_admin" || $currentUserRole->getName() !== "Admin") {
+        } elseif ($currentUserRole->getName() === "Utilisateur") {
             $error403 = new ErrorController;
             $error403->accessDenied();
-        } else {
+        }  else {
             if ($comment) {
                 $comment->delete();
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été supprimé.");
