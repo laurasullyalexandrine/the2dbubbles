@@ -1,0 +1,56 @@
+{% extends "/base.html.twig" %}
+{% block menu_contact %}
+	active
+{% endblock %}
+
+{% block body %}
+	<article class="d-flex flex-column">
+		<div class="text-center mb-4">
+			<h1>Contact-nous</h1>
+			<h5>Un bug, une question, une suggestion...
+				<span class="marker">On est à ton écoute</span>.</h5>
+		</div>
+		{% set user = user() %}
+		{# <section class="d-flex flex-column border rounded p-3"> #}
+		<section class="d-flex justify-content-center border border-dark-subtle border-2 rounded p-3">
+			<form action="/contact/message_send" method="post">
+			<div class="d-flex my-4">
+				<div class="form-check">
+					<label class="form-check-label me-3" for="Subject">
+						<i class="fas fa-solid fa-bug fa-lg" style="color: #8554C5;"></i>
+						Bug
+					</label>
+					<input class="form-check-input" type="checkbox" name="subject" id="Subject" value="bug">
+				</div>
+				<div class="form-check">
+					<label class="form-check-label me-3"for="Subject">
+					<i class="fa-solid fa-question" style="color: #8554C5;"></i>
+						{# <i class="fas fa-solid fa-bug fa-lg" style="color: #8554C5;"></i> #}
+						Question
+					</label>
+					<input class="form-check-input" type="checkbox" name="subject" id="Subject" value="question">
+				</div>
+				<div class="form-check">
+					<label class="form-check-label me-3" for="Subject">
+						<i class="fa-regular fa-lightbulb fa-lg" style="color: #8554C5;"></i>
+						Suggestion
+					</label>
+					<input class="form-check-input" type="checkbox" name="subject" id="Subject" value="suggesion">
+				</div>
+			
+			</div>
+				<input type="text" name="pseudo" id="Pseudo" value="{{ user.pseudo }}" class="form-control border border-2">
+				<label for="Pseudo" class="form-label h6">Prénom/Pseudo</label>
+
+				<input type="email" name="email" id="Email" value="{{ user.email }}" class="form-control border border-2">
+				<label for="Email" class="form-label h6">Email</label>
+
+				<textarea class="form-control border border-2" name="message" id="Message" rows="8"></textarea>
+				<label for="Message" class="form-label h6">Message</label>
+				<br>
+				<button class="btn my-4" type="submit">Envoyer</button>
+			</form>
+		</section>
+		{# </section> #}
+	</article>
+{% endblock %}

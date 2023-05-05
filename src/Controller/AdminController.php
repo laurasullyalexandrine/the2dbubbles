@@ -51,7 +51,7 @@ class AdminController extends CoreController
             $error403->accessDenied();
         } else {
             if ($this->isPost()) {
-               $this->update($commentId);
+                $this->update($commentId);
             }
         }
         // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
@@ -63,24 +63,22 @@ class AdminController extends CoreController
     public function update(int $commentId)
     {
         $comment = Comment::findById($commentId);
+
         if ($this->isPost()) {
             $status = (int)filter_input(INPUT_POST, 'status');
+            $comment->setStatus($status);
 
-            if ($this->isPost()) {
-                $comment->setStatus($status);
-
-                if ($comment->update()) {
-                    $this->flashes('success', "Le commentaire $commentId a bien été modifié.");
-                    header('Location: /admin/comments');
-                    exit;
-                } else {
-                    $this->flashes('danger', "L'article n'a pas été modifié!");
-                }
+            if ($comment->update()) {
+                $this->flashes('success', "Le commentaire $commentId a bien été modifié.");
+                header('Location: /admin/comments');
+                exit;
+            } else {
+                $this->flashes('danger', "L'article n'a pas été modifié!");
             }
         }
     }
 
-        /**
+    /**
      * Suppression d'un commentaire seulement par les rôles Super_admin et l'Admin
      * 
      * @param [type] $commentId
@@ -97,7 +95,7 @@ class AdminController extends CoreController
         } elseif ($currentUserRole->getName() === "Utilisateur") {
             $error403 = new ErrorController;
             $error403->accessDenied();
-        }  else {
+        } else {
             if ($comment) {
                 $comment->delete();
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été supprimé.");
@@ -106,7 +104,6 @@ class AdminController extends CoreController
             } else {
                 $this->flashes('danger', "Ce Bubbles Comment n'existe pas!");
             }
-
         }
     }
 }

@@ -36,6 +36,7 @@ class PostController extends CoreController
     public function create()
     {
         $post = new Post();
+        
         $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
