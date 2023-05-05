@@ -3,27 +3,26 @@
 
 {% block body %}
 
-<article class="container">
-	<section class="row">
-		<div class="d-flex justify-content-between my-3">
-			<h1>Modifies ton Bubble Post {{ post.title }}<a class="btn ms-5" href="/post/list">Retour</a></h1>
-		</div>
+	<article class="d-flex flex-column justify-content-center">
+		<h1 class="text-center mb-4">Modifier le Bubbles Post {{ post.title }}</h1>
+		<a class="btn my-4" href="/post/list">Retour</a>
+
+		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
 		<form action="/post/update/{{ post.slug }}" method="post" class="row g-3">
-			<div class="col-md-6">
-				<input type="text" class="form-control" value="{{ post.title }}" name="title" id="Title">
-				<label for="Title" class="form-label">Titre</label>
+		
+				<input type="text" class="form-control border border-2" value="{{ post.title }}" name="title" id="Title">
+				<label for="Title" class="form-label h6">Titre</label>
 
-				<textarea class="form-control mt-4" name="content" id="Content" rows="8" value="{{ post.content }}">{{ post.content }}</textarea>
-				<label for="Contenu" class="form-label">Contenu</label>
-			</div>
+				<textarea class="form-control border border-2 mt-4" name="content" id="Content" rows="8" value="{{ post.content }}">{{ post.content }}</textarea>
+				<label for="Contenu" class="form-label h6">Contenu</label>
 
-			<div class="col-md-6">
-				<input type="text" class="form-control" value="{{ post.chapo }}" name="chapo" id="Chapo">
-				<label for="Chapo" class="form-label">Chapô</label>
-			</div>		
-			<div>
+
+		
+				<input type="text" class="form-control border border-2" value="{{ post.chapo }}" name="chapo" id="Chapo">
+				<label for="Chapo" class="form-label h6">Chapô</label>
+	
 				<button class="btn" type="submit">Modifier</button>
-			</div>
+		
 		</form>
 	</section>
 </article>

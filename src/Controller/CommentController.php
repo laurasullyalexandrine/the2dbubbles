@@ -48,7 +48,7 @@ class CommentController extends CoreController
                     $comment->setUsers($userId);
 
                     if ($comment->insert()) {
-                        $this->flashes('warning', 'Ton bubbleComment est bien enregistré. Il est maintenant attente de validation!');
+                        $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
                         header('Location: /post/read/' . $post->getSlug());
                         exit;
                     } else {
@@ -58,7 +58,7 @@ class CommentController extends CoreController
                     $comment->setContent(filter_input(INPUT_POST, $content));
                 }
             }
-            $this->show('/comment/create', [
+            $this->show('/front/comment/create', [
                 'Comment' => new Comment(),
                 'user' => $userCurrent,
                 'post' => $post
@@ -75,16 +75,21 @@ class CommentController extends CoreController
     public function comment_user($slug)
     {
         $comments = Comment::findByUser($slug);
-        $posts = [];
-        foreach ($comments as $comment) {
-            $posts[] = Post::findBySlug($this->slugify($comment->post));
-            
-            foreach ($posts as $post) {
-                $author = User::findByPseudo($post->user);
+
+        if (empty($comments)) {
+            $author = null;
+        } else {
+            $posts = [];
+            foreach ($comments as $comment) {
+                $posts[] = Post::findBySlug($this->slugify($comment->post));
+                
+                foreach ($posts as $post) {
+                    $author = User::findByPseudo($post->user);
+                }
             }
         }
-
-        $this->show('/comment/read', [
+        // dd($author);
+        $this->show('front/comment/read', [
             'comments' => $comments,
             'author' => $author
         ]);
@@ -132,7 +137,7 @@ class CommentController extends CoreController
 
                     if ($comment->update()) {
                         header('Location: /comment/comment_user/'. $userCurrent->getSlug());
-                        $this->flashes('success', "Le Bubbles Comment a bien été modifié. Il de nouveau en cours de validation.");
+                        $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Il de nouveau en cours de validation.");
                         exit;
                     } else {
                         $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");
@@ -141,7 +146,7 @@ class CommentController extends CoreController
             }
         }
         // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
-        $this->show('/comment/update', [
+        $this->show('front/comment/update', [
             'comment' => $comment
         ]);
     }
@@ -173,7 +178,7 @@ class CommentController extends CoreController
             } else {
                 $this->flashes('danger', "Ce commentaire n'existe pas!");
             }
-            $this->show('/comment/read', [
+            $this->show('front/comment/read', [
                 'comment' => $comment
             ]);
         }

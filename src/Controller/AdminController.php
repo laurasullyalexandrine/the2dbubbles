@@ -71,7 +71,7 @@ class AdminController extends CoreController
 
                 if ($comment->update()) {
                     $this->flashes('success', "Le commentaire $commentId a bien été modifié.");
-                    header('Location: /admin/read');
+                    header('Location: /admin/comment/read');
                     exit;
                 } else {
                     $this->flashes('danger', "L'article n'a pas été modifié!");
@@ -81,7 +81,7 @@ class AdminController extends CoreController
     }
 
         /**
-     * Suppression d'un commentaire
+     * Suppression d'un commentaire seulement par les rôles Super_admin et l'Admin
      * 
      * @param [type] $commentId
      * @return void
@@ -89,15 +89,14 @@ class AdminController extends CoreController
     public function delete(int $commentId)
     {
         $comment = Comment::findById($commentId);
-        $idAuthorComment = $comment->getUsers();
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
 
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif($this->userIsConnected()->getId() !== $idAuthorComment) {
-             // Si le user connecté n'est pas l'auteur du commentaire
-             $error403 = new ErrorController;
-             $error403->accessDenied();
+        } elseif ($currentUserRole->getName() !== "Super_admin" || $currentUserRole->getName() !== "Admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } else {
             if ($comment) {
                 $comment->delete();

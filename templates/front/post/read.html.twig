@@ -30,14 +30,14 @@
 			<div class="d-flex justify-content-center">
 				{% if is_granted() == "Super_admin" %}
 					<a class="btn me-1" href="/post/update/{{ post.slug }}">Modifier</a>
-					{{ include('post/_delete.html.twig') }}
+					{{ include('admin/post/_delete.html.twig') }}
 				{% endif %}
 			</div>
 		</section>
 
 		{# Formulaire d'ajout de commentaire #}
 		<section class="col-7 h-100">
-			{{ include('comment/create.html.twig') }}
+			{{ include('front/comment/create.html.twig') }}
 		</section>
 
 		{# Liste des commentaires déjà postés et validés #}
@@ -68,7 +68,7 @@
 							{% endif %}
 						</p>
 
-						{% if is_granted() == "Administrateur" or is_granted() == "Super_admin" %}
+						{% if is_granted() == "Admin" or is_granted() == "Super_admin" %}
 							<a class="btn" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
 						{% endif %}
 					{% endfor %}

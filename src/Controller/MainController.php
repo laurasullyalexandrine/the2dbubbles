@@ -12,11 +12,11 @@ class MainController extends CoreController {
      * @return void
      */
     public function home() {
-        $this->show('main/home');
+        $this->show('front/main/home');
     }
 
     public function displayContact() {
-        $this->show('main/contact');
+        $this->show('front/main/contact');
     }
 
     /**

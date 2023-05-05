@@ -23,7 +23,7 @@ class PostController extends CoreController
         $posts = Post::findAll();
 
         // On les envoie à la vue
-        $this->show('/post/list', [
+        $this->show('/front/post/list', [
             'posts' => $posts
         ]);
     }
@@ -117,7 +117,7 @@ class PostController extends CoreController
         }
 
         // On les envoie à la vue
-        $this->show('/post/read', [
+        $this->show('/front/post/read', [
             'post' => $post,
             'comments' => $comments,
             'commentsCheck' => $commentsCheck
