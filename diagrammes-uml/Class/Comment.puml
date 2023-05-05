@@ -3,7 +3,7 @@
 Class Comment {
 
     - content: string
-    - status : bool
+    - status : int
     - date : DateTime 
 
 }

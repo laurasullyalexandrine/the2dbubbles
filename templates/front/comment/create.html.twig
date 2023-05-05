@@ -1,0 +1,14 @@
+{% block body %}
+	<article class="border border-2 border-dark-subtle rounded px-4">
+		<div class="d-flex justify-content-between">
+			<h2 class="text-center my-3 mb-3">Laisses un Bubbles Comment</h2>
+		</div>
+		<section>
+			<form action="/comment/create/{{ post.slug }}" method="post" class="row g-3">
+				<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
+				<label for="Contenu" class="form-label h6">Contenu</label>
+				<button class="btn mb-5" type="submit">Publier</button>
+			</form>
+		</section>
+	</article>
+{% endblock %}

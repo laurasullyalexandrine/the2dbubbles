@@ -7,20 +7,19 @@ actor Admin as Admin #OliveDrab
 
 entity Post as Post #LightYellow
 entity Comment as Comment #LightYellow
-entity Tag as Tag #LightYellow
 
-database 2dbubbles as 2dbubbles #YellowGreen
+database 2dbubbleas 2dbubble#YellowGreen
 
 Admin -> 2dbubbles: créer un compte
 alt cas réussi
-2dbubbles -> Admin: valider création du compte
+2dbubble-> Admin: valider création du compte
 else email déjà existant 
-2dbubbles -> Admin: échec de l'inscription
+2dbubble-> Admin: échec de l'inscription
 
 Admin  -> 2dbubbles: demander authentification 
-2dbubbles -> Admin: valider authentification 
+2dbubble-> Admin: valider authentification 
 else identification invalides
-2dbubbles -> Admin: échec de l'authentification
+2dbubble-> Admin: échec de l'authentification
 
 Admin  -> Post: ajouter post
 Post -> Admin: valider ajout
@@ -40,9 +39,6 @@ Admin  -> Comment: modérer commentaitre
 Comment -> Admin: accepter commentaitre
 Admin  -> Comment: refuser commentaitre
 Comment -> Admin: supprimer commentaitre
-
-Admin  -> Tag: ajouter tag
-Tag -> Admin: valider ajout
 
 end
 @enduml

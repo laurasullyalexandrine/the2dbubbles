@@ -7,20 +7,19 @@ actor SuperAdmin as SuperAdmin #DarkOliveGreen
 
 entity Post as Post #LightYellow
 entity Comment as Comment #LightYellow
-entity Tag as Tag #LightYellow
 
-database 2dbubbles as 2dbubbles #YellowGreen
+database 2dbubbleas 2dbubble#YellowGreen
 
 SuperAdmin -> 2dbubbles: créer un compte
 alt cas réussi
-2dbubbles -> SuperAdmin: valider création du compte
+2dbubble-> SuperAdmin: valider création du compte
 else email déjà existant 
-2dbubbles -> SuperAdmin: échec de l'inscription
+2dbubble-> SuperAdmin: échec de l'inscription
 
 SuperAdmin -> 2dbubbles: demander authentification 
-2dbubbles -> SuperAdmin: valider authentification 
+2dbubble-> SuperAdmin: valider authentification 
 else identification invalides
-2dbubbles -> SuperAdmin: échec de l'authentification
+2dbubble-> SuperAdmin: échec de l'authentification
 
 SuperAdmin -> Post: ajouter post
 Post -> SuperAdmin: valider ajout
@@ -39,9 +38,6 @@ SuperAdmin -> Comment: modérer commentaitre
 Comment -> SuperAdmin: accepter commentaitre
 SuperAdmin  -> Comment: refuser commentaitre
 Comment -> SuperAdmin: supprimer commentaitre
-
-SuperAdmin -> Tag: ajouter tag
-Tag -> SuperAdmin: valider ajout
 
 end
 @enduml

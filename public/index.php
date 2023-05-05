@@ -2,18 +2,16 @@
 
 namespace App;
  
-use AltoRouter;
-use \Twig\Environment;
-use \Twig\Loader\FilesystemLoader;
 use App\Controller\ErrorController;
+use App\Controller\SecurityController;
 use Exception;
 
 require dirname(__DIR__). '/vendor/autoload.php';
 
-//AltoRouter is a small but powerful routing class,
-$router = new AltoRouter();
+// Démarrage du système de session de PHP
+session_start();
 
-// Routing
+;// Routing
 /**
  * Exemples de routes :
  * .../blog/list => BlogController->list()
@@ -27,16 +25,19 @@ $router = new AltoRouter();
 $url = $_SERVER['REQUEST_URI'];
 
 $url = trim($url, '/');
+// Ajout d'une condition tempon si aucune url n'est trouvée
+$url = $url ?: 'security/login';
+
 $params = explode('/', $url); // Permet de récupérer l'url sous la forme d'un tableau
+
 $controllerName = array_shift($params); // Permet de stocker le premier élément du tableau qui le contrôleur 
 $method = array_shift($params); // Permet de stocker le premier élément du tableau qui la méthode du contrôleur 
-// $controller->$action(...$params);
 
 // 1 - Reconstruire le nom de la classe de contrôleur, vérifier si il existe, instancier
     // post->PostController
     // Reconstruction de nom de la classe 
     $controllerName = 'App\Controller\\'. ucfirst($controllerName).'Controller';
-    // TODO: ajout le try catch
+
     if (class_exists($controllerName)) {
         // Instancier bon contrôleur
         $controller = new $controllerName();
@@ -44,7 +45,6 @@ $method = array_shift($params); // Permet de stocker le premier élément du tab
         $errorController = new Controller\ErrorController();
         $errorController->pageNotFoundAction();
     }
-     
 // 2 - Vérifier que le contrôleur possède la méthode $method
     if(method_exists($controller, $method)) {
         // Cherche la méthode ainsi que ses paramètres optionnels
@@ -52,6 +52,7 @@ $method = array_shift($params); // Permet de stocker le premier élément du tab
     } else {
         $errorController = new Controller\ErrorController();
         $errorController->pageNotFoundAction();
+        
     }
     
 // 3 - Lancer la méthode en lui passant les paramètres optionnels (ref:2)

@@ -1,0 +1,49 @@
+{% extends "/base.html.twig" %}
+{% block menu_post %}
+	active
+{% endblock %}
+{% block body %}
+	<article class="row">
+		<h1 class="text-center">
+			Bubbles Posts
+			<br>
+		</h1>
+		<a class="btn mb-5" href="/main/home">Retour</a>
+		<section class="d-flex flex-wrap border border-2 border-dark-subtle rounded p-4">
+			{% for post in posts %}
+				{% set user = post.user %}
+				<div class="card hadow p-3 mb-5 rounded m-1" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">{{ post.title }}</h5>
+						<p class="card-text">{{ post.content }}</p>
+						<ul class="list-group fst-italic">
+							<li class="list-group-item">
+								Auteur :
+								{{user}}
+							</li>
+							<br>
+							<li class="list-group-item">
+								Publié le :
+								<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
+								<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+							</li>
+						</ul>
+
+					</div>
+					<div class="card-footer fst-italic text-light">
+						<div class="d-flex justify-content-center">
+							<a class="btn me-2" href="/post/read/{{ post.slug }}">voir</a>
+							{% if is_granted() == "Super_admin" %}
+								<a class="btn" href="/post/update/{{post.slug}}">modifier</a>
+								{{ include('admin/post/_delete.html.twig') }}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			{% endfor %}
+		</section>
+		{% if is_granted() == "Super_admin" %}
+			<a class="btn my-4" href="/post/create">Nouveau Bubble Post</a>
+		{% endif %}
+	</article>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "/base.html.twig" %}
+{% block menu_admin %}
+	active
+{% endblock %}
+
+{% block body %}
+{% set user = user() %}
+	<article class="row text-center">
+		<h1>Administration 2<span class="marker">DB</span>ubbles</h1>
+		<h2>Que souhaites tu faire <strong class="marker">{{ user.pseudo }} </strong> ?!</h2>
+		<section class="row">
+			<div class="card-border d-flex flex-wrap justify-content-between border border-dark-subtle rounded p-2 my-4">
+				<div class="card ms-2 mb-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">Bubble Post</h5>
+						<p class="card-text">Ici le
+							<strong class="marker">Super-admin</strong> pourra gérer tous ses Bubbles Posts.</p>
+						<a href="/post/list" class="btn btn-primary">post</a>
+					</div>
+				</div>
+
+				<div class="card ms-2 mb-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">Bubble Role</h5>
+						<p class="card-text">Ici le
+							<strong class="marker">Super-admin</strong> pourra gérer les Bubbles Roles.</p>
+						<a href="/role/read" class="btn btn-primary">role</a>
+					</div>
+				</div>
+
+				<div class="card ms-2 mb-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">Bubble User</h5>
+						<p class="card-text">Ici le
+							<strong class="marker">Super-admin</strong> pourra gérer les Bubbles Users.</p>
+						<a href="/user/read" class="btn btn-primary">user</a>
+					</div>
+				</div>
+				<div class="card ms-2 mb-3" style="width: 18rem;">
+					<div class="card-body">
+						<h5 class="card-title">Bubble Comment</h5>
+						<p class="card-text">Ici l'
+							<strong class="marker">Adminstrateur</strong> pourra gérer les Bubbles Comments.</p>
+						<a href="/admin/comments" class="btn btn-primary">comment</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</article>
+{% endblock %}

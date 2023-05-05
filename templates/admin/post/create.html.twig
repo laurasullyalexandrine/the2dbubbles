@@ -1,0 +1,26 @@
+{% extends "/base.html.twig" %}
+{% block menu_post %}
+	active
+{% endblock %}
+
+{% block body %}
+	<article class="d-flex flex-column justify-content-center">
+		<h1 class="text-center mb-4">Nouveau Bubbles Post</h1>
+		<a class="btn my-4" href="/post/list">Retour</a>
+		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
+
+			<form action="create" method="post" class="row g-3 p-3">
+				<input type="text" class="form-control border border-2" value="{{ post.title }}" name="title" id="Title">
+				<label for="Title" class="form-label h6">Titre</label>
+
+				<input type="text" class="form-control border border-2" value="{{ post.chapo }}" name="chapo" id="Chapo">
+				<label for="Chapo" class="form-label h6">Chapô</label>
+
+				<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
+				<label for="Contenu" class="form-label h6">Contenu</label>
+
+				<button class="btn" type="submit">Publier</button>
+			</form>
+		</section>
+	</article>
+{% endblock %}
