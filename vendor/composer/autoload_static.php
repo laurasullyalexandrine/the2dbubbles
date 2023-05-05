@@ -24,6 +24,10 @@ class ComposerStaticInita9384377682c40588c2e2772c147ed27
             'Symfony\\Component\\VarDumper\\' => 28,
             'Symfony\\Component\\Asset\\' => 24,
         ),
+        'P' => 
+        array (
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -50,6 +54,10 @@ class ComposerStaticInita9384377682c40588c2e2772c147ed27
         'Symfony\\Component\\Asset\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/asset',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'App\\' => 
         array (
