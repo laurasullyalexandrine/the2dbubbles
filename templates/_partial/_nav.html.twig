@@ -25,7 +25,7 @@
 						{% if is_granted() == "Utilisateur" %}
 							<li class="nav-item">
 								{% set user = user() %}
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/comment_user/{{ user.slug }}">Mes Bubble Comment</a>
+								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubble Comment</a>
 							</li>
 						{% endif %}
 					{% endif %}
@@ -51,7 +51,7 @@
 									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
 									<ul class="dropdown-menu text-center" style="background-color:#000000 !important;">
 										<li>
-											<a class="dropdown-item text-light" href="/admin/comments">Bubbles Comments</a>
+											<a class="dropdown-item text-light bg-dark" href="/admin/comments">Bubbles Comments</a>
 										</li>
 										<li>
 											<a class="dropdown-item text-light" href="/post/list">Bubbles Posts</a>
@@ -66,10 +66,10 @@
 
 								{% endif %}
 								<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
-									<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/message_send">Contact</a>
+									<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/mailSend">Contact</a>
 								</li>
 								<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
-									<a class="nav-link {% block menu_logout %} {% endblock %}" href="/security/logout">Déconnexion</a>
+									<a class="nav-link yellow" href="/security/logout">Déconnexion</a>
 								</li>
 							{% endif %}
 						</div>

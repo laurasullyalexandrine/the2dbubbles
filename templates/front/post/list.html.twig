@@ -8,7 +8,7 @@
 			Bubbles Posts
 			<br>
 		</h1>
-		<a class="btn mb-5" href="/main/home">Retour</a>
+		<a class="bluegrey mb-5" href="/main/home">Retour</a>
 		<section class="d-flex flex-wrap border border-2 border-dark-subtle rounded p-4">
 			{% for post in posts %}
 				{% set user = post.user %}
@@ -32,9 +32,9 @@
 					</div>
 					<div class="card-footer fst-italic text-light">
 						<div class="d-flex justify-content-center">
-							<a class="btn me-2" href="/post/read/{{ post.slug }}">voir</a>
+							<a class="bluegrey me-2" href="/post/read/{{ post.slug }}">voir</a>
 							{% if is_granted() == "Super_admin" %}
-								<a class="btn" href="/post/update/{{post.slug}}">modifier</a>
+								<a class="bluegrey" href="/post/update/{{post.slug}}">modifier</a>
 								{{ include('admin/post/_delete.html.twig') }}
 							</div>
 						{% endif %}
@@ -43,7 +43,7 @@
 			{% endfor %}
 		</section>
 		{% if is_granted() == "Super_admin" %}
-			<a class="btn my-4" href="/post/create">Nouveau Bubble Post</a>
+			<a class="bluegrey my-4" href="/post/create">Nouveau Bubble Post</a>
 		{% endif %}
 	</article>
 {% endblock %}

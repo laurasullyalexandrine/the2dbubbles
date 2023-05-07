@@ -72,7 +72,7 @@ class CommentController extends CoreController
      * @param int $commentId
      * @return Comment
      */
-    public function comment_user($slug)
+    public function userComment($slug)
     {
         $comments = Comment::findByUser($slug);
 
@@ -136,7 +136,7 @@ class CommentController extends CoreController
                         ->setStatus(2);
 
                     if ($comment->update()) {
-                        header('Location: /comment/comment_user/'. $userCurrent->getSlug());
+                        header('Location: /comment/userComment/'. $userCurrent->getSlug());
                         $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Il de nouveau en cours de validation.");
                         exit;
                     } else {
@@ -173,7 +173,7 @@ class CommentController extends CoreController
             if ($comment) {
                 $comment->delete();
                 $this->flashes('success', "Le commentaire a bien été supprimé.");
-                header('Location: /comment/comment_user/'. $this->userIsConnected()->getSlug());
+                header('Location: /comment/userComment/'. $this->userIsConnected()->getSlug());
                 exit;
             } else {
                 $this->flashes('danger', "Ce commentaire n'existe pas!");

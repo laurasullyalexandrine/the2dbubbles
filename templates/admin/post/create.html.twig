@@ -6,7 +6,7 @@
 {% block body %}
 	<article class="d-flex flex-column justify-content-center">
 		<h1 class="text-center mb-4">Nouveau Bubbles Post</h1>
-		<a class="btn my-4" href="/post/list">Retour</a>
+		<a class="bluegrey my-4" href="/post/list">Retour</a>
 		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
 
 			<form action="create" method="post" class="row g-3 p-3">
@@ -19,7 +19,7 @@
 				<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
 				<label for="Contenu" class="form-label h6">Contenu</label>
 
-				<button class="btn" type="submit">Publier</button>
+				<button class="bluegrey" type="submit">Publier</button>
 			</form>
 		</section>
 	</article>

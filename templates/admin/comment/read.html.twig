@@ -5,7 +5,7 @@
 	<article class="d-flex flex-column justify-content-center">
 		<h1 class="text-center mb-4">Traitement des Bubbles Comments</h1>
 
-		<a class="btn mb-3" href="/admin/dashboard">Retour</a>
+		<a class="bluegrey mb-3" href="/admin/dashboard">Retour</a>
 
 		<section class="d-flex flex-wrap border border-dark-subtle border-2 rounded p-3">
 			{% for comment in comments %}
@@ -97,7 +97,7 @@
 								{% endif %}
 						</div>
 					</div>
-						<button class="btn" type="submit">Modifier</button>
+						<button class="bluegrey" type="submit">Modifier</button>
 						</form>
 						{{ include('admin/comment/_delete.html.twig') }}
 				</div>

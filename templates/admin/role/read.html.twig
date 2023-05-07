@@ -7,7 +7,7 @@
 	<article class="d-flex flex-column justify-content-center">
 		<h1 class="text-center mb-4">Bubbles Roles</h1>
 
-		<a class="btn mb-4" href="/admin/dashboard">Retour</a>
+		<a class="bluegrey mb-4" href="/admin/dashboard">Retour</a>
 
 		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
 			{% for role in roles %}
@@ -25,13 +25,13 @@
 						{% endif %}
 
 						<div class="d-flex">
-							<a class="btn me-3" href="/role/update/{{ role.id }}">Modifer</a>
+							<a class="bluegrey me-3" href="/role/update/{{ role.id }}">Modifer</a>
 							{{ include('admin/role/_delete.html.twig') }}
 						</div>
 					</div>
 				</div>
 			{% endfor %}
 		</section>
-		<a class="btn my-4" href="/role/create">Nouveau Bubbles Role</a>
+		<a class="bluegrey my-4" href="/role/create">Nouveau Bubbles Role</a>
 	</article>
 {% endblock %}

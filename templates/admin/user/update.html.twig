@@ -7,7 +7,7 @@
 {% block body %}
 	<article class="d-flex flex-column justify-content-center">
 		<h1 class="text-center mb-5">Modifier bubble User {{ user.pseudo }} !</h1>
-		<a class="btn mb-4" href="/user/read">Retour</a>
+		<a class="bluegrey mb-4" href="/user/read">Retour</a>
 
 		<div class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
 		<form action="/user/update/{{ user.id }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
@@ -63,7 +63,7 @@
 			</section>
 
 			<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-				<button type="submit" class="btn">Modifier</button>
+				<button type="submit" class="bluegrey">Modifier</button>
 			</div>
 		</form>
 		</div>

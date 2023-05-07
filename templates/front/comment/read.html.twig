@@ -50,7 +50,7 @@
 								<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
 							</h6>
 							<div class="d-flex justify-content-center mt-4">
-								<a class="btn me-3" href="/comment/update/{{ comment.id }}" class="card-link">Modifier</a>
+								<a class="bluegrey me-3" href="/comment/update/{{ comment.id }}" class="card-link">Modifier</a>
 								{{ include('front/comment/_delete.html.twig') }}
 							</div>
 						</div>

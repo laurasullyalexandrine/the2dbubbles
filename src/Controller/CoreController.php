@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Role;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Extension\DebugExtension;
 
 class CoreController
@@ -55,7 +58,7 @@ class CoreController
         $displayFlashes = new \Twig\TwigFunction('display_flashes', function () {
 
             $flashes = isset($_SESSION['flashes']) ? $_SESSION['flashes'] : [];
-            
+
             $_SESSION["flashes"] = [];
 
             return $flashes;
@@ -63,7 +66,7 @@ class CoreController
         $twig->addFunction($displayFlashes);
 
         $request_uri = new \Twig\TwigFunction('request_uri', function () {
-     
+
             $serverRoad = $_SERVER["REQUEST_URI"];
             return $serverRoad;
         });
@@ -147,4 +150,63 @@ class CoreController
         }
     }
 
+    /**
+     * Envoyer de messages
+     *
+     * @param string $from
+     * @param string $content
+     * @param string $object
+     * @param string $name
+     * @param array $options
+     * @return void
+     */
+    protected function messageSend(
+        string $object,
+        string $name,
+        string $from,
+        string $content,
+        array $options = []
+    ) {
+        $options = array_merge([
+            'to' => 'contact@2dbubbles.fr',
+        ],  $options);
+
+        $to = $options['to'];
+
+        $mail = new PHPMailer(true);
+
+        // Gestion des exceptions
+        try {
+            // Configuration 
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            // Permet d'afficher les informations de debug
+
+            // Configuration de SMTP
+            $mail->isSMTP();
+            $mail->Host = "localhost";
+            $mail->Port = 1025; // Port de MailHog
+
+            // Charset 
+            $mail->CharSet = "utf-8";
+            
+            // Destinataire
+            $mail->addAddress($to);
+
+            // Expéditeur
+            $mail->setFrom($from);
+
+            // Contenu du message
+            $mail->isHTML(true); // Permet d'ajouter des balises HTML
+
+            $mail->Subject = $object;
+            $mail->Body = "<p>$content</p> <p>Prénom/Pseudo : $name</p>  <p>Email: $from</p> ";
+
+            // Envoyer le mail
+            $mail->send();
+            $this->flashes('success', 'Ton Bubbles message a bien été envoyé.');
+        } catch (Exception) {
+            $this->flashes('danger', "Ton Bubbles message n'a pas été envoyé!");
+            echo "Message non envoyé. Erreur{$mail->ErrorInfo}";
+        }
+    }
 }
