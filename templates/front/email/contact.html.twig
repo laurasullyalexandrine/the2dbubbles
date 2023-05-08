@@ -12,31 +12,30 @@
 			<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
 		</div>
 		{% set user = user() %}
-		{# <section class="d-flex flex-column border rounded p-3"> #}
+
 		<section class="d-flex justify-content-center">
-			<form action="/contact/mailSend" method="post" class="border border-dark-subtle border-2 rounded p-3">
-				<div class="d-flex my-4">
+			<form action="/contact/mailSend" method="post" class="d-flex flex-column border border-dark-subtle border-2 rounded p-3">
+				<div class="d-flex flex-wrap justify-content-center my-4">
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
 							<i class="fas fa-solid fa-bug fa-lg" style="color: #8554C5;"></i>
 							Bug *
 						</label>
-						<input class="form-check-input" type="checkbox" name="subject" id="Subject" value="bug">
+						<input class="form-check-input border-2" type="checkbox" name="subject" id="Subject" value="bug">
 					</div>
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
 							<i class="fa-solid fa-question" style="color: #8554C5;"></i>
-							{# <i class="fas fa-solid fa-bug fa-lg" style="color: #8554C5;"></i> #}
 							Question *
 						</label>
-						<input class="form-check-input" type="checkbox" name="subject" id="Subject" value="question">
+						<input class="form-check-input border-2" type="checkbox" name="subject" id="Subject" value="question">
 					</div>
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
 							<i class="fa-regular fa-lightbulb fa-lg" style="color: #8554C5;"></i>
 							Suggestion *
 						</label>
-						<input class="form-check-input" type="checkbox" name="subject" id="Subject" value="suggesion">
+						<input class="form-check-input border-2" type="checkbox" name="subject" id="Subject" value="suggesion">
 					</div>
 
 				</div>
@@ -48,10 +47,10 @@
 
 				<textarea class="form-control border border-2" name="message" id="Message" rows="8">{{ 'Ton Bubbles message' }}</textarea> 
 				<label for="Message" class="form-label h6">Message *</label>
-				<br>
-				<button class="bluegrey my-4" type="submit">Envoyer</button>
-			</form>
+			
+
+		<button class="bluegrey my-4" type="submit">Envoyer</button>
+		</form>
 		</section>
-		{# </section> #}
 	</article>
 {% endblock %}
