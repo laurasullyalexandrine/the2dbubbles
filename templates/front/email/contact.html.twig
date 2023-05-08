@@ -13,8 +13,8 @@
 		</div>
 		{% set user = user() %}
 		{# <section class="d-flex flex-column border rounded p-3"> #}
-		<section class="d-flex justify-content-center border border-dark-subtle border-2 rounded p-3">
-			<form action="/contact/mailSend" method="post">
+		<section class="d-flex justify-content-center">
+			<form action="/contact/mailSend" method="post" class="border border-dark-subtle border-2 rounded p-3">
 				<div class="d-flex my-4">
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
@@ -46,7 +46,7 @@
 				<input type="email" name="email" id="Email" value="{{ user.email }}" class="form-control border border-2">
 				<label for="Email" class="form-label h6">Email *</label>
 
-				<textarea class="form-control border border-2" name="message" id="Message" rows="8"></textarea>
+				<textarea class="form-control border border-2" name="message" id="Message" rows="8">{{ 'Ton Bubbles message' }}</textarea> 
 				<label for="Message" class="form-label h6">Message *</label>
 				<br>
 				<button class="bluegrey my-4" type="submit">Envoyer</button>

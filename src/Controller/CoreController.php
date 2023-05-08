@@ -170,9 +170,9 @@ class CoreController
         $options = array_merge([
             'to' => 'contact@2dbubbles.fr',
         ],  $options);
-
+ 
         $to = $options['to'];
-
+      
         $mail = new PHPMailer(true);
 
         // Gestion des exceptions
@@ -180,24 +180,23 @@ class CoreController
             // Configuration 
             // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
             // Permet d'afficher les informations de debug
-
+      
             // Configuration de SMTP
             $mail->isSMTP();
             $mail->Host = "localhost";
-            $mail->Port = 1025; // Port de MailHog
+            $mail->Port = 1025; // Port MailHog
 
             // Charset 
             $mail->CharSet = "utf-8";
-            
+        
             // Destinataire
             $mail->addAddress($to);
-
+   
             // Expéditeur
             $mail->setFrom($from);
-
+       
             // Contenu du message
             $mail->isHTML(true); // Permet d'ajouter des balises HTML
-
             $mail->Subject = $object;
             $mail->Body = "<p>$content</p> <p>Prénom/Pseudo : $name</p>  <p>Email: $from</p> ";
 
