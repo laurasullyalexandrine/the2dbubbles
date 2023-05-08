@@ -1,3 +1,4 @@
+{% set user = user() %}
 <nav class="navbar navbar-expand-lg" style="background-color:#000000 !important;">
 	<div class="container">
 		<div class="d-flex flex-wrap mt-3">
@@ -15,7 +16,7 @@
 		<div class="collapse navbar-collapse col-6" id="navbarColor01">
 			<ul class="navbar-nav me-auto text-center">
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-					{% if user() != null %}
+					{% if user != null %}
 						<li class="nav-item">
 							<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
 						</li>
@@ -24,8 +25,8 @@
 						</li>
 						{% if is_granted() == "Utilisateur" %}
 							<li class="nav-item">
-								{% set user = user() %}
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubble Comment</a>
+								<a class="nav-link" href="/admin/comments">Bonjour {{ user.pseudo }}</a>
+								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubbles Comment</a>
 							</li>
 						{% endif %}
 					{% endif %}
@@ -33,7 +34,7 @@
 				<div>
 
 					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-						{% if user() == null %}
+						{% if user == null %}
 							<li class="nav-item">
 								<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
 							</li>
@@ -44,7 +45,7 @@
 					</div>
 
 					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-						{% if user() != null %}
+						{% if user != null %}
 							{% if is_granted() == "Super_admin" or is_granted() == "Admin" %}
 								<li class="nav-item dropdown">
 									<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Administration</a>
@@ -69,7 +70,7 @@
 									<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/mailSend">Contact</a>
 								</li>
 								<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
-									<a class="nav-link yellow" href="/security/logout">Déconnexion</a>
+									<a class="nav-link purple" href="/security/logout">Déconnexion</a>
 								</li>
 							{% endif %}
 						</div>

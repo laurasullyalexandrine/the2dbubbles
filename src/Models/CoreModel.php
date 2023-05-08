@@ -46,9 +46,13 @@ class CoreModel {
      * Get the value of created_at
      * Permet d'indiquer à twig que la valeur retourner doit être un objet de type DateTime()
      */ 
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt()
     {
-        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
+        if ($this->created_at == null) {
+            return;
+        } else {
+            return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
+        }
     }
 
     /**
