@@ -120,7 +120,7 @@ class UserController extends CoreController
                         else {
                             $this->flashes('danger', "Votre compte n'a pas été créé!");
                         }
-                    } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
+                    } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd que le champ est 'unique')
                         if ($e->getCode() === '23000') {
                             $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
                         } else {

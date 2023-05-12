@@ -6,6 +6,7 @@ Class User {
     - slug : string
     - email : string
     - password: string
+    - token: string
     
     + login()
     + logout()

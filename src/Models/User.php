@@ -33,6 +33,11 @@ class User extends CoreModel
     private $password;
 
     /**
+     * @var string
+     */
+    private $token;
+
+    /**
      * @var int
      */
     private $roles;
@@ -326,6 +331,30 @@ class User extends CoreModel
     public function setPassword($password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of token
+     *
+     * @return  string
+     */ 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set the value of token
+     *
+     * @param  string  $token
+     *
+     * @return  self
+     */ 
+    public function setToken(string $token)
+    {
+        $this->token = $token;
 
         return $this;
     }

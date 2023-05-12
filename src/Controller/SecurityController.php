@@ -173,6 +173,54 @@ class SecurityController extends CoreController
         ]);
     }
 
+    public function forgetPassword() 
+    {
+        if ($this->isPost()) {
+   
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+
+            if (empty($email)) {
+                $this->flashes('warning', "Celui il est important parce sinon on va rien pourvoir faire...");
+            }
+            $user = User::findByEmail($email);
+
+            // Ici je n'arrive pas intercepter l'erreur PHP
+            //Fatal error: Uncaught Error: Call to a member function getPseudo() on bool in C:\xampp\htdocs\the2dbubbles\src\Controller\SecurityController.php:191 Stack trace: #0 C:\xampp\htdocs\the2dbubbles\public\index.php(51): App\Controller\SecurityController->forgetPassword() #1 {main} thrown in C:\xampp\htdocs\the2dbubbles\src\Controller\SecurityController.php on line 191
+            if (!isset($user)) {
+                $this->flashes('danger', "Oupss! Cet utilisateur n'existe pas!");
+            } else {
+                $pseudo = $user->getPseudo();
+            }
+      
+            try {
+                if ($user) {
+                    // Création d'un token d'une chaîne hexadecimal de 32 caractères
+                    $token = bin2hex(random_bytes(32));
+                    dd($token);
+                    // $recoveryLink = $this->recoveryLink();
+                        $this->messageSend(
+                        $subject = "Réinitialisation de mot de passe",
+                        $pseudo,
+                        $email,
+                        $content = "Hello, $pseudo, <br> <br> Si tu n'est pas fait cette demande, ignores simplement cet email. <br> Sinon cliques sur le lien ci-dessous <br> ",
+                    );
+                } else {
+                    $this->flashes('danger', "Oupss! L'email $email n'existe pas!");
+                }
+            } catch (\Exception $e) {
+                dd($e);
+                if ($e->getCode() !== '23000') {
+                    $this->flashes('danger', "Oupss! l'email n'a pas été envoyé. Merci de refaire une demande.");
+                } else {
+                    $this->flashes('danger', $e->getMessage());
+                }
+            }
+            
+        }
+        $this->show('security/password/forget_password');
+    }
+
+
     /**
      * Déconnexion de l'utilisateur
      * @return void

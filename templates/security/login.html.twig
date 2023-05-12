@@ -14,23 +14,22 @@
 
             <!-- Email input -->
             <div class="form-outline mb-4">
-              <input type="email" name="email" id="email" class="form-control form-control-lg" placeholder="saisir votre email" value="{{user.email}}" />
+              <input type="email" name="email" id="Email" class="form-control form-control-lg" placeholder="saisir votre email" value="{{user.email}}" />
               <label class="form-label" for="form3Example3">Email</label>
             </div>
 
             <!-- Password input -->
             <div class="form-outline mb-3">
-              <input type="password" name="password" id="password" class="form-control form-control-lg"
+              <input type="password" name="password" id="Password" class="form-control form-control-lg"
                 placeholder="saisir votre mot de passe" />
               <label class="form-label" for="form3Example4">Mot de passe</label>
             </div>
 
-            {# <div class="d-flex justify-content-between align-items-center">
-              <!-- Checkbox -->
+            <div class="d-flex">
               <div class="form-check mb-0">
-              <a href="#!" class="text-body">Mot de passe oublié ?</a>
+                <a href="/security/forgetPassword" class="text-body">Mot de passe oublié ?</a>
               </div>
-            </div> #}
+            </div>
 
             <div class="text-center text-lg-start mt-4 pt-2">
               <button type="submit" class="bluegrey"
@@ -42,6 +41,6 @@
         </div>
       </div>
     </div>
-    			<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
+    			
   </section>
 {% endblock %}
