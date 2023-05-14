@@ -201,8 +201,7 @@ class SecurityController extends CoreController
                 $user->setToken($token);
                 $user->update();
                 $host = $_SERVER["HTTP_HOST"];
-                dd($host);
-                $scheme = array_key_exists("HTTPS", $_SERVER) ? "https": "http";
+                $scheme = array_key_exists("HTTPS", $_SERVER) ? "https" : "http";
 
                 // Générer le lien de réinitialisation de mot de passe
                 $resetUrl = "$scheme://$host/security/resetPassword/$token";
@@ -216,6 +215,7 @@ class SecurityController extends CoreController
 
                 );
                 header("Location: /security/confirmationSendEmail");
+                exit;
             } catch (\Exception $e) {
                 if ($e->getCode() !== '23000') {
                     $this->flashes('danger', "Oupss! l'email n'a pas été envoyé. Merci de refaire une demande. Si tu as reçu le premier n'en tiens pas compte.");
@@ -248,35 +248,30 @@ class SecurityController extends CoreController
         // Vérifier si le token existe en bdd
         $user = User::findOneByToken($token);
 
-        try {
+        if ($this->isPost()) {
+            $password = filter_input(INPUT_POST, 'password');
+            $password_2 = filter_input(INPUT_POST, 'password_2');
+
+            if (empty($password)) {
+                $this->flashes('warning', 'Le champ mot de passe est vide');
+            }
+
+            if (empty($password_2)) {
+                $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
+            }
+
+            if ($password !== $password_2) {
+                $this->flashes('danger', 'Les mots de passe de correspondent pas!');
+            }
+
             if (!$user instanceof User) {
                 throw new \Exception("Oupss! Cet utilisateur n'existe pas!");
-            }
-            
-        } catch (\Exception $e) {
-
-        }
-        if ($user) {
-            if ($this->isPost()) {
-                $password = filter_input(INPUT_POST, 'password');
-                $password_2 = filter_input(INPUT_POST, 'password_2');
-                if (empty($password)) {
-                    $this->flashes('warning', 'Le champ mot de passe est vide');
-                }
-
-                if (empty($password_2)) {
-                    $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
-                }
-
-                if ($password === $password_2) {
-                } else {
-                    $this->flashes('danger', 'Les mots de passe de correspondent pas!');
-                }
-                // Si le formulaire est valide alors ...
-                if (empty($flashes["message"])) {
+            } else {
+                if (empty($_SESSION["flashes"])) {
                     // Effacer le token avec une chaîne de caractère vide
                     $user->setToken('');
-                    // Hasher le mot de passe 
+
+                    // Hasher et remplacer le mot de passe 
                     $option = ['cost' => User::HASH_COST];
                     $password = password_hash(
                         $password,
@@ -284,6 +279,7 @@ class SecurityController extends CoreController
                         $option
                     );
                     $user->setPassword($password);
+
                     if ($user->update()) {
                         $this->flashes('success', 'Ton mot de passe est maintenant modifié. Ah! Tu peux te connecter maintenant.');
                         header('Location: /security/login');
@@ -295,6 +291,7 @@ class SecurityController extends CoreController
                 }
             }
         }
+
         $this->show('security/password/reset_password', [
             'user' => $user
         ]);
