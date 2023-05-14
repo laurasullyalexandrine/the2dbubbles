@@ -146,8 +146,6 @@ class PostController extends CoreController
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
 
-            // TODO: Ajouter l'access control en fonction du role et la generation du token
-
             if ($this->isPost()) {
                 $title = filter_input(INPUT_POST, 'title');
                 $slug = $this->slugify($title);

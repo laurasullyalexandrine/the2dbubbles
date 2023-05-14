@@ -9,7 +9,7 @@ use App\Models\Comment;
 use App\Controller\CoreController;
 use App\Controller\ErrorController;
 
-class adminController extends CoreController
+class AdminController extends CoreController
 {
 
     /**
