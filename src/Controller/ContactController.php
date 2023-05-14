@@ -22,25 +22,29 @@ class ContactController extends CoreController {
                 $email = filter_input(INPUT_POST, 'email');
                 $message = filter_input(INPUT_POST, 'message');
                 
-                if (empty($subject)) {
-                    $this->flashes('warning', "Ah mais là on n'sait pas de quoi tu parles...");
+                try {
+                    if (empty($subject)) {
+                        throw new \Exception("Ah mais là on n'sait pas de quoi tu parles...");
+                    }
+                    
+                    if (empty($pseudo)) {
+                       throw new \Exception("Ton pseudo aussi ?");
+                    }
+                    
+                    if (empty($email)) {
+                       throw new \Exception("Ton petit mail pour traiter au mieux ton Bubbles message.");
+                    }
+    
+                    if (empty($message)) {
+                       throw new \Exception("Ah ?! Mais tu n'as rien à nous dire. Quel dommage...");
+                    }
+    
+                    $this->messageSend($subject, $pseudo, $email, $message, [
+                        'to', 
+                    ]);
+                } catch (\Exception $e) {
+                    $this->flashes('warning', $e->getMessage());
                 }
-                
-                if (empty($pseudo)) {
-                    $this->flashes('warning', "Ton pseudo aussi ?");
-                }
-                
-                if (empty($email)) {
-                    $this->flashes('warning', "Ton petit mail pour traiter au mieux ton Bubbles message.");
-                }
-
-                if (empty($message)) {
-                    $this->flashes('warning', "Ah ?! Mais tu n'as rien à nous dire. Quel dommage...");
-                }
-
-                $this->messageSend($subject, $pseudo, $email, $message, [
-                    'to', 
-                ]);
             }
         }
         $this->show('/front/email/contact');

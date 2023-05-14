@@ -33,6 +33,11 @@ class User extends CoreModel
     private $password;
 
     /**
+     * @var string
+     */
+    private $token;
+
+    /**
      * @var int
      */
     private $roles;
@@ -144,6 +149,26 @@ class User extends CoreModel
         
     }
 
+    public static function findOneByToken(string $token)
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            SELECT * 
+            FROM user 
+            WHERE token = :token
+            "
+        ;
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':token', $token, PDO::PARAM_STR);
+        $pdoStatement->execute();
+
+        $user = $pdoStatement->fetchObject(self::class);
+
+        return $user;
+    }
+
     /**
      * Méthode permettant de modifier un user
      *
@@ -201,6 +226,7 @@ class User extends CoreModel
                 pseudo = :pseudo,
                 email = :email,
                 password = :password,
+                token = :token,
                 roles = :roles,
                 updated_at = NOW()
             WHERE id = :id
@@ -212,6 +238,7 @@ class User extends CoreModel
         $pdoStatement->bindValue('pseudo', $this->pseudo, PDO::PARAM_STR);
         $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':token', $this->token, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
 
         return $pdoStatement->execute();
@@ -326,6 +353,30 @@ class User extends CoreModel
     public function setPassword($password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of token
+     *
+     * @return  string
+     */ 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set the value of token
+     *
+     * @param  string  $token
+     *
+     * @return  self
+     */ 
+    public function setToken(string $token)
+    {
+        $this->token = $token;
 
         return $this;
     }
