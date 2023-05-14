@@ -47,7 +47,6 @@ class UserController extends CoreController
             $error403->accessDenied();
         } else {
             if ($this->isPost()) {
-
                 // Récupérer les données recues du formalaire d'inscription
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
                 $slug = $this->slugify($pseudo);
@@ -93,11 +92,11 @@ class UserController extends CoreController
 
                 // Si il n'existe pas on affiche le message d'alerte
                 if (!$roleExist) {
-                    $flashes = $this->flashes('warning', 'Le rôle choisi est invalide');
+                    $this->flashes('warning', 'Le rôle choisi est invalide');
                 }
 
                 // Si le formulaire est valide alors ...
-                if (empty($flashes['message'])) {
+                if (empty($_SESSION["flashes"])) {
                     // Hasher le mot de passe 
                     $option = ['cost' => User::HASH_COST];
                     $password = password_hash(
@@ -105,15 +104,14 @@ class UserController extends CoreController
                         PASSWORD_BCRYPT,
                         $option
                     );
-                    // Mettre à jour les propriétés de l'instance
-
+                    // Mettre à jour le reste des propriétés de l'instance
                     $user->setSlug($slug)
                         ->setPassword($password);
 
                     // Essayer de faire l'insertion du nouvel utilisateur 
                     try {
                         if ($user->insert()) {
-                            $this->flashes('success', "Ton compte a bien été crée.");
+                            $this->flashes('success', "Ton compte a bien été créé.");
                             header('Location: /user/read');
                             exit;
                         } // Sinon erreur lors de l'enregistrement
@@ -184,7 +182,7 @@ class UserController extends CoreController
                     $this->flashes('warning', 'Le champ mot de passe est vide');
                 }
 
-                if (empty($flashes["message"])) {
+                if (empty($_SESSION["flashes"])) {
                     $option = ['cost' => User::HASH_COST];
                     $password = password_hash(
                         $password,
