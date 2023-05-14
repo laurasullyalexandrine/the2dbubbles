@@ -232,10 +232,10 @@ class Role extends CoreModel
 
     public function getDisplayRole(): string
     {
-        if ($this->roleString === "ROLE_SUPER_ADMIN") {
-            return "Super Admin";
-        } elseif ($this->roleString === "ROLE_SUPER_ADMIN") {
-            return "Admin";
+        if ($this->roleString === "ROLE_super_admin") {
+            return "Super admin";
+        } elseif ($this->roleString === "ROLE_super_admin") {
+            return "admin";
         } else {
             return "2dbubblebum";
         }

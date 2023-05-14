@@ -1,9 +1,9 @@
 
-@startuml SuperAdmin
+@startuml Superadmin
 
 left to right direction
 
-actor "SuperAdmin" as SuperAdmin #OliveDrab
+actor "Superadmin" as Superadmin #OliveDrab
 
 rectangle 2dbubble{
   usecase "Créer un compte" as UC1
@@ -17,14 +17,14 @@ rectangle 2dbubble{
   usecase "Supprimer des commentaires" as UC9
 }
 
-SuperAdmin --> UC1
-SuperAdmin --> UC2
-SuperAdmin --> UC3
-SuperAdmin --> UC4
-SuperAdmin --> UC5
-SuperAdmin --> UC6
-SuperAdmin --> UC7
-SuperAdmin --> UC8
-SuperAdmin --> UC9
+Superadmin --> UC1
+Superadmin --> UC2
+Superadmin --> UC3
+Superadmin --> UC4
+Superadmin --> UC5
+Superadmin --> UC6
+Superadmin --> UC7
+Superadmin --> UC8
+Superadmin --> UC9
 
 @enduml

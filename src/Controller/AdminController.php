@@ -9,11 +9,11 @@ use App\Models\Comment;
 use App\Controller\CoreController;
 use App\Controller\ErrorController;
 
-class AdminController extends CoreController
+class adminController extends CoreController
 {
 
     /**
-     * Afficher la page admin réservé au rôle Super_admin et l'admin
+     * Afficher la page admin réservé au rôle super_admin et l'admin
      *
      * @return void
      */
@@ -46,7 +46,7 @@ class AdminController extends CoreController
         if (!$userCurrent) {
             $this->flashes('warning', 'Une petite connexion avant ?!');
             header('Location: /security/login');
-        } elseif ($role->getName() == "Utilisateur") {
+        } elseif ($role->getName() == "utilisateur") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
@@ -79,7 +79,7 @@ class AdminController extends CoreController
     }
 
     /**
-     * Suppression d'un commentaire seulement par les rôles Super_admin et l'Admin
+     * Suppression d'un commentaire seulement par les rôles super_admin et l'admin
      * 
      * @param [type] $commentId
      * @return void
@@ -92,7 +92,7 @@ class AdminController extends CoreController
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() === "Utilisateur") {
+        } elseif ($currentUserRole->getName() === "utilisateur") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {

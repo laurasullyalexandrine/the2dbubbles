@@ -10,7 +10,7 @@ use Exception;
 class RoleController extends CoreController
 {
     /**
-     * Afficher tous les rôles de la base de données au role Super_admin et l'admin
+     * Afficher tous les rôles de la base de données au role super_admin et l'admin
      * 
      * @return void
      */
@@ -23,7 +23,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Ajout d'un nouveau rôle réservé au role Super_admin
+     * Ajout d'un nouveau rôle réservé au role super_admin
      * 
      * @return Role
      */
@@ -34,7 +34,7 @@ class RoleController extends CoreController
         $currentUserRole = Role::findById($userCurrent->getRoles());
         if (!$userCurrent) {
             header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
@@ -73,7 +73,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Édition d'un rôle réservé au role Super_admin
+     * Édition d'un rôle réservé au role super_admin
      * 
      * @param [type] $roleId
      * @return Role
@@ -86,7 +86,7 @@ class RoleController extends CoreController
         
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
@@ -126,7 +126,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Suppression d'un rôle au role Super_admin
+     * Suppression d'un rôle au role super_admin
      *
      * @param [type] $roleId
      * @return void
@@ -139,7 +139,7 @@ class RoleController extends CoreController
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {

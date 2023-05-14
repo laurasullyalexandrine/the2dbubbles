@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+-- phpMyadmin SQL Dump
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
@@ -113,9 +113,9 @@ CREATE TABLE `role` (
 --
 
 INSERT INTO `role` (`id`, `name`, `roleString`, `created_at`, `updated_at`) VALUES
-(2, 'Super_admin', 'ROLE_SUPER_ADMIN', '2023-04-06 12:26:26', '2023-04-21 09:06:07'),
-(3, 'Admin', 'ROLE_Admin', '2023-04-06 12:26:26', '2023-04-06 13:03:06'),
-(4, 'Utilisateur', 'ROLE_UTILISATEUR', '2023-04-06 12:26:26', '2023-04-06 12:26:46');
+(2, 'super_admin', 'ROLE_super_admin', '2023-04-06 12:26:26', '2023-04-21 09:06:07'),
+(3, 'admin', 'ROLE_admin', '2023-04-06 12:26:26', '2023-04-06 13:03:06'),
+(4, 'utilisateur', 'ROLE_utilisateur', '2023-04-06 12:26:26', '2023-04-06 12:26:46');
 
 -- --------------------------------------------------------
 
