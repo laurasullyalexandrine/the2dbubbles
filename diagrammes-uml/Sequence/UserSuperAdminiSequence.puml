@@ -1,43 +1,43 @@
-@startuml UserSuperAdminSequence
+@startuml UserSuperadminSequence
 
 skinparam responseMessageBelowArrow true
 skinparam SequenceMessageAlignment center
 
-actor SuperAdmin as SuperAdmin #DarkOliveGreen
+actor Superadmin as Superadmin #DarkOliveGreen
 
 entity Post as Post #LightYellow
 entity Comment as Comment #LightYellow
 
 database 2dbubbleas 2dbubble#YellowGreen
 
-SuperAdmin -> 2dbubbles: créer un compte
+Superadmin -> 2dbubbles: créer un compte
 alt cas réussi
-2dbubble-> SuperAdmin: valider création du compte
+2dbubble-> Superadmin: valider création du compte
 else email déjà existant 
-2dbubble-> SuperAdmin: échec de l'inscription
+2dbubble-> Superadmin: échec de l'inscription
 
-SuperAdmin -> 2dbubbles: demander authentification 
-2dbubble-> SuperAdmin: valider authentification 
+Superadmin -> 2dbubbles: demander authentification 
+2dbubble-> Superadmin: valider authentification 
 else identification invalides
-2dbubble-> SuperAdmin: échec de l'authentification
+2dbubble-> Superadmin: échec de l'authentification
 
-SuperAdmin -> Post: ajouter post
-Post -> SuperAdmin: valider ajout
+Superadmin -> Post: ajouter post
+Post -> Superadmin: valider ajout
 else le titre ne peut être nul
-Post -> SuperAdmin: échec de l'ajout
+Post -> Superadmin: échec de l'ajout
 
-SuperAdmin -> Post: éditer post
-Post -> SuperAdmin: valider édition
+Superadmin -> Post: éditer post
+Post -> Superadmin: valider édition
 else ce post n'existe pas
-Post -> SuperAdmin: le post recherché n'existe pas
+Post -> Superadmin: le post recherché n'existe pas
 
-SuperAdmin -> Post: supprimer post
-Post -> SuperAdmin: valider suppression
+Superadmin -> Post: supprimer post
+Post -> Superadmin: valider suppression
 
-SuperAdmin -> Comment: modérer commentaitre
-Comment -> SuperAdmin: accepter commentaitre
-SuperAdmin  -> Comment: refuser commentaitre
-Comment -> SuperAdmin: supprimer commentaitre
+Superadmin -> Comment: modérer commentaitre
+Comment -> Superadmin: accepter commentaitre
+Superadmin  -> Comment: refuser commentaitre
+Comment -> Superadmin: supprimer commentaitre
 
 end
 @enduml

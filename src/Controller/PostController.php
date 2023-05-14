@@ -41,7 +41,7 @@ class PostController extends CoreController
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
@@ -139,14 +139,12 @@ class PostController extends CoreController
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
-
-            // TODO: Ajouter l'access control en fonction du role et la generation du token
 
             if ($this->isPost()) {
                 $title = filter_input(INPUT_POST, 'title');
@@ -198,7 +196,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Suppression d'un post uniquement avec le rôle Super_admin
+     * Suppression d'un post uniquement avec le rôle super_admin
      *
      * @param string $slug
      * @return void
@@ -212,7 +210,7 @@ class PostController extends CoreController
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "Super_admin") {
+        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied(); 
         } else {

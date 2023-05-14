@@ -162,16 +162,16 @@ class CoreController
      */
     protected function messageSend(
         string $object,
-        string $name,
+        string $name = null,
         string $from,
         string $content,
         array $options = []
     ) {
         $options = array_merge([
-            'to' => 'contact@2dbubbles.fr',
+            'admin' => 'contact@2dbubbles.fr',
         ],  $options);
  
-        $to = $options['to'];
+        $to = $options['admin'];
       
         $mail = new PHPMailer(true);
 

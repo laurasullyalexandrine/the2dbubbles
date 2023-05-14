@@ -25,10 +25,10 @@ class SecurityController extends CoreController
 
             // Vérifier l'existence du user
             $userCurrent = User::findByEmail($email);
-            
+
             // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
             if (empty($password)) {
-                $this->flashes('warning', 'Merci de saisir votre mot de passe!');
+                $this->flashes('warning', 'Merci de saisir Ton mot de passe!');
             } elseif (
                 $userCurrent
                 && !empty($password)
@@ -39,7 +39,7 @@ class SecurityController extends CoreController
 
             // Contrôle email
             if (empty($email)) {
-                $this->flashes('warning', 'Merci de saisir votre email');
+                $this->flashes('warning', 'Merci de saisir Ton email');
             } elseif (
                 $userCurrent
                 && $email !== $userCurrent->getEmail()
@@ -84,7 +84,7 @@ class SecurityController extends CoreController
             $pseudo = filter_input(INPUT_POST, 'pseudo');
             $slug = $this->slugify($pseudo);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-            $password_1 = filter_input(INPUT_POST, 'password_1');
+            $password = filter_input(INPUT_POST, 'password');
             $password_2 = filter_input(INPUT_POST, 'password_2');
             $hiddenRole = filter_input(INPUT_POST, 'role');
             $user->setPseudo($pseudo)
@@ -95,16 +95,16 @@ class SecurityController extends CoreController
                 $this->flashes('warning', 'Le champ email est vide');
             }
 
-            if (empty($password_1)) {
+            if (empty($password)) {
                 $this->flashes('warning', 'Le champ mot de passe est vide');
             }
 
             if (empty($password_2)) {
                 $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
             }
-            if ($password_1 === $password_2) {
-            } else {
-                $this->flashes('danger', 'Les mots de passe de corresponde pas!');
+
+            if ($password !== $password_2) {
+                $this->flashes('danger', 'Les mots de passe de correspondent pas!');
             }
 
 
@@ -114,7 +114,7 @@ class SecurityController extends CoreController
             foreach ($roles as $existingRole) {
                 $rolesIdArray[] = $existingRole->getId();
                 $getIdRoleSubmited = $existingRole::findByName($hiddenRole)->getId();
-             
+
                 // Si l'id du rôle soumis existe en base de données alors
                 if (in_array($getIdRoleSubmited, $rolesIdArray)) {
                     // la valeur de la variable roleExist devient true
@@ -133,23 +133,23 @@ class SecurityController extends CoreController
                 // Hasher le mot de passe 
                 $option = ['cost' => User::HASH_COST];
                 $password = password_hash(
-                    $password_1,
+                    $password,
                     PASSWORD_BCRYPT,
                     $option
                 );
                 $user->setSlug($slug)
                     ->setPassword($password)
                     ->setRoles($getIdRoleSubmited);
-                    
+
                 // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
                     if ($user->insert()) {
-                        $this->flashes('success', 'Votre compte a bien été créé, merci de vous connecter.');
+                        $this->flashes('success', 'Ton compte a bien été créé, merci de vous connecter.');
                         header('Location: /security/login');
                         exit;
                     } // Si erreur lors de l'enregistrement
                     else {
-                        $this->flashes('danger', "Votre compte n'a pas été créé!");
+                        $this->flashes('danger', "Ton compte n'a pas été créé!");
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {
@@ -170,6 +170,130 @@ class SecurityController extends CoreController
         $this->show('security/register', [
             'user' => $user,
             'roles' => $roles
+        ]);
+    }
+
+    /**
+     * Gestion du formulaire demande de réinitialisation de mot de passe
+     *
+     * @return void
+     */
+    public function forgetPassword()
+    {
+        if ($this->isPost()) {
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+
+            if (empty($email)) {
+                $this->flashes('warning', "Celui il est important parce sinon on va rien pourvoir faire...");
+            }
+            $user = User::findByEmail($email);
+
+            try {
+                if (!$user instanceof User) {
+                    throw new \Exception("Oupss! Cet utilisateur n'existe pas!");
+                }
+                $pseudo = $user->getPseudo();
+
+                // Création d'un token d'une chaîne hexadecimal de 32 caractères
+                $token = bin2hex(random_bytes(32));
+
+                // Ajout du token généré à l'utilisateur reconnu
+                $user->setToken($token);
+                $user->update();
+                $host = $_SERVER["HTTP_HOST"];
+                $scheme = array_key_exists("HTTPS", $_SERVER) ? "https" : "http";
+
+                // Générer le lien de réinitialisation de mot de passe
+                $resetUrl = "$scheme://$host/security/resetPassword/$token";
+
+                // Envoyer le mail
+                $this->messageSend(
+                    "Réinitialisation de mot de passe",
+                    $pseudo,
+                    $email,
+                    'Hello,' . ' ' . $pseudo . ', <br> <br> Si tu n\'est pas fait cette demande, ignores simplement cet email. <br> Sinon cliques sur le lien ci-dessous <br>' . '<a href="' . $resetUrl . '">Réinitialise ton mot de passe</a>',
+
+                );
+                header("Location: /security/confirmationSendEmail");
+                exit;
+            } catch (\Exception $e) {
+                if ($e->getCode() !== '23000') {
+                    $this->flashes('danger', "Oupss! l'email n'a pas été envoyé. Merci de refaire une demande. Si tu as reçu le premier n'en tiens pas compte.");
+                } else {
+                    $this->flashes('danger', $e->getMessage());
+                }
+            }
+        }
+        $this->show('security/password/forget_password');
+    }
+
+    /**
+     * Page redirection Confirmation d'envoi de mail
+     *
+     * @return void
+     */
+    public function confirmationSendEmail()
+    {
+        $this->show('security/password/confirmation');
+    }
+
+    /**
+     * Gestion du formulaire du nouveau mot de passe
+     *
+     * @param string $token
+     * @return void
+     */
+    public function resetPassword(string $token)
+    {
+        // Vérifier si le token existe en bdd
+        $user = User::findOneByToken($token);
+
+        if ($this->isPost()) {
+            $password = filter_input(INPUT_POST, 'password');
+            $password_2 = filter_input(INPUT_POST, 'password_2');
+
+            if (empty($password)) {
+                $this->flashes('warning', 'Le champ mot de passe est vide');
+            }
+
+            if (empty($password_2)) {
+                $this->flashes('warning', 'Le champ confirmation de mot de passe est vide');
+            }
+
+            if ($password !== $password_2) {
+                $this->flashes('danger', 'Les mots de passe de correspondent pas!');
+            }
+
+            if (!$user instanceof User) {
+                throw new \Exception("Oupss! Cet utilisateur n'existe pas!");
+            } else {
+                if (empty($_SESSION["flashes"])) {
+                    // Effacer le token avec une chaîne de caractère vide
+                    $user->setToken('');
+
+                    // Hasher et remplacer le mot de passe 
+                    $option = ['cost' => User::HASH_COST];
+                    $password = password_hash(
+                        $password,
+                        PASSWORD_BCRYPT,
+                        $option
+                    );
+                    $user->setPassword($password);
+
+                    if ($user->update()) {
+                        $this->flashes('success', 'Ton mot de passe est maintenant modifié. Ah! Tu peux te connecter maintenant.');
+                        header('Location: /security/login');
+                        exit;
+                    } // Si erreur lors de l'enregistrement
+                    else {
+                        $this->flashes('danger', "Oupss! Ton mot de passe n'a pas été modifié!");
+                    }
+                }
+            }
+        }
+
+        $this->show('security/password/reset_password', [
+            'user' => $user
         ]);
     }
 

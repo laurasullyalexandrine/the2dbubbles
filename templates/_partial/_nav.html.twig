@@ -23,7 +23,7 @@
 						<li class="nav-item">
 							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubbles Actualité</a>
 						</li>
-						{% if is_granted() == "Utilisateur" %}
+						{% if is_granted() == "utilisateur" %}
 							<li class="nav-item">
 								<a class="nav-link" href="/admin/comments">Bonjour {{ user.pseudo }}</a>
 								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubbles Comment</a>
@@ -46,7 +46,7 @@
 
 					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
 						{% if user != null %}
-							{% if is_granted() == "Super_admin" or is_granted() == "Admin" %}
+							{% if is_granted() == "super_admin" or is_granted() == "admin" %}
 								<li class="nav-item dropdown">
 									<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Administration</a>
 									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
