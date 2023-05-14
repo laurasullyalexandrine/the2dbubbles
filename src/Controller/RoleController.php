@@ -47,7 +47,7 @@ class RoleController extends CoreController
                         $this->flashes('warning', 'Le champ du rôle est vide.');
                     }
 
-                    if (empty($flashes["message"])) {
+                    if (empty($_SESSION["flashes"])) {
                         $role->setName($roleName)
                             ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
@@ -100,7 +100,7 @@ class RoleController extends CoreController
                     $this->flashes('warning', 'Le champ du rôle est vide.');
                 }
 
-                if (empty($flashes["message"])) {
+                if (empty($_SESSION["flashes"])) {
                     $role->setName($roleName)
                         ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 

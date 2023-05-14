@@ -69,7 +69,7 @@ class PostController extends CoreController
                 if (empty($content)) {
                     $this->flashes('warning', 'Le champ contenu est vide.');
                 }
-                if (empty($flashes["message"])) {
+                if (empty($_SESSION["flashes"])) {
 
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
@@ -110,6 +110,7 @@ class PostController extends CoreController
         // Récupérer les tableaux des commentaires
         $comments = Comment::findBySlugPost($slug);
         $commentsCheck = [];
+       
 
         foreach ($comments as $comment) {
             if ($comment->getStatus() === 1) {
@@ -162,7 +163,7 @@ class PostController extends CoreController
                     $this->flashes('warning', 'Le champ contenu est vide.');
                 }
 
-                if (empty($flashes["message"])) {
+                if (empty($_SESSION["flashes"])) {
 
                     $post->setTitle($title)
                         ->setChapo($chapo)
@@ -183,8 +184,7 @@ class PostController extends CoreController
                     $slug = $this->slugify($title);
 
                     $this->show('admin/post/update', [
-                        'post' => $post,
-                        'flashes' => $flashes
+                        'post' => $post
                     ]);
                 }
             }
