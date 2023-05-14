@@ -46,45 +46,47 @@
 
 
 		{# Liste des commentaires déjà postés et validés #}
-		<section class="py-5">
-			<h2>Bubbles Comments</h2>
-			<div>
-				{% if comments is empty %}
-					<p>Cet article n'a pas encore de Bubble Comment.
-						<br>
-						A ton clavier 😄</p>
-				{% elseif commentsCheck == 0 %}
-					<p>Cet article n'a pas encore de Bubble Comment validé!
-						<br>
-					</p>
-				{% else %}
-					{% for commentCheck in commentsCheck %}
-					<div class="border border-2 rounded p-3 my-4">
-						<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}
-							<br><br>
-							Publié par
-							<span class="fw-bolder">{{ commentCheck.pseudo }}</span>
-							le
-							<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
-							<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
+		{% if is_granted() == "utilisateur" %}
+			<section class="py-5">
+				<h2>Bubbles Comments</h2>
+				<div>
+					{% if comments is empty %}
+						<p>Cet article n'a pas encore de Bubble Comment.
 							<br>
-							{% if commentCheck.status == 1 %}
-								Bubble Comment Validé
-								<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-							{% endif %}
+							A ton clavier 😄</p>
+					{% elseif commentsCheck is empty %}
+						<p>Cet article n'a pas encore de Bubble Comment validé!
+							<br>
 						</p>
+					{% else %}
+						{% for commentCheck in commentsCheck %}
+						<div class="border border-2 rounded p-3 my-4">
+							<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}
+								<br><br>
+								Publié par
+								<span class="fw-bolder">{{ commentCheck.pseudo }}</span>
+								le
+								<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
+								<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
+								<br>
+								{% if commentCheck.status == 1 %}
+									Bubble Comment Validé
+									<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+								{% endif %}
+							</p>
 
-						{% if is_granted() == "utilisateur" %}
-							{% set user = user() %}
-							{% if commentCheck.pseudo ==  user.pseudo %}
-								<a class="bluegrey" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
+							{% if is_granted() == "utilisateur" %}
+								{% set user = user() %}
+								{% if commentCheck.pseudo ==  user.pseudo %}
+									<a class="bluegrey" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
+								{% endif %}
 							{% endif %}
-						{% endif %}
-					</div>
-					{% endfor %}
-				{% endif %}
+						</div>
+						{% endfor %}
+					{% endif %}
 
-			</div>
-		</section>
+				</div>
+			</section>
+		{% endif %}
 	</article>
 {% endblock %}

@@ -40,7 +40,7 @@ class CommentController extends CoreController
                 if (empty($content)) {
                     $this->flashes('warning', 'Le champ contenu est vide');
                 }
-                if (empty($flashes["message"])) {
+                if (empty($_SESSION["flashes"])) {
                     $comment->setContent($content)
                         ->setPosts($postId)
                         ->setStatus(2);
@@ -131,7 +131,7 @@ class CommentController extends CoreController
                     $this->flashes('warning', 'Le champ contenu est vide.');
                 }
 
-                if (empty($flashes["message"])) {
+                if (empty($_SESSION["flashes"])) {
                     $comment->setContent($content)
                         ->setStatus(2);
 

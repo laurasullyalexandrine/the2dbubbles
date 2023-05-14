@@ -144,7 +144,7 @@ class SecurityController extends CoreController
                 // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
                     if ($user->insert()) {
-                        $this->flashes('success', 'Ton compte a bien été créé, merci de vous connecter.');
+                        $this->flashes('success', 'Ton compte a bien été créé, merci de te connecter.');
                         header('Location: /security/login');
                         exit;
                     } // Si erreur lors de l'enregistrement

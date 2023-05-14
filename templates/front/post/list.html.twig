@@ -10,40 +10,44 @@
 		</h1>
 		<a class="bluegrey mb-5" href="/main/home">Retour</a>
 		<section class="d-flex flex-wrap border border-2 border-dark-subtle rounded p-4">
-			{% for post in posts %}
-				{% set user = post.user %}
-				<div class="card hadow p-3 mb-5 rounded m-1" style="width: 18rem;">
-					<div class="card-body">
-						<h5 class="card-title">{{ post.title }}</h5>
-						<p class="card-text">{{ post.content }}</p>
-						<ul class="list-group fst-italic">
-							<li class="list-group-item">
-								Auteur :
-								{{user}}
-							</li>
-							<br>
-							<li class="list-group-item">
-								Publié le :
-								<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
-								<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
-							</li>
-						</ul>
-
+			{% if posts is empty %}
+				<p class="text-center">Il n'y a pas encore de Bubbles Post!<br>Attendons de voir, la prochaine fois surement...</p>
+			{% else %}
+				{% for post in posts %}
+					{% set user = post.user %}
+					<div class="card hadow p-3 mb-5 rounded m-1" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">{{ post.title }}</h5>
+							<p class="card-text">{{ post.content }}</p>
+							<ul class="list-group fst-italic">
+								<li class="list-group-item">
+									Auteur :
+									{{ user }}
+								</li>
+								<br>
+								<li class="list-group-item">
+									Publié le :
+									<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
+									<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+								</li>
+							</ul>
+						</div>
+						<div class="card-footer fst-italic text-light">
+							<div class="d-flex justify-content-center">
+								<a class="bluegrey me-2" href="/post/read/{{ post.slug }}">voir</a>
+								{% if is_granted() == "super_admin" %}
+									<a class="bluegrey" href="/post/update/{{ post.slug }}">modifier</a>
+									{{ include('admin/post/_delete.html.twig') }}
+								</div>
+							{% endif %}
+						</div>
 					</div>
-					<div class="card-footer fst-italic text-light">
-						<div class="d-flex justify-content-center">
-							<a class="bluegrey me-2" href="/post/read/{{ post.slug }}">voir</a>
-							{% if is_granted() == "super_admin" %}
-								<a class="bluegrey" href="/post/update/{{post.slug}}">modifier</a>
-								{{ include('admin/post/_delete.html.twig') }}
-							</div>
-						{% endif %}
-					</div>
-				</div>
-			{% endfor %}
+				{% endfor %}
+					{% endif %}
 		</section>
 		{% if is_granted() == "super_admin" %}
-			<a class="bluegrey my-4" href="/post/create">Nouveau Bubble Post</a>
+			<a class="bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
 		{% endif %}
+
 	</article>
 {% endblock %}
