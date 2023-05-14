@@ -42,7 +42,7 @@ class UserController extends CoreController
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
@@ -137,7 +137,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Édition d'un utilisateur seulement par le rôle Super_admin
+     * Édition d'un utilisateur seulement par le rôle super_admin
      *
      * @param [type] $userId
      * @return User
@@ -152,7 +152,7 @@ class UserController extends CoreController
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
@@ -216,7 +216,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Suppression d'un utilisateur par une rôle Super_admin
+     * Suppression d'un utilisateur par une rôle super_admin
      *
      * @param [type] $userId
      * @return void
@@ -229,7 +229,7 @@ class UserController extends CoreController
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "Super_admin") {
+        } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {

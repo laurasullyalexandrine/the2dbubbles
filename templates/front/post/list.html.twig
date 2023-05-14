@@ -33,7 +33,7 @@
 					<div class="card-footer fst-italic text-light">
 						<div class="d-flex justify-content-center">
 							<a class="bluegrey me-2" href="/post/read/{{ post.slug }}">voir</a>
-							{% if is_granted() == "Super_admin" %}
+							{% if is_granted() == "super_admin" %}
 								<a class="bluegrey" href="/post/update/{{post.slug}}">modifier</a>
 								{{ include('admin/post/_delete.html.twig') }}
 							</div>
@@ -42,7 +42,7 @@
 				</div>
 			{% endfor %}
 		</section>
-		{% if is_granted() == "Super_admin" %}
+		{% if is_granted() == "super_admin" %}
 			<a class="bluegrey my-4" href="/post/create">Nouveau Bubble Post</a>
 		{% endif %}
 	</article>

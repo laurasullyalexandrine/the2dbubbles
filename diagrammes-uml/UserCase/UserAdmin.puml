@@ -1,9 +1,9 @@
 
-@startuml Admin
+@startuml admin
 
 left to right direction
 
-actor "Admin" as Admin #OliveDrab
+actor "admin" as admin #OliveDrab
 
 rectangle 2dbubble{
   usecase "Créer un compte" as UC1
@@ -14,11 +14,11 @@ rectangle 2dbubble{
   usecase "Ajouter des commentaires" as UC6
 }
 
-Admin --> UC1
-Admin --> UC2
-Admin --> UC3
-Admin --> UC4
-Admin --> UC5
-Admin --> UC6
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC4
+admin --> UC5
+admin --> UC6
 
 @enduml

@@ -28,7 +28,7 @@
 			</p>
 
 			<div class="d-flex justify-content-center">
-				{% if is_granted() == "Super_admin" %}
+				{% if is_granted() == "super_admin" %}
 					<a class="bluegrey me-1" href="/post/update/{{ post.slug }}">Modifier</a>
 					{{ include('admin/post/_delete.html.twig') }}
 				{% endif %}
@@ -36,7 +36,7 @@
 		</section>
 
 		{# Formulaire d'ajout de commentaire #}
-		{% if is_granted() == "Utilisateur" %}
+		{% if is_granted() == "utilisateur" %}
 			<section class="col-7 h-100">
 				{{ include('front/comment/create.html.twig') }}
 			</section>
@@ -74,7 +74,7 @@
 							{% endif %}
 						</p>
 
-						{% if is_granted() == "Utilisateur" %}
+						{% if is_granted() == "utilisateur" %}
 							{% set user = user() %}
 							{% if commentCheck.pseudo ==  user.pseudo %}
 								<a class="bluegrey" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
