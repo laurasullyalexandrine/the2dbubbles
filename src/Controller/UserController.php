@@ -52,7 +52,7 @@ class UserController extends CoreController
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
                 $slug = $this->slugify($pseudo);
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                $password_1 = filter_input(INPUT_POST, 'password_1');
+                $password = filter_input(INPUT_POST, 'password');
                 $password_2 = filter_input(INPUT_POST, 'password_2');
                 // Contraindre le type de la valeur soumis 
                 $role = (int)filter_input(INPUT_POST, 'role');
@@ -69,7 +69,7 @@ class UserController extends CoreController
                     $this->flashes('warning', 'Le champ email est vide.');
                 }
 
-                if (empty($password_1)) {
+                if (empty($password)) {
                     $this->flashes('warning', 'Le champ mot de passe est vide.');
                 }
 
@@ -77,7 +77,7 @@ class UserController extends CoreController
                     $this->flashes('warning', 'Le champ confirmation de mot de passe est vide.');
                 }
 
-                if ($password_1 !== $password_2) {
+                if ($password !== $password_2) {
                     $this->flashes('danger', 'Les mots de passe ne corresponde pas!');
                 }
 
@@ -101,7 +101,7 @@ class UserController extends CoreController
                     // Hasher le mot de passe 
                     $option = ['cost' => User::HASH_COST];
                     $password = password_hash(
-                        $password_1,
+                        $password,
                         PASSWORD_BCRYPT,
                         $option
                     );
@@ -113,12 +113,12 @@ class UserController extends CoreController
                     // Essayer de faire l'insertion du nouvel utilisateur 
                     try {
                         if ($user->insert()) {
-                            $this->flashes('success', "Votre compte a bien été crée.");
+                            $this->flashes('success', "Ton compte a bien été crée.");
                             header('Location: /user/read');
                             exit;
                         } // Sinon erreur lors de l'enregistrement
                         else {
-                            $this->flashes('danger', "Votre compte n'a pas été créé!");
+                            $this->flashes('danger', "Ton compte n'a pas été créé!");
                         }
                     } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd que le champ est 'unique')
                         if ($e->getCode() === '23000') {
@@ -167,7 +167,7 @@ class UserController extends CoreController
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
                 $slug = $this->slugify($pseudo);
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
-                $password_1 = filter_input(INPUT_POST, 'password_1');
+                $password = filter_input(INPUT_POST, 'password');
                 $role = (int)filter_input(INPUT_POST, 'role');
                 $user->setPseudo($pseudo);
                 $user->setEmail($email);
@@ -180,14 +180,14 @@ class UserController extends CoreController
                 if (empty($email)) {
                     $this->flashes('warning', 'Le champ email est vide');
                 }
-                if (empty($password_1)) {
+                if (empty($password)) {
                     $this->flashes('warning', 'Le champ mot de passe est vide');
                 }
 
                 if (empty($flashes["message"])) {
                     $option = ['cost' => User::HASH_COST];
                     $password = password_hash(
-                        $password_1,
+                        $password,
                         PASSWORD_BCRYPT,
                         $option
                     );

@@ -149,6 +149,26 @@ class User extends CoreModel
         
     }
 
+    public static function findOneByToken(string $token)
+    {
+        $pdoDBConnexion = Database::getPDO();
+
+        $sql = "
+            SELECT * 
+            FROM user 
+            WHERE token = :token
+            "
+        ;
+
+        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement->bindValue(':token', $token, PDO::PARAM_STR);
+        $pdoStatement->execute();
+
+        $user = $pdoStatement->fetchObject(self::class);
+
+        return $user;
+    }
+
     /**
      * Méthode permettant de modifier un user
      *
@@ -206,6 +226,7 @@ class User extends CoreModel
                 pseudo = :pseudo,
                 email = :email,
                 password = :password,
+                token = :token,
                 roles = :roles,
                 updated_at = NOW()
             WHERE id = :id
@@ -217,6 +238,7 @@ class User extends CoreModel
         $pdoStatement->bindValue('pseudo', $this->pseudo, PDO::PARAM_STR);
         $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
+        $pdoStatement->bindValue(':token', $this->token, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
 
         return $pdoStatement->execute();
