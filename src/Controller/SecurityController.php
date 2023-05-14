@@ -39,7 +39,7 @@ class SecurityController extends CoreController
 
             // Contrôle email
             if (empty($email)) {
-                $this->flashes('warning', 'Merci de saisir Ton email');
+                $this->flashes('warning', 'Merci de saisir ton email');
             } elseif (
                 $userCurrent
                 && $email !== $userCurrent->getEmail()
@@ -54,7 +54,7 @@ class SecurityController extends CoreController
             }
 
             // Si il y a des erreurs on les affiches sinon ...
-            if (!empty($flashes['message'])) {
+            if (!empty($_SESSION["flashes"])) {
                 $this->show('security/login', [
                     'user' => $userCurrent
                 ]);
@@ -129,7 +129,7 @@ class SecurityController extends CoreController
             }
 
             // Si le formulaire est valide alors ...
-            if (empty($flashes['message'])) {
+            if (empty($_SESSION["flashes"])) {
                 // Hasher le mot de passe 
                 $option = ['cost' => User::HASH_COST];
                 $password = password_hash(
@@ -153,9 +153,9 @@ class SecurityController extends CoreController
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {
-                        $flashes = $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
+                        $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
                     } else {
-                        $flashes = $this->flashes('danger', $e->getMessage());
+                        $this->flashes('danger', $e->getMessage());
                     }
                 }
             } // Si le formulaire est soumis mais pas valide alors ... 
