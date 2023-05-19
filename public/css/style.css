@@ -2,13 +2,8 @@
 /*------ BODY ------*/
 #wrapper {
     background-color: #ffffff !important;
-    font-family: 'Instrument' sans-serif !important;
+    font-family: 'Oswald' sans-serif !important;
 }
-/* 
-.picture-home {
-    float: left !important;
-    shape-outside: circle(50%) !important;
-} */
 
 h1 {
     font-family: 'Instrument' sans-serif !important;
