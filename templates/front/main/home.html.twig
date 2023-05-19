@@ -3,36 +3,41 @@
 {% block menu_home %}
 	active
 {% endblock %}
-{% block body %}
-	<article class="d-flex justify-content-center w-50">
-		<aside>
-         Mettre une image
-        </aside>
-		<section class="text-start">
-			<h2>
-				<span class="orange">La petite présentation…</span>
-			</h2>
-			<p>Bienvenue sur mon blog interactif et évolutif !
-				<br>
-				Je me présente <strong class="marker">Laura Sully-Alexandrine, développeuse junior PHP Symfony</strong> 
-				<br>
-				Le graphisme est entièrement réalisé sous l'outil d'édition et de retouche image
-				<strong class="marker">GIMP</strong>.</p>
-			<p>Ce petit projet est réalisé, avec le langage
-				<strong class="marker">from scratch en PHP natif</strong>
-				sous le
-				<strong class="marker">Design Pattern MVC (Model Vues Controler)</strong>.
-					                        La programmation est faite sous l'éditeur de code
-				<strong class="marker">Visual Studio Code</strong>, j'ai utilisé les langages
-				<strong class="marker">HTML5</strong>
-				ainsi que
-				<strong class="marker">CSS3 et bootstrap 5.3</strong>
-				pour l'intégration de la partie statique du site, à l'aide du
-				<strong class="marker">moteur de templates TWIG</strong>.
-					                        Vous aurez la possibilité de <strong class="marker">créer un compte</strong>, pour vos futurs <strong class="marker">'Bubble Comment'</strong> !<br>
 
-				Vous pourrez, également <strong class="marker">télécharger mon CV</strong> au format PDF et me contacter à l'aide du <strong class="marker">formulaire de contact</strong>. <br><br>
-                Merci pour Ton intérêt,<br><br>
+{% block body %}
+	<article class="d-flex flex-wrap justify-content-center">
+	{# style="background-color: #38ada9;" #}
+		<div class="picture-home col-lg-6 text-start">
+			<img src="/image/php-dev-symfony.png" alt="">
+        </div>
+		<section class="home col-lg-6 text-start px-lg-2">
+			<h2 class="mb-3">
+				<span class="orange">LA PETITE PRÉSENTATION…</span>
+			</h2>
+			<p>Bienvenue sur mon blog professionnel, interactif et évolutif !</p>
+			<p>
+				Je me présente, 
+				<strong class="marker">Laura Sully-Alexandrine</strong>, <strong class="marker">développeuse junior PHP Symfony</strong>.
+				<br>
+				Je suis en contrat de professionnalisation avec la plate forme d'apprentissage en ligne 
+				<strong class="marker"><a href="https://openclassrooms.com/fr/">OpenClassRooms</a></strong> et mon entreprise 
+				<strong class="marker"><a href="https://bv.elyote.com/home.php">Elyote</a></strong>, pour une durée de 24 mois. <br>
+				Ma mission, lors de mes deux d'apprentissage est la refonte complète en <strong class="marker">from scratch</strong>, de l'application Elyote pour l'enseigne Retail <strong class="marker"> <a href="https://www.bureau-vallee.fr/">Bureau-Vallée</a></strong>, sous le framework
+				 <strong class="marker">Symfony</strong>, et j'espère bien d'autres projets.
+			</p>
+			<p>
+				Ce petit projet sous le nom de <strong>2<span class="marker">DB</span>ubble<span class="marker">s</span></strong>, est réalisé, en from scratch avec le langage serveur
+				<strong class="marker">PHP8</strong> et le <strong class="marker">Design Pattern MVC (Model Vues Controler)</strong>.
+				les langages front <strong class="marker">HTML5</strong>
+				ainsi que <strong class="marker">CSS3</strong> et parfois, surcharger les classes <strong class="marker">Bootstrap 5.3</strong>.
+				L'intégration de la partie statique du site, à travers <strong class="marker">moteur de templates TWIG</strong>.
+				Tout ça programmé, sous l'éditeur de code extensible <strong class="marker">Visual Studio Code</strong>.
+				<br>
+				Le graphisme lui, est entièrement réalisé sous l'outil d'édition et de retouche image <strong class="marker">GIMP</strong>.
+				<br>
+				Tu auras la possibilité de créer ton<strong class="marker">bubbles Space</strong>, pour tes futurs <strong class="marker">'Bubbles Comment'</strong> !<br>
+				Tu pourras, également <a href="http://localhost:8080/image/CV_Laura_Sully-Alexandrine.pdf" download="CV_Laura_Sully-Alexandrine.pdf">Télécharger mon CV</a> au format PDF, me contacter à l'aide du <strong class="marker">formulaire de contact</strong> ou de mes coordonées que tu trouveras sur mon CV.<br><br>
+                Merci pour ton intérêt,<br><br>
 
 				et bonne visite...</p>
 		</section>
