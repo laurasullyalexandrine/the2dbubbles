@@ -1,13 +1,23 @@
 {% set user = user() %}
 <nav class="navbar navbar-expand-lg" style="background-color:#000000 !important;">
 	<div class="container">
-		<div class="d-flex flex-wrap mt-3">
-			<p class="col-ms-5 col-lg-5 col-xl-5 col-xxl-5 mt-lg-2 mt-xl-2 mt-xxl-2 mt-sm-5">
-				<a class="navbar-brand text-center" href="/main/home">
-					<img class="logo_picture" src="/image/logo-2dbubbles.png" width="120" alt="logo-2DBubble">
-				</a>
-			</p>
-		</div>
+		{% if user == null %}
+			<div class="d-flex flex-wrap mt-3">
+				<p class="col-ms-5 col-lg-5 col-xl-5 col-xxl-5 mt-lg-2 mt-xl-2 mt-xxl-2 mt-sm-5">
+					<a class="navbar-brand text-center" href="/security/login">
+						<img class="logo_picture" src="/image/logo-2dbubbles.png" width="120" alt="logo-2DBubble">
+					</a>
+				</p>
+			</div>
+		{% else %}
+			<div class="d-flex flex-wrap mt-3">
+				<p class="col-ms-5 col-lg-5 col-xl-5 col-xxl-5 mt-lg-2 mt-xl-2 mt-xxl-2 mt-sm-5">
+					<a class="navbar-brand text-center" href="/main/home">
+						<img class="logo_picture" src="/image/logo-2dbubbles.png" width="120" alt="logo-2DBubble">
+					</a>
+				</p>
+			</div>
+		{% endif %}
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon">
 				<i class="fas fa-solid fa-bars-staggered"></i>
@@ -23,56 +33,61 @@
 						<li class="nav-item">
 							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubbles Actualité</a>
 						</li>
-						{% if is_granted() == "utilisateur" %}
-							<li class="nav-item">
-								<a class="nav-link" href="/admin/comments">Bonjour {{ user.pseudo }}</a>
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubbles Comment</a>
-							</li>
-						{% endif %}
 					{% endif %}
 				</div>
 				<div>
 
-					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-						{% if user == null %}
+				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+					{% if user == null %}
+						<li class="nav-item">
+							<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
+						</li>
+					{% endif %}
+				</div>
+
+				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+					{% if user != null %}
+						{% if is_granted() == "super_admin" or is_granted() == "admin" %}
+							<li class="nav-item dropdown">
+								<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Administration</a>
+								<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+								<ul class="dropdown-menu text-center" style="background-color:#000000 !important;">
+									<li>
+										<a class="dropdown-item text-light bg-dark" href="/admin/comments">Bubbles Comments</a>
+									</li>
+									<li>
+										<a class="dropdown-item text-light" href="/post/list">Bubbles Posts</a>
+									</li>
+									<li>
+										<a class="dropdown-item text-light" href="/role/read">Bubbles Roles</a>
+									</li>
+									<li>
+										<a class="dropdown-item text-light" href="/user/read">Bubbles Users</a>
+									</li>
+								</ul>
+						{% endif %}
+					{% endif %}
+					{% if user != null %}
+						{% if is_granted() == "utilisateur" %}
 							<li class="nav-item">
-								<a class="nav-link {% block menu_register %} {% endblock %}" href="/security/register">Inscription</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link {% block menu_login %} {% endblock %}" href="/security/login">Connexion</a>
+								
+								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubbles Comment</a>
 							</li>
 						{% endif %}
-					</div>
-
-					<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
-						{% if user != null %}
-							{% if is_granted() == "super_admin" or is_granted() == "admin" %}
-								<li class="nav-item dropdown">
-									<a class="nav-link {% block menu_admin %} {% endblock %}" href="/admin/dashboard">Administration</a>
-									<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
-									<ul class="dropdown-menu text-center" style="background-color:#000000 !important;">
-										<li>
-											<a class="dropdown-item text-light bg-dark" href="/admin/comments">Bubbles Comments</a>
-										</li>
-										<li>
-											<a class="dropdown-item text-light" href="/post/list">Bubbles Posts</a>
-										</li>
-										<li>
-											<a class="dropdown-item text-light" href="/role/read">Bubbles Roles</a>
-										</li>
-										<li>
-											<a class="dropdown-item text-light" href="/user/read">Bubbles Users</a>
-										</li>
-									</ul>
-								{% endif %}
-					
-								<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
-									<a class="nav-link purple" href="/security/logout">Déconnexion</a>
-								</li>
-							{% endif %}
-								<li class="nav-item me-lg-5 me-xl-5 me-xxl-5">
-									<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/mailSend">Contact</a>
-								</li>
-						</div>
-					</ul>
-				</nav>
+					{% endif %}
+					<li class="nav-item">
+						<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/mailSend">Contact</a>
+					</li>
+					{% if user != null %}
+						<li class="nav-item">
+						<a class="nav-link" href="/admin/comments">Bonjour {{ user.pseudo }}</a>
+							<a class="nav-link purple" href="/security/logout">Déconnexion</a>
+						</li>
+					{% endif %}
+				</div>
+			</ul>
+	</div>
+</nav>
