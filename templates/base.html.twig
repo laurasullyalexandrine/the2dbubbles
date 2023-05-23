@@ -1,7 +1,7 @@
 
 {% include "/_partial/_head.html.twig" %}
 {% include "/_partial/_nav.html.twig" %}
-	<main class="container p-5"> 
+	<main class="container"> 
         {% for flash in display_flashes() %}
             <div class="alert alert-{{ flash.alert }}">
                 {{ flash.message }}
