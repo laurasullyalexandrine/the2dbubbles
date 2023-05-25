@@ -3,6 +3,7 @@
 #wrapper {
     background-color: #ffffff !important;
     font-family: 'Oswald' !important;
+    font-weight: 300;
     font-size: 1.1rem !important;
 }
 .delete {
@@ -22,7 +23,8 @@ h1 {
     font-family: "Ubuntu Mono" !important;
 }
 strong {
-    font-weight: 600 !important;
+    color: #3c6382;
+    font-weight: 400 !important;
 }
 .card-title {
     font-family: "Ubuntu Mono" !important;
