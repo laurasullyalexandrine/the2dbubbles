@@ -1,4 +1,4 @@
-<!-- Footer -->
+{# <!-- Footer -->
 <footer class="navbar navbar-expand-lg" style="background-color:#000000 !important;">
   <!-- Section: Social media -->
 
@@ -6,7 +6,7 @@
     <!-- Left -->
     <div class="me-5 d-none d-lg-block">
       <span>Get connected with us on social networks:</span>
-      <a href="http://localhost:8080/image/CV_Laura_Sully-Alexandrine.pdf" download="CV_Laura_Sully-Alexandrine.pdf">Télécharger mon CV</a> 
+   
     </div>
 
     <!-- Right -->
@@ -119,8 +119,34 @@
     <a class="text-reset fw-bold" href="https://mdbootstrap.com/">MDBootstrap.com</a>
   </div>
   <!-- Copyright -->
-</footer>
+</footer> #}
 <!-- Footer -->
+{% set user = user() %}
+    <footer class="d-flex flex-column justify-content-center text-light p-3 mt-5" style="background-color:#000000 !important;">
+      <ul class="navbar-nav">
+        {% if user != null %}
+          {% if is_granted() == "super_admin" or is_granted() == "admin" %}
+            <li class="nav-item">
+              <a class="nav-link p-3" href="/admin/dashboard">Administration</a>
+            </li>
+          {% endif %}
+			  {% endif %}
+       	<li class="nav-item">
+          	<a class="nav-link" href="http://localhost:8080/image/CV_Laura_Sully-Alexandrine.pdf" download="CV_Laura_Sully-Alexandrine.pdf">Télécharger mon Curriculum vitae</a> 
+        </li>
+      </ul>
+      {# <div class"text-center"> #}
+    <p class="text-center p-4">
+        <a href="https://www.facebook.com/"><img src="/image/picto_face.png" targer="_blank" alt="Picto_Facebook" title="Mon_Facebook"></a>&thinsp;&thinsp;&thinsp;&thinsp;
+        <a href="https://www.youtube.com/playlist?list=PLD1416FA612AC03F5"><img src="/image/picto_youtube.png" targer="_blank" alt="Picto Youtube" title="Mon Youtube"></a>&thinsp;&thinsp;&thinsp;&thinsp;
+        <a href="https://www.linkedin.com/feed/"><img src="/image/picto_linkedin.png" targer="_blank" alt="Picto_Linkedin" title="Mon_Linkedin"></a>&thinsp;&thinsp;&thinsp;&thinsp;&thinsp;
+        <a href="https://www.pinterest.fr/?autologin=true"><img src="/image/picto_pinterest.png" targer="_blank" alt="Picto_Pinterest" title="Mon_Pinterest"></a>
+    </p>
+      {# </div> #}
+      <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2023 Copyright: 2DBubbles
+      </div>
+    </footer>
 
 		{# BLOCK JAVASCRIPT #}
 		{# ajout du chemin vers bootstrap.com JS #}
