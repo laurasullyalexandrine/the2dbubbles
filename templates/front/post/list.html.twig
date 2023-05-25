@@ -3,49 +3,47 @@
 	active
 {% endblock %}
 {% block body %}
-	<article class="d-flex">
-		<section>
-			<h1 class="col mt-lg-4">
-				<img src="/image/post.png" alt="image-developer-php-symfony" class="mw-100">
-			</h1>
-		</section>
-			
-		<section class="d-flex flex-column mb-5">
-		<p><a class="nav-link bluegrey mt-4" href="/main/home">Retour</a></p>
-			<div class="d-flex flex-wrap justify-content-center w-100">
-			{% for post in posts %}
-			
-					<div class="col-sm-6 my-3">
+	<article class="row d-flex flex-wrap">
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/post.png" alt="image-developer-php-symfony" class="w-100">
+		</div>
+
+		<section class="col-lg-7 d-flex flex-column mb-5">		
+			<p class="d-flex justify-content-around">
+				{% if is_granted() == "super_admin" %}
+					<a class="nav-link bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
+				{% endif %}
+				<a class="nav-link bluegrey my-4" href="/main/home">Retour</a>
+			</p>
+			<div class="d-flex flex-wrap justify-content-center">
+				{% for post in posts %}
+					<div class="col-sm-6 mb-3">
 						<div class="card shadow-sm bg-body rounded" style="width: 18rem; height: 12rem;">
 							<div class="card-body flex-wrap">
 								<h5 class="card-title">{{ post.title }}</h5>
 								<p class="card-subtitle fs-6 mb-2 text-muted">{{ post.chapo }}</p>
-								<ul class="list-group fst-italic">
-									<br>
+								<ul class="list-group">
 									<li class="fs-6 list-group-item">
 										Publié le :
 										<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
 										<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
 									</li>
 								</ul>
-								<div class="d-flex justify-content-center">
+								<div class="d-flex">
 									<a class="card-link" href="/post/read/{{ post.slug }}">Lire</a>
 									{% if is_granted() == "super_admin" %}
-										<a class="card-link" href="/post/update/{{ post.slug }}">modifier</a>
+										<a class="card-link" href="/post/update/{{ post.slug }}">Modifier</a>
 									{% endif %}
-								{% if is_granted() == "super_admin" %}
-									{{ include('admin/post/_delete.html.twig') }}
-								{% endif %}
+									{% if is_granted() == "super_admin" %}
+										{{ include('admin/post/_delete.html.twig') }}
+									{% endif %}
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			{% endfor %}
-		
-		{% if is_granted() == "super_admin" %}
-			<a class="nav-link bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
-		{% endif %}
+				{% endfor %}
+			</div>
+
 		</section>
 	</article>
 {% endblock %}

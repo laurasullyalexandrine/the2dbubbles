@@ -19,13 +19,13 @@
     transition: .8s !important;
 }
 h1 {
-    font-family: "Ubuntu Mono" sans-serif !important;
+    font-family: "Ubuntu Mono" !important;
 }
 strong {
     font-weight: 600 !important;
 }
 .card-title {
-    font-family: "Ubuntu Mono"!important;
+    font-family: "Ubuntu Mono" !important;
 }
 .card-link {
     color: #3c6382;
@@ -45,36 +45,19 @@ strong {
 .home {
 background-color: #ffffff !important;
 }
-.bluegrey,
-.green,
-.purple {
+
+.bluegrey {
     color: #ffffff !important;
     text-align: center !important;
     border: 0 !important; 
     cursor: pointer !important;
     padding: 5px 15px !important;
     border-radius: 3px !important;
-}
-
-.bluegrey {
     background-color: #38ada9 !important;
 }
-.bluegrey {
-    background-color: #38ada9 !important;
-}
-
-.green {
-    background-color: #78e08f !important;
-}
-/* .green:hover {
-    background-color: #a775e8 !important;
-} */
-
-.purple {
-    background-color: #8554c5 !important;
-}
-.purple:hover {
-    background-color: #a775e8 !important;
+.bluegrey:hover {
+    background-color: #4bccc8 !important;
+    transition: .6s !important;
 }
 
 .marker {
