@@ -2,22 +2,46 @@
 /*------ BODY ------*/
 #wrapper {
     background-color: #ffffff !important;
-    font-family: 'Oswald' sans-serif !important;
+    font-family: 'Oswald' !important;
+    font-size: 1.1rem !important;
 }
-
+.delete {
+    color: #eb2f06;
+    border: none;
+    background-color: transparent;
+    margin-top: 5px;
+    padding: 0px 15px !important;
+    border-radius: 3px !important;
+}
+.delete:hover {
+    color: #ffffff !important;
+    background-color: #eb2f06 !important;
+    transition: .8s !important;
+}
 h1 {
-    font-family: 'Instrument' sans-serif !important;
+    font-family: "Ubuntu Mono" sans-serif !important;
 }
 strong {
     font-weight: 600 !important;
 }
-.a {
+.card-title {
+    font-family: "Ubuntu Mono"!important;
+}
+.card-link {
+    color: #3c6382;
+    font-weight: 400;
     text-decoration: none !important;
+    margin-top: 5px;
+    padding: 0px 15px !important;
+    border-radius: 3px !important;
 }
-.a:hover {
-    transition: .3s !important;
-    color: #3c6382 !important;
+.card-link:hover {
+    color: #ffffff;
+    background-color: #3c6382;
+    transition: .8s !important;
+
 }
+
 .home {
 background-color: #ffffff !important;
 }
@@ -54,7 +78,7 @@ background-color: #ffffff !important;
 }
 
 .marker {
-    color: #38ada9 
+    color: #38ada9;    
 }
 
 /*------ NAVBAR FOOTER ------*/

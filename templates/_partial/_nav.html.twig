@@ -31,7 +31,7 @@
 							<a class="nav-link {% block menu_home %} {% endblock %}" href="/main/home">Accueil</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubbles Actualité</a>
+							<a class="nav-link {% block menu_actuality %} {% endblock %}" href="/post/list">Bubbles Post</a>
 						</li>
 					{% endif %}
 				</div>
@@ -74,7 +74,7 @@
 						{% if is_granted() == "utilisateur" %}
 							<li class="nav-item">
 								
-								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Mes Bubbles Comment</a>
+								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Bubbles Comment</a>
 							</li>
 						{% endif %}
 					{% endif %}
@@ -83,7 +83,6 @@
 					</li>
 					{% if user != null %}
 						<li class="nav-item">
-						<a class="nav-link" href="/admin/comments">Bonjour {{ user.pseudo }}</a>
 							<a class="nav-link purple" href="/security/logout">Déconnexion</a>
 						</li>
 					{% endif %}

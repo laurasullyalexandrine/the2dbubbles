@@ -3,51 +3,49 @@
 	active
 {% endblock %}
 {% block body %}
-	<article class="row">
-		<h1 class="text-center">
-			Bubbles Posts
-			<br>
-		</h1>
-		<a class="bluegrey mb-5" href="/main/home">Retour</a>
-		<section class="d-flex flex-wrap border border-2 border-dark-subtle rounded p-4">
-			{% if posts is empty %}
-				<p class="text-center">Il n'y a pas encore de Bubbles Post!<br>Attendons de voir, la prochaine fois surement...</p>
-			{% else %}
-				{% for post in posts %}
-					{% set user = post.user %}
-					<div class="card hadow p-3 mb-5 rounded m-1" style="width: 18rem;">
-						<div class="card-body">
-							<h5 class="card-title">{{ post.title }}</h5>
-							<p class="card-text">{{ post.content }}</p>
-							<ul class="list-group fst-italic">
-								<li class="list-group-item">
-									Auteur :
-									{{ user }}
-								</li>
-								<br>
-								<li class="list-group-item">
-									Publié le :
-									<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
-									<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
-								</li>
-							</ul>
-						</div>
-						<div class="card-footer fst-italic text-light">
-							<div class="d-flex justify-content-center">
-								<a class="bluegrey me-2" href="/post/read/{{ post.slug }}">voir</a>
+	<article class="d-flex">
+		<section>
+			<h1 class="col mt-lg-4">
+				<img src="/image/post.png" alt="image-developer-php-symfony" class="mw-100">
+			</h1>
+		</section>
+			
+		<section class="d-flex flex-column mb-5">
+		<p><a class="nav-link bluegrey mt-4" href="/main/home">Retour</a></p>
+			<div class="d-flex flex-wrap justify-content-center w-100">
+			{% for post in posts %}
+			
+					<div class="col-sm-6 my-3">
+						<div class="card shadow-sm bg-body rounded" style="width: 18rem; height: 12rem;">
+							<div class="card-body flex-wrap">
+								<h5 class="card-title">{{ post.title }}</h5>
+								<p class="card-subtitle fs-6 mb-2 text-muted">{{ post.chapo }}</p>
+								<ul class="list-group fst-italic">
+									<br>
+									<li class="fs-6 list-group-item">
+										Publié le :
+										<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
+										<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
+									</li>
+								</ul>
+								<div class="d-flex justify-content-center">
+									<a class="card-link" href="/post/read/{{ post.slug }}">Lire</a>
+									{% if is_granted() == "super_admin" %}
+										<a class="card-link" href="/post/update/{{ post.slug }}">modifier</a>
+									{% endif %}
 								{% if is_granted() == "super_admin" %}
-									<a class="bluegrey" href="/post/update/{{ post.slug }}">modifier</a>
 									{{ include('admin/post/_delete.html.twig') }}
+								{% endif %}
 								</div>
-							{% endif %}
+							</div>
 						</div>
 					</div>
-				{% endfor %}
-					{% endif %}
-		</section>
+				</div>
+			{% endfor %}
+		
 		{% if is_granted() == "super_admin" %}
-			<a class="bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
+			<a class="nav-link bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
 		{% endif %}
-
+		</section>
 	</article>
 {% endblock %}
