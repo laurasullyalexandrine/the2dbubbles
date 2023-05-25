@@ -35,7 +35,6 @@
 						</li>
 					{% endif %}
 				</div>
-				<div>
 
 				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
 					{% if user == null %}
@@ -48,7 +47,7 @@
 					{% endif %}
 				</div>
 
-				<div class="d-lg-flex flex-lg-row flex-xl-row lex-xxl-row flex-xs-column flex-sm-column">
+				<div class="d-lg-flex flex-lg-row flex-xl-row flex-xxl-row flex-xs-column flex-sm-column">
 					{% if user != null %}
 						{% if is_granted() == "super_admin" or is_granted() == "admin" %}
 							<li class="nav-item dropdown">
@@ -59,13 +58,13 @@
 										<a class="dropdown-item text-light bg-dark" href="/admin/comments">Bubbles Comments</a>
 									</li>
 									<li>
-										<a class="dropdown-item text-light" href="/post/list">Bubbles Posts</a>
+										<a class="dropdown-item text-light bg-dark" href="/post/list">Bubbles Posts</a>
 									</li>
 									<li>
-										<a class="dropdown-item text-light" href="/role/read">Bubbles Roles</a>
+										<a class="dropdown-item text-light bg-dark" href="/role/read">Bubbles Roles</a>
 									</li>
 									<li>
-										<a class="dropdown-item text-light" href="/user/read">Bubbles Users</a>
+										<a class="dropdown-item text-light bg-dark" href="/user/read">Bubbles Users</a>
 									</li>
 								</ul>
 						{% endif %}
@@ -73,20 +72,21 @@
 					{% if user != null %}
 						{% if is_granted() == "utilisateur" %}
 							<li class="nav-item">
-								
 								<a class="nav-link {% block menu_comment %} {% endblock %}" href="/comment/userComment/{{ user.slug }}">Bubbles Comment</a>
 							</li>
 						{% endif %}
 					{% endif %}
-					<li class="nav-item">
-						<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/mailSend">Contact</a>
-					</li>
-					{% if user != null %}
-						<li class="nav-item">
-							<a class="nav-link bluegrey" href="/security/logout">Déconnexion</a>
-						</li>
-					{% endif %}
 				</div>
+			</ul>
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link {% block menu_contact %} {% endblock %}" href="/contact/mailSend">Contact</a>
+				</li>
+				{% if user != null %}
+					<li class="nav-item">
+						<a class="nav-link bluegrey" href="/security/logout">Déconnexion</a>
+					</li>
+				{% endif %}
 			</ul>
 	</div>
 </nav>
