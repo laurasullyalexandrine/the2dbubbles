@@ -2,17 +2,22 @@
 
 {% block body %}
 	{% set user = user() %}
-	<article class="d-flex flex-column justify-content-center">
-		<h1 class="text-center">Modifies ton Bubbles Comment</h1>
-		<h5 class="text-center">Tu veux revoir ta copie ? <br> C'est ici que ça se passe !</h5>
-		<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
-		<a class="bluegrey my-4" href="/comment/userComment/{{ user.slug }}">Retour</a>
+	<article class="row d-flex flex-wrap justify-content-between">
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/comment.png" alt="image-comment" class="w-100">
+		</div>
+		<section class="col p-3 d-flex flex-column">
+			<div class="mb-4">
+				<h1>Modifies ton Bubbles Comment</h1>
+				<h6>Tu veux revoir ta copie ? C'est ici que ça se passe!</h6>
+				<a class="card-link" href="/comment/userComment/{{ user.slug }}">Retour</a>
+			</div>
+			<p class="text-danger fst-italic">Les champs marqués d'un * sont obligatoires.</p>
 
-		<section class="border rounded p-3">
-			<form action="/comment/update/{{ comment.id }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
+			<form action="/comment/update/{{ comment.id }}" method="post" class="d-flex flex-column">
 				<textarea class="form-control border border-2" name="content" id="Content" rows="6" value="{{ comment.content }}">{{ comment.content }}</textarea>
-				<label for="Contenu" class="form-label h6">Contenu</label>
-	
+				<label for="Contenu" class="form-label">Contenu*</label>
+
 				<button class="bluegrey" type="submit">Modifier</button>
 			</form>
 		</section>
