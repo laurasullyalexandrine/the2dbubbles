@@ -3,8 +3,8 @@
 #wrapper {
     background-color: #ffffff !important;
     font-family: 'Oswald' !important;
-    font-weight: 300;
     font-size: 1.1rem !important;
+    font-weight: 300;
 }
 .delete {
     color: #eb2f06;
@@ -26,6 +26,9 @@ h2 {
 h2 {
     font-size: 1.5rem !important;
 }
+h6 {
+    font-weight: 300 !important;
+}
 strong {
     color: #3c6382;
     font-weight: 400 !important;
@@ -33,6 +36,7 @@ strong {
 .card-title {
     font-family: "Ubuntu Mono" !important;
 }
+
 .card-link {
     color: #3c6382;
     font-weight: 400;
@@ -45,7 +49,6 @@ strong {
     color: #ffffff;
     background-color: #3c6382;
     transition: .8s !important;
-
 }
 
 .home {
