@@ -19,8 +19,12 @@
     background-color: #eb2f06 !important;
     transition: .8s !important;
 }
-h1 {
+h1,
+h2 {
     font-family: "Ubuntu Mono" !important;
+}
+h2 {
+    font-size: 1.5rem !important;
 }
 strong {
     color: #3c6382;
@@ -34,7 +38,7 @@ strong {
     font-weight: 400;
     text-decoration: none !important;
     margin-top: 5px;
-    padding: 0px 15px !important;
+    padding: 0 15px !important;
     border-radius: 3px !important;
 }
 .card-link:hover {
