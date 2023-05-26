@@ -1,14 +1,14 @@
 {% extends "/base.html.twig" %}
 
 {% block body %}
-	<article class="row d-flex flex-wrap justify-content-between">
+	<article class="row d-flex flex-wrap">
 		<div class="col-lg-5 mt-lg-4">
 			<img src="/image/space.png" alt="image-space" class="w-100">
 		</div>
 		<section class="col p-3 d-flex flex-wrap">
 			<div class="mb-4">
 				<h1>Bienvenue dans ton Bubbles Space!</h1>
-				<h6>C'est ici que tu gères tes Bubbles Comment.</h6>
+				<h6 class="fs-5">C'est ici que tu gères tes Bubbles Comment.</h6>
 			</div>
 			{% if comments|length == 0 %}
 				<div class="d-flex flex-column">
@@ -17,7 +17,7 @@
 				</div>
 			{% else %}
 				{% for comment in comments %}
-					<div class="d-flex flex-wrap justify-content-center mb-3">
+					<div class="d-flex mb-3">
 						<div class="card shadow-sm bg-body rounded me-3 mb-5" style="width: 18rem; height: 12rem;">
 							<div class="card-body flex-wrap">
 								<h6 class="card-title">
@@ -43,7 +43,7 @@
 										{{comment.post}}
 										<br>
 									Auteur :
-									{{ author.pseudo }}
+									{{ author.pseudo }} <br>
 										Publié le :
 										<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
 										<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>
