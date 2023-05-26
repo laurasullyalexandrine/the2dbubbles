@@ -304,6 +304,6 @@ class SecurityController extends CoreController
     public function logout()
     {
         session_destroy();
-        header('Location: /main/home');
+        header('Location: /security/login');
     }
 }
