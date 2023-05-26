@@ -12,13 +12,13 @@
 			</section>
 		{% else %}
 			<div class="col-lg-5 mt-lg-4">
-				<img src="/image/post.png" alt="image-developer-php-symfony" class="w-100">
+				<img src="/image/post.png" alt="image-post" class="w-100">
 			</div>
 		{% endif %}
 
 
 		{# Article #}
-		<section class="col-lg-5 col-sm-6 mt-lg-4 p-3">
+		<section class="col-lg-5 col-sm-6 mt-lg-4 p-3 d-flex flex-column">
 			<div>
 				<h1>{{ post.title }}</h1>
 				<h2 class="fs-5">{{ post.chapo }}</h2>
@@ -48,10 +48,10 @@
 				</div>
 			</div>
 
-					{# Liste des commentaires déjà postés et validés #}
+		{# Liste des commentaires déjà postés et validés #}
 		{# {% if is_granted() == "utilisateur" %} #}
 			<section class="col py-5">
-				<h2>Bubbles Comments</h2>
+				<h2>Bubbles Comment</h2>
 				<div>
 					{% if comments is empty %}
 						<p>Cet article n'a pas encore de Bubble Comment.

@@ -1,5 +1,8 @@
 {% block body %}
-	<article class="border border-2 border-dark-subtle rounded px-4">
+	<article class="d-flex flex-column border-end mt-5 px-4">
+		<div class="col-lg-5 align-self-center rounded mb-4 mw-100">
+			<img src="/image/comment.png" alt="image-comment" class="w-100">
+		</div>
 		<div class="d-flex flex-column justify-content-between">
 			<h2 class="text-center my-3 mb-3">Laisses ton <span class="marker">Bubbles Comment</span></h2>
 			<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
@@ -7,7 +10,7 @@
 		<section>
 			<form action="/comment/create/{{ post.slug }}" method="post" class="row g-3">
 				<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
-				<label for="Contenu" class="form-label h6">Contenu *</label>
+				<label for="Contenu" class="form-label h6">Contenu*</label>
 				<button class="bluegrey my-4" type="submit">Publier</button>
 			</form>
 		</section>
