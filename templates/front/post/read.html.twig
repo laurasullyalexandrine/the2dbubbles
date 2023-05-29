@@ -23,7 +23,7 @@
 			<div>
 				<h1>{{ post.title }}</h1>
 				<h2 class="fs-5">{{ post.chapo }}</h2>
-				<p class="fst-italic">
+				<p class="fs-6 fst-italic">
 					Publié le
 					<time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
 					<time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
@@ -52,30 +52,36 @@
 				<h2>Bubbles Comment</h2>
 				<div>
 					{% if comments is empty %}
-						<p>Cet article n'a pas encore de Bubble Comment.
+						<p>
+							Cet article n'a pas encore de Bubbles Comment.
 							<br>
-							À ton clavier 😄</p>
+							À ton clavier 😄
+						</p>
 					{% elseif commentsCheck is empty %}
-						<p>Cet article n'a pas encore de Bubble Comment validé!
+						<p>Cet article n'a pas encore de Bubbles Comment validé!
 							<br>
 						</p>
 					{% else %}
 						{% for commentCheck in commentsCheck %}
-						<div class="border border-2 rounded p-3 my-4">
-							<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}
-								<br><br>
-								Publié par
-								<span class="fw-bolder">{{ commentCheck.pseudo }}</span>
-								le
-								<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
-								<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
-								<br>
-								{% if commentCheck.status == 1 %}
+						<div class="card shadow-sm bg-body rounded me-3 mb-5" style="min-width: 18rem; min-height: 12rem;">
+							<div class="card-body flex-wrap">
+							{% if commentCheck.status == 1 %}
+								<h6 class="card-title">
 									Bubble Comment Validé
 									<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-								{% endif %}
-							</p>
-
+								</h6>
+								
+							{% endif %}
+							<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}</p>
+							<ul class="list-group">
+								<li class="fs-6 list-group-item">
+									Publié par
+									{{ commentCheck.pseudo }}
+									le
+									<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
+									<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
+								</li>
+							</ul>
 							{% if is_granted() == "utilisateur" %}
 								{% set user = user() %}
 								{% if commentCheck.pseudo ==  user.pseudo %}
