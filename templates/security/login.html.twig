@@ -2,10 +2,11 @@
 {% block body %}
 	{% set user = user() %}
 	<article class="d-flex flex-wrap justify-content-center">
-		<h1 class="col-lg-6 mt-lg-4">
+		<div class="col-lg-6 mt-lg-4">
 			<img src="/image/login.png" alt="image-login" class="mw-100">
-		</h1>
+		</div>
 		<section class="col-lg-6 p-lg-5">
+		<h1>Bienvenue</h1>
 			<form action="/security/login" method="post" class="d-flex flex-column mt-lg-5 p-lg-4">
 				<div>
 					<input type="email" name="email" id="email" class="form-control border-2" value="{{ user.email }}">
