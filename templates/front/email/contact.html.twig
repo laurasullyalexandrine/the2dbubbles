@@ -4,53 +4,53 @@
 {% endblock %}
 
 {% block body %}
-	<article class="d-flex flex-column">
-		<div class="text-center mb-4">
-			<h1>Contact-nous</h1>
-			<h5>Un bug, une question, une suggestion...
-				<span class="marker">On est à ton écoute</span>.</h5>
-			<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
+	{% set user = user() %}
+	<article class="d-flex flex-wrap justify-content-center">
+		<div class="col-lg-6 my-4">
+			<img src="/image/contact.png" alt="image-contact" class="mw-100">
 		</div>
-		{% set user = user() %}
-
-		<section class="d-flex justify-content-center">
-			<form action="/contact/mailSend" method="post" class="d-flex flex-column border border-dark-subtle border-2 rounded p-3">
+		<section class="col-lg-6 p-lg-5">
+			<h1>Formulaire de contact</h1>
+			<h5>Un bug, une question, une suggestion...
+				<span class="marker">On est à ton écoute</span>.
+			</h5>
+			<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
+			<form action="/contact/mailSend" method="post" class="d-flex flex-column rounded p-3">
 				<div class="d-flex flex-wrap justify-content-center my-4">
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
-							<i class="fas fa-solid fa-bug fa-lg" style="color: #8554C5;"></i>
-							Bug *
+							<i class="fas fa-solid fa-bug fa-lg" style="color: #3498db;"></i>
+							Bug*
 						</label>
 						<input class="form-check-input border-2" type="checkbox" name="subject" id="Subject" value="bug">
 					</div>
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
-							<i class="fa-solid fa-question" style="color: #8554C5;"></i>
-							Question *
+							<i class="fa-solid fa-question" style="color: #3498db;"></i>
+							Question*
 						</label>
 						<input class="form-check-input border-2" type="checkbox" name="subject" id="Subject" value="question">
 					</div>
 					<div class="form-check">
 						<label class="form-check-label me-3" for="Subject">
-							<i class="fa-regular fa-lightbulb fa-lg" style="color: #8554C5;"></i>
-							Suggestion *
+							<i class="fa-regular fa-lightbulb fa-lg" style="color: #3498db;"></i>
+							Suggestion*
 						</label>
 						<input class="form-check-input border-2" type="checkbox" name="subject" id="Subject" value="suggesion">
 					</div>
 
 				</div>
 				<input type="text" name="pseudo" id="Pseudo" value="{{ user.pseudo }}" class="form-control border border-2">
-				<label for="Pseudo" class="form-label h6">Prénom/Pseudo *</label>
+				<label for="Pseudo" class="form-label h6">Prénom/Pseudo*</label>
 
 				<input type="email" name="email" id="Email" value="{{ user.email }}" class="form-control border border-2">
-				<label for="Email" class="form-label h6">Email *</label>
+				<label for="Email" class="form-label h6">Email*</label>
 
-				<textarea class="form-control border border-2" name="message" id="Message" rows="8">{{ 'Ton Bubbles message' }}</textarea> 
-				<label for="Message" class="form-label h6">Message *</label>
-			
+				<textarea class="form-control border border-2" name="message" id="Message" rows="8">{{ 'Ton Bubbles message' }}</textarea>
+				<label for="Message" class="form-label h6">Message*</label>
 
-		<button class="bluegrey my-4" type="submit">Envoyer</button>
-		</form>
+				<button class="bluegrey my-4" type="submit">Envoyer</button>
+			</form>
 		</section>
 	</article>
 {% endblock %}

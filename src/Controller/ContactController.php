@@ -12,10 +12,6 @@ class ContactController extends CoreController {
 
     public function mailSend() {
 
-        if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
-            header('Location: /security/login');
-        } else {
             if ($this->isPost()) {
                 $subject = filter_input(INPUT_POST, 'subject');
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
@@ -46,7 +42,6 @@ class ContactController extends CoreController {
                     $this->flashes('warning', $e->getMessage());
                 }
             }
-        }
         $this->show('/front/email/contact');
     }
 }

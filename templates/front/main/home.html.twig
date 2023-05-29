@@ -7,14 +7,14 @@
 {% block body %}
 {% set user = user() %}
 	<article class="row d-flex flex-wrap justify-content-between">
-		<h1 class="col-lg-6 mt-lg-4">
+		<div class="col-lg-6 my-4">
 			<img src="/image/php-dev-symfony.png" alt="image-developer-php-symfony" class="mw-100">
-        </h1>
+        </div>
 
 		<section class="col p-lg-4">
-			<h2 class="my-3">
+			<h1 class="my-3">
 				Bonjour <span class="marker"> {{ user.pseudo }}</span>,
-			</h2>
+			</h1>
 			<p>Bienvenue sur mon blog professionnel, interactif et évolutif !</p>
 			<p>
 				Je me présente, 
