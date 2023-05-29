@@ -5,6 +5,7 @@
 
 {% block body %}
 	<article class="row d-flex flex-wrap justify-content-between">
+		<p class="align-self-end"><a class="card-link" href="/post/list">Retour</a></p>
 		{# Formulaire d'ajout de commentaire #}
 		{% if is_granted() == "utilisateur" %}
 			<section class="col">
@@ -44,12 +45,9 @@
 						<a class="card-link" href="/post/update/{{ post.slug }}">Modifier</a>
 						{{ include('admin/post/_delete.html.twig') }}
 					{% endif %}
-					<a class="card-link" href="/post/list">Retour</a>
 				</div>
 			</div>
 
-		{# Liste des commentaires déjà postés et validés #}
-		{# {% if is_granted() == "utilisateur" %} #}
 			<section class="col py-5">
 				<h2>Bubbles Comment</h2>
 				<div>
@@ -90,7 +88,6 @@
 
 				</div>
 			</section>
-		{# {% endif %} #}
 		</section>
 
 

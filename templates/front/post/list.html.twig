@@ -4,6 +4,7 @@
 {% endblock %}
 {% block body %}
 	<article class="row d-flex flex-wrap">
+		<p class="align-self-end"><a class="card-link my-4" href="/main/home">Retour</a></p>
 		<div class="col-lg-5 mt-lg-4">
 			<img src="/image/post.png" alt="image-developer-php-symfony" class="w-100">
 		</div>
@@ -13,7 +14,6 @@
 				{% if is_granted() == "super_admin" %}
 					<a class="nav-link bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
 				{% endif %}
-				<a class="nav-link bluegrey my-4" href="/main/home">Retour</a>
 			</p>
 			<div class="d-flex flex-wrap justify-content-center">
 				{% for post in posts %}
