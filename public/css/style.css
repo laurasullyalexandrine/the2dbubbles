@@ -99,3 +99,14 @@ strong {
     background-color: #38ada9 !important;
 }
 
+.admin {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 15px !important;
+    border-radius: 3px !important;
+    background-color: #eb2f06 !important;
+}
+.admin:hover {
+    background-color: #e94520 !important;
+}
+
