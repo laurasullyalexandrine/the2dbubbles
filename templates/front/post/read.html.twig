@@ -17,29 +17,30 @@
 			</div>
 		{% endif %}
 
-
 		{# Article #}
-		<section class="col-lg-5 col-sm-6 mt-lg-4 p-3 d-flex flex-column">
+		<section class="col-lg-5 col-sm-6 mt-lg-4 p-4 d-flex flex-column">
 			<div>
-				<h1>{{ post.title }}</h1>
+				<h1 class="p-2 rounded" style="background-color:pink;">{{ post.title }}</h1>
 				<h2 class="fs-5">{{ post.chapo }}</h2>
-				<p class="fs-6 fst-italic">
-					Publié le
-					<time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
-					<time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
-				</p>
 				<p class="mw-25 text-justify">{{ post.content }}</p>
-				<p class="fs-6 fst-italic">Auteur :
-					{{post.user}}</p>
 				{% if post.updatedAt != null %}
-					<p>
-						<span class="st-italic">Modifié le :
-						</span>
-						<time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
-						<time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
-					{% endif %}
-				</p>
-
+					<ul class="list-group">
+						<li class="fs-6 list-group-item">
+							Modifié le :
+							<time datetime="{{ post.updatedAt|date('d-m-Y') }}">{{ post.updatedAt|date('d-m-Y') }}</time>
+							<time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
+						</li>
+					</ul>
+				{% endif %}
+				<ul class="list-group">
+					<li class="fs-6 list-group-item">
+						Publié par
+						{{post.user}}
+						le 
+						<time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
+						<time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
+					</li>
+				</ul>
 				<div class="d-flex">
 					{% if is_granted() == "super_admin" %}
 						<a class="card-link" href="/post/update/{{ post.slug }}">Modifier</a>

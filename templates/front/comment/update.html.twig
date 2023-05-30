@@ -3,22 +3,23 @@
 {% block body %}
 	{% set user = user() %}
 	<article class="row d-flex flex-wrap justify-content-between">
+		<p><a class="card-link" href="/comment/userComment/{{ user.slug }}">Retour</a></p>
 		<div class="col-lg-6 my-4">
 			<img src="/image/comment.png" alt="image-comment" class="w-100">
 		</div>
 		<section class="col p-3 d-flex flex-column">
 			<div class="mb-4">
 				<h1>Modifies ton Bubbles Comment</h1>
-				<h6>Tu veux revoir ta copie ? C'est ici que ça se passe!</h6>
-				<a class="card-link" href="/comment/userComment/{{ user.slug }}">Retour</a>
+				<h6 class="fs-5">Tu veux revoir ta copie ? C'est ici que ça se passe!</h6>
+				
 			</div>
-			<p class="text-danger fst-italic">Les champs marqués d'un * sont obligatoires.</p>
-
+			<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
 			<form action="/comment/update/{{ comment.id }}" method="post" class="d-flex flex-column">
-				<textarea class="form-control border border-2" name="content" id="Content" rows="6" value="{{ comment.content }}">{{ comment.content }}</textarea>
-				<label for="Contenu" class="form-label">Contenu*</label>
-
-				<button class="bluegrey" type="submit">Modifier</button>
+				<div class="mb-2">
+					<textarea class="form-control border border-2" name="content" id="Content" rows="6" value="{{ comment.content }}">{{ comment.content }}</textarea>
+					<label for="Contenu" class="form-label h6">Contenu*</label>
+				</div>
+				<button class="bluegrey my-4" type="submit">Modifier</button>
 			</form>
 		</section>
 	</article>

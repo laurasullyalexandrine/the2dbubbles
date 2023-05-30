@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
 	<article class="row d-flex flex-wrap">
-		<p class="align-self-end"><a class="card-link my-4" href="/main/home">Retour</a></p>
+		<p><a class="card-link my-4" href="/main/home">Retour</a></p>
 		<div class="col-lg-5 mt-lg-4">
 			<img src="/image/post.png" alt="image-developer-php-symfony" class="w-100">
 		</div>
@@ -20,8 +20,8 @@
 					<div class="col-sm-6 mb-3">
 						<div class="card shadow-sm bg-body rounded" style="width: 18rem; height: 12rem;">
 							<div class="card-body flex-wrap">
-								<h5 class="card-title">{{ post.title }}</h5>
-								<p class="card-subtitle fs-6 mb-2 text-muted">{{ post.chapo }}</p>
+								<h5 class="card-title p-2 rounded" style="background-color:pink;">{{ post.title }}</h5>
+								<p class="card-subtitle fs -6 mb-2 text-muted">{{ post.chapo }}</p>
 								<ul class="list-group">
 									<li class="fs-6 list-group-item">
 										Publié le :
@@ -43,7 +43,6 @@
 					</div>
 				{% endfor %}
 			</div>
-
 		</section>
 	</article>
 {% endblock %}

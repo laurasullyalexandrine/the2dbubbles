@@ -2,10 +2,10 @@
 
 {% block body %}
 	<article class="row d-flex flex-wrap">
-		<div class="col-lg-6 my-4">
+		<div class="col-lg-5 my-4">
 			<img src="/image/space.png" alt="image-space" class="w-100">
 		</div>
-		<section class="col p-3 d-flex flex-wrap">
+		<section class="col-lg-7 p-3 d-flex flex-wrap justify-content-center">
 			<div class="mb-4">
 				<h1>Bienvenue dans ton Bubbles Space!</h1>
 				<h6 class="fs-5">C'est ici que tu gères tes Bubbles Comment.</h6>
@@ -13,7 +13,7 @@
 			{% if comments|length == 0 %}
 				<div class="d-flex flex-column">
 					<h2>Tu n'as pas encore de Bubbles Comment !</h2>
-					<p class="fs-5">À toi de jouer!</p>
+					<p class="fs-5">À toi de jouer! 😁</p>
 				</div>
 			{% else %}
 				{% for comment in comments %}

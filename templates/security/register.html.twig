@@ -7,34 +7,33 @@
 			<img src="/image/register.png" alt="image-login" class="mw-100">
 		</div>
 		<section class="col-lg-6 p-lg-5">
-			<h1 class="text-start">Créer ton Bubbles Space</h1>
-			<p class="text-danger fst-italic text-start">Les champs marqués d'un * sont obligatoires.</p>
-			<form action="register" method="POST" class="d-flex flex-column mx-1 mx-md-4">
-				<div>
+			<h1>Créer ton Bubbles Space</h1>
+			<form action="register" method="post" class="d-flex flex-column mt-lg-3 p-lg-4">
+				<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
+				<div class="mb-2">
 					<input type="text" name="pseudo" id="pseudo" class="form-control border-2" value="{{ user.email }}">
-					<label for="" class="form-label h6 mb-3">Pseudo</label>
+					<label for="" class="form-label h6 mb-3">Pseudo*</label>
 				</div>
-				<div>
+				<div class="mb-2">
 					<input type="email" name="email" id="email" class="form-control border-2" value="{{ user.email }}">
-					<label for="" class="form-label h6 mb-3">Email</label>
+					<label for="" class="form-label h6 mb-3">Email*</label>
 				</div>
-				<div>
+				<div class="mb-2">
 					<input type="password" name="password" id="password" class="form-control border-2" value="{{ user.password }}">
-					<label for="" class="form-label h6 mb-3">Mot de passe</label>
+					<label for="" class="form-label h6 mb-3">Mot de passe*</label>
 				</div>
-				<div>
+				<div class="mb-2">
 					<input type="password" name="password_2" id="password_2" class="form-control border-2" value="{{ user.password }}">
-					<label for="" class="form-label h6 mb-3">Confirmes ton mot de passe</label>
+					<label for="" class="form-label h6 mb-3">Confirmes mot de passe*</label>
 				</div>
-					<button type="submit" class="bluegrey bluegrey-lg">Bubbles Go!</button>
-				<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+				<button type="submit" class="bluegrey bluegrey-lg">Bubbles Go!</button>
+				<div class="d-flex justify-content-center rounded p-3 my-5" style="background-color:pink;">
+					<p class="small h6">
+						Tu as déjà un Bubbles Space ?
+						<a class="link-danger" href="/security/login">Connecte-toi!</a>
+					</p>
 				</div>
 			</form>
-			<div class="d-flex justify-content-center rounded p-3 my-3" style="background-color:pink;">
-				<p class="small h6">Tu as déjà un Bubbles Space ?
-					<a class="link-danger" href="/security/login">Connecte-toi!</a>
-				</p>
-			</div>
 		</section>
 	</article>
 {% endblock %}
