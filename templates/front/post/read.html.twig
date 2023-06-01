@@ -74,7 +74,7 @@
 								
 							{% endif %}
 							<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}</p>
-							<ul class="list-group">
+							<ul class="list-group mb-3">
 								<li class="fs-6 list-group-item">
 									Publié par
 									{{ commentCheck.pseudo }}
@@ -86,7 +86,7 @@
 							{% if is_granted() == "utilisateur" %}
 								{% set user = user() %}
 								{% if commentCheck.pseudo ==  user.pseudo %}
-									<a class="bluegrey" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
+									<a class="card-link" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
 								{% endif %}
 							{% endif %}
 						</div>

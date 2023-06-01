@@ -70,7 +70,9 @@ strong {
 .marker {
     color: #38ada9;    
 }
+.logout {
 
+}
 /*------ NAVBAR FOOTER ------*/
 
 .navbar-toggler,
@@ -99,14 +101,18 @@ strong {
     background-color: #38ada9 !important;
 }
 
-.admin {
+.admin, 
+.logout {
     color: #ffffff;
     text-decoration: none;
     padding: 5px 15px !important;
     border-radius: 3px !important;
-    background-color: #eb2f06 !important;
+    background-color: #3c6382 !important;
 }
 .admin:hover {
-    background-color: #e94520 !important;
+    background-color: #38ada9!important;
 }
 
+.logout:hover {
+    background-color: #38ada9!important;
+}
