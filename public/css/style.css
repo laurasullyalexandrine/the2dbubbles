@@ -70,9 +70,7 @@ strong {
 .marker {
     color: #38ada9;    
 }
-.logout {
 
-}
 /*------ NAVBAR FOOTER ------*/
 
 .navbar-toggler,
@@ -110,9 +108,9 @@ strong {
     background-color: #3c6382 !important;
 }
 .admin:hover {
-    background-color: #38ada9!important;
+    background-color: #577894 !important;
 }
 
 .logout:hover {
-    background-color: #38ada9!important;
+    background-color: #577894 !important;
 }

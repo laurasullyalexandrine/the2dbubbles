@@ -4,17 +4,18 @@
 {% endblock %}
 {% block body %}
 	<article class="row d-flex flex-wrap">
-		<p><a class="card-link my-4" href="/main/home">Retour</a></p>
+		<p>
+			<a class="card-link my-4" href="/main/home">Retour</a>
+				{% if is_granted() == "super_admin" %}
+					<a class="card-link my-3" href="/post/create">Nouveau Bubbles Post</a>
+				{% endif %}
+		</p>
 		<div class="col-lg-5 mt-lg-4">
 			<img src="/image/post.png" alt="image-developer-php-symfony" class="w-100">
 		</div>
 
 		<section class="col-lg-7 d-flex flex-column mb-5">		
-			<p class="d-flex justify-content-around">
-				{% if is_granted() == "super_admin" %}
-					<a class="nav-link bluegrey my-4" href="/post/create">Nouveau Bubbles Post</a>
-				{% endif %}
-			</p>
+
 			<div class="d-flex flex-wrap justify-content-center">
 				{% for post in posts %}
 					<div class="col-sm-6 mb-3">
