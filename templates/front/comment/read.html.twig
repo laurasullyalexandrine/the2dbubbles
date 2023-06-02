@@ -33,17 +33,18 @@
 									{% endif %}
 								</h6>
 								<p class="card-text">{{ comment.content }}</p>
-									<div class="d-flex">
-										<a class="card-link" href="/comment/update/{{ comment.id }}">Modifier</a>
-										{{ include('front/comment/_delete.html.twig') }}
-									</div>
+								<div class="d-flex">
+									<a class="card-link" href="/comment/update/{{ comment.id }}">Modifier</a>
+									{{ include('front/comment/_delete.html.twig') }}
+								</div>
 								<ul class="list-group">
 									<li class="fs-6 list-group-item">
 										Titre Bubbles Post :
 										{{comment.post}}
 										<br>
-									Auteur :
-									{{ author.pseudo }} <br>
+										Auteur :
+										{{ author.pseudo }}
+										<br>
 										Publié le :
 										<time datetime="{{ post.createdAt|date('d-m-Y') }}">{{ post.createdAt|date('d-m-Y') }}</time>
 										<time datetime="{{ post.createdAt|date('H:i:s') }}">{{ post.createdAt|date('H:i:s') }}</time>

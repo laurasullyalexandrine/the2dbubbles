@@ -69,11 +69,11 @@ class AdminController extends CoreController
             $comment->setStatus($status);
 
             if ($comment->update()) {
-                $this->flashes('success', "Le commentaire $commentId a bien été modifié.");
+                $this->flashes('success', "Le Bubbles Comment $commentId a bien été modifié.");
                 header('Location: /admin/comments');
                 exit;
             } else {
-                $this->flashes('danger', "L'article n'a pas été modifié!");
+                $this->flashes('danger', "Le Bubbles Comment  $commentId n'a pas été modifié!");
             }
         }
     }

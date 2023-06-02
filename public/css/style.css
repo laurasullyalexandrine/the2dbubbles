@@ -29,9 +29,11 @@ strong {
     color: #3c6382;
     font-weight: 400;
     text-decoration: none !important;
+    border: none;
     margin: 5px 0;
     padding: 5px 15px !important;
     border-radius: 3px !important;
+    background-color: transparent;
 }
 .card-link:hover {
     color: #ffffff;
