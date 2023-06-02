@@ -70,6 +70,9 @@ strong {
 .marker {
     color: #38ada9;    
 }
+.marker-dark {
+    color: #3c6382 ;    
+}
 
 /*------ NAVBAR FOOTER ------*/
 

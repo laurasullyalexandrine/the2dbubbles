@@ -4,44 +4,59 @@
 {% endblock %}
 
 {% block body %}
-{% set user = user() %}
-	<article class="row text-center">
-		<h1>Administration 2<span class="marker">DB</span>ubbles</h1>
-		<h2>Que souhaites tu faire <strong class="marker">{{ user.pseudo }} </strong> ?!</h2>
-		<section class="row">
-			<div class="card-border d-flex flex-wrap justify-content-between border border-dark-subtle rounded p-2 my-4">
-				<div class="card ms-2 mb-3" style="width: 18rem;">
-					<div class="card-body">
-						<h5 class="card-title">Bubble Post</h5>
-						<p class="card-text">Ici le
-							<strong class="marker">Super-admin</strong> pourra gérer tous ses Bubbles Posts.</p>
-						<a href="/post/list" class="bluegrey bluegrey-primary">post</a>
+	{% set user = user() %}
+	<article class="row d-flex flex-wrap">
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/admin.png" alt="image-admin" class="mw-100">
+		</div>
+		<section class="col p-lg-5">
+			<h1>Administration</h1>
+			<h2>Que souhaites tu faire
+				<strong class="marker-dark">{{ user.pseudo }}</strong> ?!
+			</h2>
+			<div class="d-flex flex-wrap justify-content-between">
+				<div class="col-sm-6 mb-3">
+					<div class="card shadow-sm bg-body rounded" style="width: 16rem; height: 12rem;">
+						<div class="card-body flex-wrap">
+							<h5 class="card-title p-2 rounded" style="background-color:pink;">Bubbles Post</h5>
+							<p class="card-subtitle fs -6 mb-2 text-muted">Ici le
+								<strong class="marker-dark ">Super-admin</strong>
+								pourra gérer tous ses Bubbles Posts.</p>
+							<a href="/post/list" class="card-link">post</a>
+						</div>
 					</div>
 				</div>
-
-				<div class="card ms-2 mb-3" style="width: 18rem;">
-					<div class="card-body">
-						<h5 class="card-title">Bubble Role</h5>
-						<p class="card-text">Ici le
-							<strong class="marker">Super-admin</strong> pourra gérer les Bubbles Roles.</p>
-						<a href="/role/read" class="bluegrey bluegrey-primary">role</a>
+				<div class="col-sm-6 mb-3">
+					<div class="card shadow-sm bg-body rounded"  style="width: 16rem; height: 12rem;">
+						<div class="card-body flex-wrap">
+							<h5 class="card-title p-2 rounded" style="background-color:pink;">Bubbles Role</h5>
+							<p class="card-subtitle fs -6 mb-2 text-muted">Ici le
+								<strong class="marker-dark">Super-admin</strong>
+								pourra gérer les Bubbles Roles.</p>
+							<a href="/role/read" class="card-link">role</a>
+						</div>
 					</div>
 				</div>
-
-				<div class="card ms-2 mb-3" style="width: 18rem;">
-					<div class="card-body">
-						<h5 class="card-title">Bubble User</h5>
-						<p class="card-text">Ici le
-							<strong class="marker">Super-admin</strong> pourra gérer les Bubbles Users.</p>
-						<a href="/user/read" class="bluegrey bluegrey-primary">user</a>
+				<div class="col-sm-6 mb-3">
+					<div class="card shadow-sm bg-body rounded"  style="width: 16rem; height: 12rem;">
+						<div class="card-body flex-wrap">
+							<h5 class="card-title p-2 rounded" style="background-color:pink;">Bubbles User</h5>
+							<p class="card-subtitle fs -6 mb-2 text-muted">Ici le
+								<strong class="marker-dark">Super-admin</strong>
+								pourra gérer les Bubbles Users.</p>
+							<a href="/user/read" class="card-link">user</a>
+						</div>
 					</div>
 				</div>
-				<div class="card ms-2 mb-3" style="width: 18rem;">
-					<div class="card-body">
-						<h5 class="card-title">Bubble Comment</h5>
-						<p class="card-text">Ici l'
-							<strong class="marker">adminstrateur</strong> pourra gérer les Bubbles Comments.</p>
-						<a href="/admin/comments" class="bluegrey bluegrey-primary">comment</a>
+				<div class="col-sm-6 mb-3">
+					<div class="card shadow-sm bg-body rounded"  style="width: 16rem; height: 12rem;">
+						<div class="card-body flex-wrap">
+							<h5 class="card-title p-2 rounded" style="background-color:pink;">Bubbles Comment</h5>
+							<p class="card-subtitle fs -6 mb-2 text-muted">Ici l'
+								<strong class="marker-dark">Adminstrateur</strong>
+								pourra gérer les Bubbles Comments.</p>
+							<a href="/admin/comments" class="card-link">comment</a>
+						</div>
 					</div>
 				</div>
 			</div>
