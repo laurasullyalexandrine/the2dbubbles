@@ -106,10 +106,10 @@ class RoleController extends CoreController
 
                     if ($role->update()) {
                         header('Location: /role/read');
-                        $this->flashes('success', 'Le rôle a bien été modifié.');
+                        $this->flashes('success', 'Le rôle ' . $role->getName() . ' a bien été modifié.');
                         exit;
                     } else {
-                       $this->flashes('danger', "Le rôle n'a pas été modifié!");
+                       $this->flashes('danger', 'Le rôle ' . $role->getName() . ' n\'a pas été modifié!');
                     }
                 } else {
                     $role->setName($roleName);
