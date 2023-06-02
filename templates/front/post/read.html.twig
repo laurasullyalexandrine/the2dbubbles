@@ -64,39 +64,38 @@
 						</p>
 					{% else %}
 						{% for commentCheck in commentsCheck %}
-						<div class="card shadow-sm bg-body rounded me-3 mb-5" style="min-width: 18rem; min-height: 12rem;">
-							<div class="card-body flex-wrap">
-							{% if commentCheck.status == 1 %}
-								<h6 class="card-title">
-									Bubble Comment Validé
-									<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
-								</h6>
-								
-							{% endif %}
-							<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}</p>
-							<ul class="list-group mb-3">
-								<li class="fs-6 list-group-item">
-									Publié par
-									{{ commentCheck.pseudo }}
-									le
-									<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
-									<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
-								</li>
-							</ul>
-							{% if is_granted() == "utilisateur" %}
-								{% set user = user() %}
-								{% if commentCheck.pseudo ==  user.pseudo %}
-									<a class="card-link" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
-								{% endif %}
-							{% endif %}
-						</div>
+							<div class="col-sm-6 mb-3">
+								<div class="card shadow-sm bg-body rounded me-3 mb-5" style="min-width: 20rem; min-height: 12rem;">
+									<div class="card-body flex-wrap">
+										{% if commentCheck.status == 1 %}
+											<h5 class="card-title">
+												Bubble Comment Validé
+												<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
+											</h5>
+										{% endif %}
+
+										<p class="text-justify pb-2 mb-4 border-bottom border-light">{{ commentCheck.content }}</p>
+										<ul class="list-group mb-3">
+											<li class="fs-6 list-group-item">
+												Publié par
+												{{ commentCheck.pseudo }}
+												le
+												<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('d-m-Y')}}">{{ commentCheck.createdAt|date('d-m-Y') }}</time>
+												<time class="fst-italic" datetime="{{ commentCheck.createdAt|date('H:i:s')}}">{{commentCheck.createdAt|date('H:i:s')}}</time>
+											</li>
+										</ul>
+										{% if is_granted() == "utilisateur" %}
+											{% set user = user() %}
+											{% if commentCheck.pseudo ==  user.pseudo %}
+												<a class="card-link" href="/comment/update/{{ commentCheck.id }}">Modifier</a>
+											{% endif %}
+										{% endif %}
+									</div>
+								</div>
+							</div>	
 						{% endfor %}
 					{% endif %}
-
-				</div>
 			</section>
 		</section>
-
-
 	</article>
 {% endblock %}
