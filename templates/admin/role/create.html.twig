@@ -4,19 +4,21 @@
 {% endblock %}
 
 {% block body %}
-	<article class="d-flex flex-column justify-content-center">
-		<h1 class="text-center mb-4">Nouveau Bubbles Rôle</h1>
-		<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
-		<a class="bluegrey my-4" href="/role/read">Retour</a>
-		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
+	<article class="row d-flex flex-wrap">
+		<p><a class="card-link my-4" href="/role/read">Retour</a></p>
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/admin-role.png" alt="image-role" class="mw-100">
+		</div>
+		
+		<section class="col-lg-6 p-lg-5">
+			<h1>Nouveau Bubbles Role</h1>
 			<form action="create" method="post" class="row g-3">
-				<div>
-					<label for="Role" class="form-label">Nom</label>
-					<input type="text" class="form-control" value="{{ role.name }}" name="role" id="Role">
+				<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
+				<div class="mb-2">
+					<input type="text" class="form-control border border-2" value="{{ role.name }}" name="role" id="Role">
+					<label for="Role" class="form-label h6">Nom*</label>
 				</div>
-				
-					<button class="bluegrey" type="submit">Créer</button>
-			
+				<button class="bluegrey my-4" type="submit">Créer</button>
 			</form>
 		</section>
 	</article>
