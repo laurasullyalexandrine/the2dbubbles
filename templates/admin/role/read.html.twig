@@ -3,35 +3,47 @@
 	active
 {% endblock %}
 {% block body %}
+	<article class="row d-flex flex-wrap">
+		<p>
+			<a class="card-link" href="/admin/dashboard">Retour</a>
+			{% if is_granted() == "super_admin" %}
+				<a class="card-link my-3" href="/role/create">Nouveau Bubbles Role</a>
+			{% endif %}
+		</p>
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/admin-role.png" alt="image-role" class="mw-100">
+		</div>
+		<section class="col-lg-7 d-flex flex-column mb-5">
+			<h1 class="mt-3">Admin Bubbles Role</h1>
+			<div class="d-flex flex-wrap justify-content-center">
+				{% for role in roles %}
+					<div class="col-sm-6 mb-3">
+						<div class="card shadow-sm bg-body rounded" style="width: 18rem; max-height: 18rem;">
+							<div class="card-body flex-wrap">
+								<h5 class="card-title p-2 rounded" style="background-color:pink;">
+									{{ role.name}}</h5>
+								<p class="card-subtitle fs -6 mb-2 text-muted">Numéro
+									{{ role.id }}</p>
+								{% if role.name == "super_admin" %}
+									<p class="card-text">Ce rôle a accès à toutes les fonctionnalités du site.</p>
+								{% elseif role.name == "admin" %}
+									<p class="card-text">Ce rôle permet de gérer et valider tous les commentaires du site.</p>
+								{% else %}
+									<p class="card-text">Ce rôle est réservé aux utilisateurs lambda.</p>
+								{% endif %}
 
-	<article class="d-flex flex-column justify-content-center">
-		<h1 class="text-center mb-4">Bubbles Roles</h1>
-
-		<a class="bluegrey mb-4" href="/admin/dashboard">Retour</a>
-
-		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
-			{% for role in roles %}
-				<div class="card m-2" style="width: 18rem;">
-					<div class="card-body">
-						<h5 class="card-title">Numéro
-							{{ role.id }}</h5>
-						<h6 class="card-subtitle mb-2 text-muted">{{ role.name }}</h6>
-						{% if role.name == "super_admin" %}
-							<p class="card-text">Ce rôle a accès à toutes les fonctionnalités du site.</p>
-						{% elseif role.name == "admin" %}
-							<p class="card-text">Ce rôle permet de gérer et valider tous les commentaires du site.</p>
-						{% else %}
-							<p class="card-text">Ce rôle est réservé aux utilisateurs lambda.</p>
-						{% endif %}
-
-						<div class="d-flex">
-							<a class="bluegrey me-3" href="/role/update/{{ role.id }}">Modifer</a>
-							{{ include('admin/role/_delete.html.twig') }}
+								<div class="d-flex">
+									{% if is_granted() == "super_admin" %}
+										<a class="card-link" href="/role/update/{{ role.id }}">Modifer</a>
+										{{ include('admin/role/_delete.html.twig') }}
+									{% endif %}
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			{% endfor %}
+				{% endfor %}
+			</div>
 		</section>
-		<a class="bluegrey my-4" href="/role/create">Nouveau Bubbles Role</a>
+
 	</article>
 {% endblock %}
