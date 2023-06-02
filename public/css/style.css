@@ -91,18 +91,16 @@ strong {
 .nav-link {
     color: #ffffff !important;
     padding: 5px 15px !important;
+    border-bottom: 1px solid transparent !important;
 }
 .nav-link:hover {
     transition: .3s !important;
-    color: #38ada9 !important;
+    border-bottom: 1px solid #38ada9 !important;
 }
 
-.nav-link .active {
-    transition: .3s !important;
-    padding: 5px 15px !important;
-    border-radius: 3px !important;
-    background-color: #38ada9 !important;
-}
+/* .active {
+    border-bottom: 1px solid #38ada9 !important;
+} */
 
 .admin, 
 .logout {
