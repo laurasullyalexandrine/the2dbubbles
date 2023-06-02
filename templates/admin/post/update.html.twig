@@ -1,32 +1,35 @@
 {% extends "/base.html.twig" %}
-{% block menu_post %} active {% endblock %}
-
-{% block body %}
-
-	<article class="d-flex flex-column justify-content-center">
-		<h1 class="text-center mb-4">Modifier le Bubbles Post {{ post.title }}</h1>
-		<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
-		<a class="bluegrey my-4" href="/post/list">Retour</a>
-
-		<section class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
-		<form action="/post/update/{{ post.slug }}" method="post" class="row g-3">
-		
-				<input type="text" class="form-control border border-2" value="{{ post.title }}" name="title" id="Title">
-				<label for="Title" class="form-label h6">Titre</label>
-
-				<textarea class="form-control border border-2 mt-4" name="content" id="Content" rows="8" value="{{ post.content }}">{{ post.content }}</textarea>
-				<label for="Contenu" class="form-label h6">Contenu</label>
-
-
-		
-				<input type="text" class="form-control border border-2" value="{{ post.chapo }}" name="chapo" id="Chapo">
-				<label for="Chapo" class="form-label h6">Chapô</label>
-	
-				<button class="bluegrey" type="submit">Modifier</button>
-		
-		</form>
-	</section>
-</article>
-      
+{% block menu_post %}
+	active
 {% endblock %}
 
+{% block body %}
+	<article class="row d-flex flex-wrap">
+		<p>
+			<a class="card-link my-4" href="/post/list">Retour</a>
+		</p>
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/post.png" alt="image-post" class="w-100">
+		</div>
+
+		<section class="col-lg-6 p-lg-5">
+			<h1>Modifier le Bubbles Post {{ post.title }}</h1>
+			<form action="/post/update/{{ post.slug }}" method="post" class="row g-3">
+				<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
+				<div class="mb-2">
+					<input type="text" class="form-control border border-2" value="{{ post.title }}" name="title" id="Title">
+					<label for="Title" class="form-label h6">Titre*</label>
+				</div>
+				<div class="mb-2">
+					<input type="text" class="form-control border border-2" value="{{ post.chapo }}" name="chapo" id="Chapo">
+					<label for="Chapo" class="form-label h6">Chapô*</label>
+				</div>
+				<div class="mb-2">
+					<textarea class="form-control border border-2 mt-4" name="content" id="Content" rows="8" value="{{ post.content }}">{{ post.content }}</textarea>
+					<label for="Contenu" class="form-label h6">Contenu*</label>
+				</div>
+				<button class="bluegrey my-4" type="submit">Modifier</button>
+			</form>
+		</section>
+	</article>
+	{% endblock %}
