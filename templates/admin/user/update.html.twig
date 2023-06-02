@@ -5,15 +5,22 @@
 {% endblock %}
 
 {% block body %}
-	<article class="d-flex flex-column justify-content-center">
-		<h1 class="text-center mb-5">Modifier bubble User {{ user.pseudo }} !</h1>
-		<p class="text-danger fst-italic text-center">Les champs marqués d'un * sont obligatoires.</p>
-		<a class="bluegrey mb-4" href="/user/read">Retour</a>
+	<article class="row d-flex flex-wrap">
+		<p>
+			<a class="card-link my-4" href="/user/read">Retour</a>
+		</p>
+		<div class="col-lg-5 mt-lg-4">
+			<img src="/image/admin-user.png" alt="image-user" class="mw-100">
+		</div>
 
-		<div class="d-flex flex-wrap justify-content-center border border-dark-subtle border-2 rounded p-3">
-		<form action="/user/update/{{ user.id }}" method="post" class="d-flex flex-column p-4 mx-1 mx-md-4">
-			<section class="col-lg-6 col-xl-6 col-xxl-6 col-xs-12 col-sm-12">
-				<div class="my-3">
+		<section class="col-lg-6 p-lg-5">
+			<h1>
+				Modifier bubble User
+				<span class="marker-dark">{{ user.pseudo }}</span>
+			</h1>
+			<form action="/user/update/{{ user.id }}" method="post" class="row g-3">
+				<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
+				<div class="mb-2">
 					{% for role in roles %}
 						{% if role.id == role_current_user %}
 							<div class="form-check ms-1">
@@ -27,28 +34,24 @@
 							</div>
 						{% endif %}
 					{% endfor %}
-					<label class="form-label h6" for="Role">Rôle</label>
+					<label class="form-label h6" for="Role">Rôle*</label>
 				</div>
-			</section>
 
-			<section class="">
 				<div class="d-flex flex-row align-items-center mb-4">
 					<div class="form-outline flex-fill mb-0">
 						<input type="text" name="pseudo" id="Pseudo" class="form-control" value="{{ user.pseudo }}"/>
-						<label class="form-label h6" for="Pseudo">Prénom/Pseudo</label>
+						<label class="form-label h6" for="Pseudo">Prénom/Pseudo*</label>
 					</div>
 				</div>
 
 				<div class="d-flex flex-row align-items-center mb-4">
 					<div class="form-outline flex-fill mb-0">
 						<input type="email" name="email" id="form3Example3c" class="form-control" value="{{ user.email }}"/>
-						<label class="form-label h6" for="form3Example3c">Email</label>
+						<label class="form-label h6" for="form3Example3c">Email*</label>
 					</div>
 				</div>
-			</section>
 
-			<section>
-				<p class="text-danger">Cette partie est facultative si vous ne souhaitez pas changer votre mot de passe.</p>
+				<p class="text-danger">Si tu ne souhaites pas changer ton mot de passe... bah fais rien </p>
 				<div class="d-flex flex-row align-items-center mb-4">
 					<div class="form-outline flex-fill mb-0">
 						<input type="password" name="password" id="password" class="form-control"/>
@@ -62,12 +65,8 @@
 						<label class="form-label h6" for="">Confirmez mot de passe</label>
 					</div>
 				</div>
-			</section>
-
-			<div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-				<button type="submit" class="bluegrey">Modifier</button>
-			</div>
-		</form>
-		</div>
+				<button class="bluegrey my-4" type="submit">Modifier</button>
+			</form>
+		</section>
 	</article>
 {% endblock %}
