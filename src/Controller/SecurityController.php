@@ -146,7 +146,7 @@ class SecurityController extends CoreController
                     if ($user->insert()) {
                         $this->flashes('success', 'Ton compte a bien été créé, merci de te connecter.');
                         header('Location: /security/login');
-                        exit;
+                        return;
                     } // Si erreur lors de l'enregistrement
                     else {
                         $this->flashes('danger', "Ton compte n'a pas été créé!");
@@ -215,7 +215,7 @@ class SecurityController extends CoreController
 
                 );
                 header("Location: /security/confirmationSendEmail");
-                exit;
+                return;
             } catch (\Exception $e) {
                 if ($e->getCode() !== '23000') {
                     $this->flashes('danger', "Oupss! l'email n'a pas été envoyé. Merci de refaire une demande. Si tu as reçu le premier n'en tiens pas compte.");
@@ -283,7 +283,7 @@ class SecurityController extends CoreController
                     if ($user->update()) {
                         $this->flashes('success', 'Ton mot de passe est maintenant modifié. Ah! Tu peux te connecter maintenant.');
                         header('Location: /security/login');
-                        exit;
+                        return;
                     } // Si erreur lors de l'enregistrement
                     else {
                         $this->flashes('danger', "Oupss! Ton mot de passe n'a pas été modifié!");

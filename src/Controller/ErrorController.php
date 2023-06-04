@@ -12,20 +12,20 @@ class ErrorController extends CoreController {
     {
         // header("HTTP/1.0 404 Not Found");
         $this->show('error/404');
-        exit;
+        return;
     }
 
     public function accessDenied()
     {
         // header('HTTP/1.0 403 Unauthorized');
         $this->show('error/403');
-        exit;
+        return;
     }
 
     public function eternalServerError()
     {
         // header('HTTP/1.0 403 Unauthorized');
         $this->show('error/500');
-        exit;
+        return;
     }
 }

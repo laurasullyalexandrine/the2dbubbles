@@ -50,7 +50,7 @@ class CommentController extends CoreController
                     if ($comment->insert()) {
                         $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
                         header('Location: /post/read/' . $post->getSlug());
-                        exit;
+                        return;
                     } else {
                         $this->flashes('danger', "Le commentaire n'a pas été créé!");
                     }
@@ -138,7 +138,7 @@ class CommentController extends CoreController
                     if ($comment->update()) {
                         header('Location: /comment/userComment/'. $userCurrent->getSlug());
                         $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Par contre Il est de nouveau en cours de validation.");
-                        exit;
+                        return;
                     } else {
                         $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");
                     }
@@ -174,7 +174,7 @@ class CommentController extends CoreController
                 $comment->delete();
                 $this->flashes('success', "Le commentaire a bien été supprimé.");
                 header('Location: /comment/userComment/'. $this->userIsConnected()->getSlug());
-                exit;
+                return;
             } else {
                 $this->flashes('danger', "Ce commentaire n'existe pas!");
             }

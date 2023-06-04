@@ -77,7 +77,7 @@ class PostController extends CoreController
                     if ($post->insert()) {
                         $this->flashes('success', "L'article a bien été créé.");
                         header('Location: /post/list');
-                        exit;
+                        return;
                     } else {
                         $this->flashes('danger', "L'article n'a pas été créé!");
                     }
@@ -176,7 +176,7 @@ class PostController extends CoreController
                     if ($post->update()) {
                         $this->flashes('success', "L'article a bien été modifié.");
                         header('Location: /post/list');
-                        exit;
+                        return;
                     } else {
                         $this->flashes('danger', "L'article n'a pas été modifié!");
                     }
@@ -218,7 +218,7 @@ class PostController extends CoreController
                 $post->delete();
                 $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
                 header('Location: /post/list');
-                exit;
+                return;
             } else {
                 $this->flashes('danger', "Cet article n'existe pas!");
             }

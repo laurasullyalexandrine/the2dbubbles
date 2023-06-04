@@ -54,12 +54,12 @@ class RoleController extends CoreController
                         if ($role->insert()) {
                             $this->flashes('success', 'Le rôle a bien été créé.');
                             header('Location: /role/read');
-                            exit;
+                            return;
                         } else {
                             $this->flashes('danger', "Le rôle n'a pas été créé!");
                         }
                     } else {
-                        $role->setName($role);
+                        $role->setName($roleName);
                         $this->show('admin/role/create', [
                             'user' => $userCurrent
                         ]);
@@ -107,7 +107,7 @@ class RoleController extends CoreController
                     if ($role->update()) {
                         header('Location: /role/read');
                         $this->flashes('success', 'Le rôle ' . $role->getName() . ' a bien été modifié.');
-                        exit;
+                        return;
                     } else {
                        $this->flashes('danger', 'Le rôle ' . $role->getName() . ' n\'a pas été modifié!');
                     }
@@ -147,7 +147,7 @@ class RoleController extends CoreController
                 $role->delete();
                 $this->flashes('success', 'Le Bubbles Role' . ' ' . $role->getName() . ' ' . 'a bien été supprimé.');
                 header('Location: /role/read');
-                exit;
+                return;
             } else {
                 $this->flashes('danger', "Ce Bubbles Role n'existe pas!");
             }

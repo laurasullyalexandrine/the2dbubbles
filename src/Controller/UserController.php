@@ -113,7 +113,7 @@ class UserController extends CoreController
                         if ($user->insert()) {
                             $this->flashes('success', "Ton compte a bien été créé.");
                             header('Location: /user/read');
-                            exit;
+                            return;
                         } // Sinon erreur lors de l'enregistrement
                         else {
                             $this->flashes('danger', "Ton compte n'a pas été créé!");
@@ -194,7 +194,7 @@ class UserController extends CoreController
                     if ($user->update()) {
                         $this->flashes('success', 'Le Bubbles User'. ' ' . $user->getPseudo(). ' ' . 'a bien été modifié.');
                         header('Location: /user/read');
-                        exit;
+                        return;
                     } else {
                         $this->flashes('danger', "L'utilisateur n'a pas été modifié!");
                     }
@@ -235,7 +235,7 @@ class UserController extends CoreController
                 $user->delete();
                 $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été supprimé.');
                 header('Location: /user/read');
-                exit;
+                return;
             } else {
                 $this->flashes('danger', "Ce Bubbles User n'existe pas!");
             }

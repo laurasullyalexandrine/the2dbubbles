@@ -404,7 +404,7 @@ class User extends CoreModel
      *
      * @return  self
      */
-    public function setRoles(array $roles)
+    public function setRoles(int $roles)
     {
         $this->roles = $roles;
 

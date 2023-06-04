@@ -71,7 +71,7 @@ class AdminController extends CoreController
             if ($comment->update()) {
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été modifié.");
                 header('Location: /admin/comments');
-                exit;
+                return;
             } else {
                 $this->flashes('danger', "Le Bubbles Comment  $commentId n'a pas été modifié!");
             }
