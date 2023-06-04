@@ -21,4 +21,11 @@ class ErrorController extends CoreController {
         $this->show('error/403');
         exit;
     }
+
+    public function eternalServerError()
+    {
+        // header('HTTP/1.0 403 Unauthorized');
+        $this->show('error/500');
+        exit;
+    }
 }
