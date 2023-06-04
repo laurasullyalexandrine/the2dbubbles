@@ -70,9 +70,9 @@ class CommentController extends CoreController
      * Voir un Post et ses commentaires
      * 
      * @param int $commentId
-     * @return Comment
+     * @return void
      */
-    public function userComment($slug)
+    public function userComment(string $slug): void
     {
         $comments = Comment::findByUser($slug);
 
@@ -99,9 +99,9 @@ class CommentController extends CoreController
      * Édition d'un commentaire
      *
      * @param [type] $commentId
-     * @return Comment
+     * @return void
      */
-    public function update(int $commentId)
+    public function update(int $commentId): void
     {
         $comment = Comment::findById($commentId);
 

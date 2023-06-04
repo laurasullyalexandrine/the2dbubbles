@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Role;
-use PHPMailer\PHPMailer\SMTP;
+use App\Models\User;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Extension\DebugExtension;
 
 class CoreController
 {
-    protected function show($viewName, $viewVars = [])
+    protected function show(string $viewName, array $viewVars = []): void
     {
         // Charge le chemin absolu vers le dossier front
         $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/../templates/');
@@ -136,9 +136,9 @@ class CoreController
     /**
      * Méthode permettant de récupérer le user connecté
      *
-     * @return User
+     * @return ?User
      */
-    protected function userIsConnected()
+    protected function userIsConnected(): ?User
     {
         $session = $_SESSION;
 
@@ -146,7 +146,7 @@ class CoreController
             $user = $session["userObject"];
             return $user;
         } else {
-            return;
+            return null;
         }
     }
 

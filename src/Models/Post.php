@@ -37,9 +37,9 @@ class Post extends CoreModel {
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
      *
-     * @return Post
+     * @return array
      */
-    public static function findAll() 
+    public static function findAll(): array
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -160,9 +160,9 @@ class Post extends CoreModel {
     /**
      * Méthode permettant l'édition d'un article
      *
-     * @return Post
+     * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -225,7 +225,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
 
@@ -269,7 +269,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setChapo($chapo)
+    public function setChapo(string $chapo)
     {
         $this->chapo = $chapo;
 

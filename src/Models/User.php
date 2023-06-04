@@ -51,9 +51,9 @@ class User extends CoreModel
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table user
      *
-     * @return User
+     * @return array
      */
-    public static function findAll()
+    public static function findAll(): array
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -149,7 +149,13 @@ class User extends CoreModel
         
     }
 
-    public static function findOneByToken(string $token)
+    /**
+     * Trouver un user par son token
+     *
+     * @param string $token
+     * @return User
+     */
+    public static function findOneByToken(string $token): User
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -172,9 +178,9 @@ class User extends CoreModel
     /**
      * Méthode permettant de modifier un user
      *
-     * @return void
+     * @return bool
      */
-    public function insert()
+    public function insert(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -215,7 +221,11 @@ class User extends CoreModel
         return false;
     }
 
-
+    /**
+     * Mettre à jour un utilisateur
+     *
+     * @return void
+     */
     public function update()
     {
         $pdoDBConnexion = Database::getPDO();
@@ -330,7 +340,7 @@ class User extends CoreModel
      *
      * @return  self
      */
-    public function setEmail($email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -350,7 +360,7 @@ class User extends CoreModel
      *
      * @return  self
      */
-    public function setPassword($password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -394,7 +404,7 @@ class User extends CoreModel
      *
      * @return  self
      */
-    public function setRoles($roles)
+    public function setRoles(array $roles)
     {
         $this->roles = $roles;
 

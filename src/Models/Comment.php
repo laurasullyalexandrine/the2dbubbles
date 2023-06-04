@@ -53,7 +53,7 @@ class Comment extends CoreModel
      * @param [type] $commentId
      * @return Comment
      */
-    public static function findById($commentId)
+    public static function findById(int $commentId)
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -76,7 +76,7 @@ class Comment extends CoreModel
      *
      * @return Post
      */
-    public static function findByUser($slug)
+    public static function findByUser(string $slug)
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -105,9 +105,9 @@ class Comment extends CoreModel
      * Permet de trouver tous les commentaires d'un Post
      *
      * @param [type] $slug
-     * @return Comment
+     * @return array
      */
-    public static function findBySlugPost($slug)
+    public static function findBySlugPost(string $slug): array
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -177,9 +177,9 @@ class Comment extends CoreModel
     /**
      * Méthode permettant l'édition d'un commentaire
      *
-     * @return Comment
+     * @return bool
      */
-    public function update()
+    public function update(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 

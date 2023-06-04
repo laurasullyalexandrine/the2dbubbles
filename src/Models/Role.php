@@ -31,9 +31,9 @@ class Role extends CoreModel
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
-     * @return Role
+     * @return array
      */
-    public static function findAll()
+    public static function findAll(): array
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -49,9 +49,9 @@ class Role extends CoreModel
         /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
-     * @return Role
+     * @return array
      */
-    public static function findByUser()
+    public static function findByUser(): array
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -118,9 +118,9 @@ class Role extends CoreModel
      * Méthode permettant d'ajouter un enregistrement dans la table role.
      * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      *
-     * @return void
+     * @return bool
      */
-    public function insert()
+    public function insert(): bool
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -139,14 +139,12 @@ class Role extends CoreModel
             $this->id = $pdoDBConnexion->lastInsertId();
             return true;
         }
-
         return false;
     }
 
     /**
      * Méthode permetttant l'édition d'un rôle
      *
-     * @return void
      */
     public function update()
     {
@@ -203,7 +201,7 @@ class Role extends CoreModel
      *
      * @return  self
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
 
@@ -223,7 +221,7 @@ class Role extends CoreModel
      *
      * @return  self
      */
-    public function setRoleString($roleString)
+    public function setRoleString(string $roleString)
     {
         $this->roleString = $roleString;
 
