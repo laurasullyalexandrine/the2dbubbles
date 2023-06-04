@@ -176,11 +176,7 @@ class CoreController
         $mail = new PHPMailer(true);
 
         // Gestion des exceptions
-        try {
-            // Configuration 
-            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-            // Permet d'afficher les informations de debug
-      
+        try {      
             // Configuration de SMTP
             $mail->isSMTP();
             $mail->Host = "localhost";

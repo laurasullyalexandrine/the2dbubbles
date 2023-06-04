@@ -41,7 +41,6 @@ class AdminController extends CoreController
         // Récupérer le role du user en session
         $roleId = $userCurrent->getRoles();
         $role = Role::findById($roleId);
-        // dd($comments, $userCurrent, $role);
 
         if (!$userCurrent) {
             $this->flashes('warning', 'Une petite connexion avant ?!');
@@ -100,7 +99,7 @@ class AdminController extends CoreController
                 $comment->delete();
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été supprimé.");
                 header('Location: /admin/comments');
-                exit;
+                return;
             } else {
                 $this->flashes('danger', "Ce Bubbles Comment n'existe pas!");
             }

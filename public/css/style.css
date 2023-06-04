@@ -36,9 +36,9 @@ strong {
     background-color: transparent;
 }
 .card-link:hover {
-    color: #ffffff !important;
-    background-color: #4bccc8 !important;
     transition: .6s !important;
+    color: #ffffff !important;
+    background-color: #3c6382 !important;
 }
 
 .bluegrey {
@@ -95,7 +95,11 @@ strong {
 }
 .nav-link:hover {
     transition: .3s !important;
-    border-bottom: 1px solid #38ada9 !important;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 5px 15px !important;
+    border-radius: 3px !important;
+    background-color: #3c6382 !important;
 }
 
 .admin, 

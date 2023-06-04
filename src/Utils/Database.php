@@ -39,7 +39,7 @@ class Database {
             echo '<pre>';
             echo $exception->getTraceAsString();
             echo '</pre>';
-            exit;
+            return;
         }
     }
 
