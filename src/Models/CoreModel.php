@@ -48,7 +48,7 @@ class CoreModel {
      */ 
     public function getCreatedAt()
     {
-        if ($this->created_at == null) {
+        if ($this->created_at === null) {
             return;
         } else {
             return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
@@ -72,7 +72,7 @@ class CoreModel {
      */ 
     public function getUpdatedAt()
     {
-        if ($this->updated_at == null) {
+        if ($this->updated_at === null) {
             return;
         } else {
             return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
