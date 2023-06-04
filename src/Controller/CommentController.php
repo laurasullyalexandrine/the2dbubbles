@@ -88,7 +88,6 @@ class CommentController extends CoreController
                 }
             }
         }
-        // dd($author);
         $this->show('front/comment/read', [
             'comments' => $comments,
             'author' => $author
