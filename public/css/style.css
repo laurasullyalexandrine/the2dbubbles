@@ -3,27 +3,29 @@
 h1,
 h2,
 .card-title {
-    font-family:  "Ubuntu Mono", sans-serif; }
+    font-family: "Ubuntu Mono", sans-serif;
+}
 
 strong,
 .card-link,
 .marker-dark {
-    color:  #3c6382; }
+    color: #3c6382;
+}
 
 /** BODY **/
 #wrapper {
     background-color:  #fff;
     font-family:  'Oswald', sans-serif;
     font-size:  1.1rem;
-    font-weight:  300; 
+    font-weight:  300;
 }
 
 h2 {
-    font-size:  1.5rem; 
+    font-size: 1.5rem;
 }
 
 h6 {
-    font-weight:  300; 
+    font-weight: 300;
 }
 
 .card-link {
@@ -33,26 +35,30 @@ h6 {
     margin:  5px 0;
     padding:  5px 15px;
     border-radius:  3px;
-    background-color:  transparent; 
+    background-color:  transparent;
 }
 
-.card-link:hover {
+.card-link:hover 
+{
     transition:0.6s;
     color: #fff;
-    background-color: #3c6382; 
+    background-color: #3c6382;
 }
 
 .bluegrey {
     color:  #fff;
     text-align:  center;
-    border:  0; 
+    border:  none;
     cursor:  pointer;
     padding:  5px 15px;
     border-radius:  3px;
-    background-color:  #38ada9; }
-.bluegrey:hover {
+    background-color:  #38ada9;
+}
+.bluegrey:hover 
+{
     background-color: #4bccc8;
-    transition: 0.6s; }
+    transition: 0.6s;
+}
 
 .delete {
     color:  #eb2f06;
@@ -60,15 +66,17 @@ h6 {
     background-color:  transparent;
     margin:  5px 0;
     padding:  5px 15px;
-    border-radius:  3px; }
-.delete:hover {
+    border-radius:  3px;
+}
+.delete:hover 
+{
     color:  #ffffff;
     background-color:  #eb2f06;
     transition:  0.8s; 
 }
 
 .marker {
-    color:  #38ada9; 
+    color: #38ada9;
 }
 
 
@@ -81,21 +89,22 @@ h6 {
 }
 
 .navbar-nav {
-    text-align:  center; 
+    text-align: center;
 }
 
 .nav-link {
     color:  #ffffff;
     padding:  5px 15px;
-    border-bottom:  1px solid transparent; 
+    border-bottom:  1px solid transparent;
 }
-.nav-link:hover {
+.nav-link:hover 
+{
     transition:  0.3s;
     color:  #fff;
     text-decoration:  none;
     padding:  5px 15px;
     border-radius:  3px;
-    background-color:  #3c6382; 
+    background-color:  #3c6382;
 }
 
 .admin, 
@@ -104,9 +113,14 @@ h6 {
     text-decoration:  none;
     padding:  5px 15px;
     border-radius:  3px;
-    background-color:  #3c6382; }
-.admin:hover {
-    background-color:  #577894; }
+    background-color:  #3c6382;
+}
+.admin:hover 
+{
+    background-color: #577894;
+}
 
-.logout:hover {
-    background-color:  #577894; }
+.logout:hover 
+{
+    background-color: #577894;
+}
