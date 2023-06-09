@@ -74,9 +74,9 @@ class Comment extends CoreModel
     /**
      * Méthode permettant de récupérer tous les commentaires d'un même auteur
      *
-     * @return Post
+     * @return array
      */
-    public static function findByUser(string $slug)
+    public static function findByUser(string $slug): array
     {
         $pdoDBConnexion = Database::getPDO();
 

@@ -226,7 +226,7 @@ class User extends CoreModel
      *
      * @return void
      */
-    public function update()
+    public function update(): void
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -251,7 +251,7 @@ class User extends CoreModel
         $pdoStatement->bindValue(':token', $this->token, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
 
-        return $pdoStatement->execute();
+        $pdoStatement->execute();
     }
 
 
