@@ -34,9 +34,9 @@ class RoleController extends CoreController
         $currentUserRole = Role::findById($userCurrent->getRoles());
         if (!$userCurrent) {
             header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "super_admin") {
+        } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
-            $error403->accessDenied(); 
+            $error403->accessDenied();
         } else {
             $userCurrent = $this->userIsConnected(); {
 
@@ -83,7 +83,7 @@ class RoleController extends CoreController
         $role = role::findById($roleId);
 
         $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
-        
+
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "super_admin") {
@@ -102,14 +102,14 @@ class RoleController extends CoreController
 
                 if (empty($_SESSION["flashes"])) {
                     $role->setName($roleName)
-                        ->setRoleString('ROLE_'.mb_strtoupper($roleName));
+                        ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
                     if ($role->update()) {
                         header('Location: /role/read');
-                        $this->flashes('success', 'Le rôle '.$role->getName().' a bien été modifié.');
+                        $this->flashes('success', 'Le rôle ' . $role->getName() . ' a bien été modifié.');
                         return;
                     } else {
-                       $this->flashes('danger', 'Le rôle '.$role->getName().' n\'a pas été modifié!');
+                        $this->flashes('danger', 'Le rôle ' . $role->getName() . ' n\'a pas été modifié!');
                     }
                 } else {
                     $role->setName($roleName);
@@ -145,7 +145,7 @@ class RoleController extends CoreController
         } else {
             if ($role) {
                 $role->delete();
-                $this->flashes('success', 'Le Bubbles Role'.' '. $role->getName().' '. 'a bien été supprimé.');
+                $this->flashes('success', 'Le Bubbles Role' . ' ' . $role->getName() . ' ' . 'a bien été supprimé.');
                 header('Location: /role/read');
                 return;
             } else {
