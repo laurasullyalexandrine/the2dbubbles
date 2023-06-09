@@ -144,7 +144,7 @@ class CommentController extends CoreController
                 }
             }
         }
-        // Afficher la vue en transmettant les infos du Comment et des messages d'alerte
+        // Afficher la vue en transmettant les infos du Comment et des messages d'alerte.
         $this->show('front/comment/update', [
             'comment' => $comment
         ]);
