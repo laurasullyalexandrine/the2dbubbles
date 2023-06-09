@@ -12,7 +12,16 @@ use Twig\Extension\DebugExtension;
 
 class CoreController
 {
-    protected function show(string $viewName, array $viewVars = []): void
+    /**
+     * Méthode permettant la gestion des fonctions et affichage dans les templates Twig
+     *
+     * @param string $viewName
+     * @param array $viewVars
+     * @return void
+     */
+
+    
+    protected function show(string $viewName, array $viewVars= []): void
     {
         // Charge le chemin absolu vers le dossier front
         $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/../templates/');
@@ -170,13 +179,13 @@ class CoreController
         $options = array_merge([
             'admin' => 'contact@2dbubbles.fr',
         ],  $options);
- 
+
         $to = $options['admin'];
-      
+
         $mail = new PHPMailer(true);
 
         // Gestion des exceptions
-        try {      
+        try {
             // Configuration de SMTP
             $mail->isSMTP();
             $mail->Host = "localhost";
@@ -184,13 +193,13 @@ class CoreController
 
             // Charset 
             $mail->CharSet = "utf-8";
-        
+
             // Destinataire
             $mail->addAddress($to);
-   
+
             // Expéditeur
             $mail->setFrom($from);
-       
+
             // Contenu du message
             $mail->isHTML(true); // Permet d'ajouter des balises HTML
             $mail->Subject = $object;
