@@ -14,15 +14,15 @@ class Role extends CoreModel
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var string
      */
-    private $roleString;
+    private string $roleString;
 
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }
@@ -74,7 +74,7 @@ class Role extends CoreModel
      * @param [type] $roleId
      * @return Role
      */
-    public static function findById(int $roleId)
+    public static function findById(int $roleId): Role
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = '
@@ -97,7 +97,7 @@ class Role extends CoreModel
      * @param [type] $roleId
      * @return Role
      */
-    public static function findByName(string $roleName)
+    public static function findByName(string $roleName): Role
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = '
@@ -145,7 +145,7 @@ class Role extends CoreModel
      * Méthode permetttant l'édition d'un rôle
      *
      */
-    public function update()
+    public function update(): void
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -163,7 +163,7 @@ class Role extends CoreModel
         $pdoStatement->bindValue(':name', $this->name, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roleString', $this->roleString, PDO::PARAM_STR);
 
-        return $pdoStatement->execute();
+        $pdoStatement->execute();
     }
 
 
@@ -172,7 +172,7 @@ class Role extends CoreModel
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -190,7 +190,7 @@ class Role extends CoreModel
     /**
      * Get the value of name
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -200,7 +200,7 @@ class Role extends CoreModel
      *
      * @return  self
      */
-    public function setName(string $name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -210,7 +210,7 @@ class Role extends CoreModel
     /**
      * Get the value of roleString
      */
-    public function getRoleString()
+    public function getRoleString(): ?string
     {
         return $this->roleString;
     }
@@ -220,13 +220,18 @@ class Role extends CoreModel
      *
      * @return  self
      */
-    public function setRoleString(string $roleString)
+    public function setRoleString(string $roleString): self
     {
         $this->roleString = $roleString;
 
         return $this;
     }
 
+    /**
+     * Méthode permettant d'afficher les roles
+     *
+     * @return string
+     */
     public function getDisplayRole(): string
     {
         if ($this->roleString === "ROLE_SUPER_ADMIN") {

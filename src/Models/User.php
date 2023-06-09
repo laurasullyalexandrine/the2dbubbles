@@ -15,35 +15,35 @@ class User extends CoreModel
     /**
      * @var string
      */
-    private $pseudo;
+    private string $pseudo;
 
     /**
      * @var string
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @var string
      */
-    private $email;
+    private string $email;
 
     /**
      * @var string
      */
-    private $password;
+    private string $password;
 
     /**
      * @var string
      */
-    private $token;
+    private string $token;
 
     /**
      * @var int
      */
-    private $roles;
+    private int $roles;
 
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->pseudo;
     }
@@ -78,7 +78,7 @@ class User extends CoreModel
      * @param integer $userId
      * @return User
      */
-    public static function findById(int $userId)
+    public static function findById(int $userId): User
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -100,9 +100,9 @@ class User extends CoreModel
      * Méthode permettant de récupérer un user par son email
      *
      * @param string $email
-     * @return User
+     * @return ?User
      */
-    public static function findByEmail(string $email)
+    public static function findByEmail(string $email): ?User
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -119,16 +119,16 @@ class User extends CoreModel
 
         $user = $pdoStatement->fetchObject(self::class);
 
-        return $user;
+        return $user instanceof User ? $user : null;
     }
 
     /**
      * Méthode permettant de trouver les posts et commentaire par son pseudo
      *
      * @param string $pseudo
-     * @return User
+     * @return ?User
      */
-    public static function findByPseudo(string $pseudo) 
+    public static function findByPseudo(string $pseudo): ?User
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -145,7 +145,7 @@ class User extends CoreModel
 
         $user = $pdoStatement->fetchObject(self::class);
 
-        return $user;
+        return $user instanceof User ? $user : null;
         
     }
 
@@ -153,9 +153,9 @@ class User extends CoreModel
      * Trouver un user par son token
      *
      * @param string $token
-     * @return User
+     * @return ?User
      */
-    public static function findOneByToken(string $token): User
+    public static function findOneByToken(string $token): ?User
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -172,7 +172,7 @@ class User extends CoreModel
 
         $user = $pdoStatement->fetchObject(self::class);
 
-        return $user;
+        return $user instanceof User ? $user : null;
     }
 
     /**
@@ -260,7 +260,7 @@ class User extends CoreModel
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -285,7 +285,7 @@ class User extends CoreModel
      *
      * @return  string
      */ 
-    public function getPseudo()
+    public function getPseudo(): string
     {
         return $this->pseudo;
     }
@@ -297,7 +297,7 @@ class User extends CoreModel
      *
      * @return  self
      */ 
-    public function setPseudo(string $pseudo)
+    public function setPseudo(string $pseudo): self
     {
         $this->pseudo = $pseudo;
 
@@ -308,7 +308,7 @@ class User extends CoreModel
      *
      * @return  string
      */ 
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -320,7 +320,7 @@ class User extends CoreModel
      *
      * @return  self
      */ 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -372,7 +372,7 @@ class User extends CoreModel
      *
      * @return  string
      */ 
-    public function getToken()
+    public function getToken(): string
     {
         return $this->token;
     }
@@ -384,7 +384,7 @@ class User extends CoreModel
      *
      * @return  self
      */ 
-    public function setToken(string $token)
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
@@ -394,7 +394,7 @@ class User extends CoreModel
     /**
      * Get the value of roles
      */
-    public function getRoles()
+    public function getRoles(): int
     {
         return $this->roles;
     }
@@ -404,7 +404,7 @@ class User extends CoreModel
      *
      * @return  self
      */
-    public function setRoles(int $roles)
+    public function setRoles(int $roles): self
     {
         $this->roles = $roles;
 

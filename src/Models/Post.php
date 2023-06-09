@@ -12,27 +12,27 @@ class Post extends CoreModel {
     /**
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * @var string
      */
-    private $slug;
+    private string $slug;
 
     /**
      * @var string
      */
-    private $chapo;
+    private string $chapo;
 
     /**
      * @var string
      */
-    private $content;
+    private string $content;
 
     /**
      * @var int
      */
-    private $users;
+    private int $users;
 
     
     /**
@@ -67,7 +67,7 @@ class Post extends CoreModel {
      * @param [type] $postId
      * @return Post
      */
-    public static function findById(int $postId) 
+    public static function findById(int $postId): Post
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -196,7 +196,7 @@ class Post extends CoreModel {
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -216,7 +216,7 @@ class Post extends CoreModel {
     /**
      * Get the value of title
      */ 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -226,7 +226,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setTitle(string $title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -238,7 +238,7 @@ class Post extends CoreModel {
      *
      * @return  string
      */ 
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -250,7 +250,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -260,7 +260,7 @@ class Post extends CoreModel {
     /**
      * Get the value of chapo
      */ 
-    public function getChapo()
+    public function getChapo(): string
     {
         return $this->chapo;
     }
@@ -270,7 +270,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setChapo(string $chapo)
+    public function setChapo(string $chapo): self
     {
         $this->chapo = $chapo;
 
@@ -282,7 +282,7 @@ class Post extends CoreModel {
      *
      * @return  string
      */ 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -294,7 +294,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setContent(string $content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
@@ -306,7 +306,7 @@ class Post extends CoreModel {
      *
      * @return  int
      */ 
-    public function getUsers()
+    public function getUsers(): int
     {
         return $this->users;
     }
@@ -318,7 +318,7 @@ class Post extends CoreModel {
      *
      * @return  self
      */ 
-    public function setUsers(int $users)
+    public function setUsers(int $users): self
     {
         $this->users = $users;
 

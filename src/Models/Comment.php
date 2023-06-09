@@ -12,25 +12,29 @@ class Comment extends CoreModel
     /**
      * @var string
      */
-    private $content;
+    private string $content;
 
     /**
      * @var int
      */
-    private $status;
+    private int $status;
 
     /**
      * @var int
      */
-    private $users;
+    private int $users;
 
     /**
      * @var int
      */
-    private $posts;
+    private int $posts;
 
-
-    public static function findAll() 
+    /**
+     * Méthode permettant de récupérer tous les commentaires
+     *
+     * @return array
+     */
+    public static function findAll(): array
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -53,7 +57,7 @@ class Comment extends CoreModel
      * @param [type] $commentId
      * @return Comment
      */
-    public static function findById(int $commentId)
+    public static function findById(int $commentId): Comment
     {
         $pdoDBConnexion = Database::getPDO();
         $sql = "
@@ -206,7 +210,7 @@ class Comment extends CoreModel
      *
      * @return bool
      */
-    public function delete()
+    public function delete(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -228,7 +232,7 @@ class Comment extends CoreModel
      *
      * @return  string
      */ 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -240,7 +244,7 @@ class Comment extends CoreModel
      *
      * @return  self
      */ 
-    public function setContent(string $content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
@@ -252,7 +256,7 @@ class Comment extends CoreModel
      *
      * @return  int
      */ 
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -264,7 +268,7 @@ class Comment extends CoreModel
      *
      * @return  self
      */ 
-    public function setStatus(int $status)
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -276,7 +280,7 @@ class Comment extends CoreModel
      *
      * @return  int
      */ 
-    public function getUsers()
+    public function getUsers(): int
     {
         return $this->users;
     }
@@ -288,7 +292,7 @@ class Comment extends CoreModel
      *
      * @return  self
      */ 
-    public function setUsers(int $users)
+    public function setUsers(int $users): self
     {
         $this->users = $users;
 
@@ -300,7 +304,7 @@ class Comment extends CoreModel
      *
      * @return  int
      */ 
-    public function getPosts()
+    public function getPosts(): int
     {
         return $this->posts;
     }
@@ -312,7 +316,7 @@ class Comment extends CoreModel
      *
      * @return  self
      */ 
-    public function setPosts(int $posts)
+    public function setPosts(int $posts): self
     {
         $this->posts = $posts;
 
