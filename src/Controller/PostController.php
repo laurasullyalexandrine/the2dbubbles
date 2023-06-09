@@ -31,9 +31,9 @@ class PostController extends CoreController
     /**
      * Ajout d'un nouveau post
      * 
-     * @return Post
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         $post = new Post();
         
@@ -130,9 +130,9 @@ class PostController extends CoreController
      * Édition d'un Post (article)
      *
      * @param string $slug
-     * @return Post
+     * @return void
      */
-    public function update(string $slug)
+    public function update(string $slug): void
     {
         $post = Post::findBySlug($slug);
 

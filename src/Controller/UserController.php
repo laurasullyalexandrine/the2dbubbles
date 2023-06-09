@@ -30,9 +30,9 @@ class UserController extends CoreController
     /**
      * Ajout d'un nouvel utilisateur
      * 
-     * @return User
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         $user = new User();
         $role = new Role();
@@ -138,9 +138,9 @@ class UserController extends CoreController
      * Édition d'un utilisateur seulement par le rôle super_admin
      *
      * @param [type] $userId
-     * @return User
+     * @return void
      */
-    public function update(int $userId)
+    public function update(int $userId): void
     {
         $user = User::findById($userId);
         $updatedRole = $user->getRoles();

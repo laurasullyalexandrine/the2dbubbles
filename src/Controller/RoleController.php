@@ -27,9 +27,9 @@ class RoleController extends CoreController
     /**
      * Ajout d'un nouveau rôle réservé au role super_admin
      * 
-     * @return Role
+     * @return void
      */
-    public function create()
+    public function create(): void
     {
         $role = new Role();
         $userCurrent = $this->userIsConnected();
@@ -78,9 +78,9 @@ class RoleController extends CoreController
      * Édition d'un rôle réservé au role super_admin
      * 
      * @param [type] $roleId
-     * @return Role
+     * @return void
      */
-    public function update(int $roleId)
+    public function update(int $roleId): void
     {
         $role = role::findById($roleId);
 

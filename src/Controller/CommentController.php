@@ -14,9 +14,9 @@ class CommentController extends CoreController
     /**
      * Ajout d'un nouveau commentaire
      * 
-     * @return Comment
+     * @return void
      */
-    public function create(string $slug)
+    public function create(string $slug): void
     {
         $comment = new Comment();
 

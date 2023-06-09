@@ -70,9 +70,9 @@ class SecurityController extends CoreController
 
     /**
      * Traitement du formulaire d'inscription
-     * @return User
+     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $user = new User();
         $role = new Role();
