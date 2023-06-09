@@ -109,7 +109,7 @@ class CommentController extends CoreController
 
         // Récupérer le role du user en session
         $roleId = $userCurrent->getRoles();
-        $role = Role::findById($roleId);
+        Role::findById($roleId);
 
         // Récupérer l'id de lauteur du commentaire
         $idAuthorComment = $comment->getUsers();
@@ -144,7 +144,7 @@ class CommentController extends CoreController
                 }
             }
         }
-        // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
+        // Afficher la vue en transmettant les infos du Comment et des messages d'alerte
         $this->show('front/comment/update', [
             'comment' => $comment
         ]);
