@@ -58,8 +58,13 @@ class AdminController extends CoreController
             'comments' => $comments
         ]);
     }
-
-    public function update(int $commentId)
+    /**
+     * Méthode permettant de récupérer un commentaire
+     *
+     * @param integer $commentId
+     * @return void
+     */
+    public function update(int $commentId): void
     {
         $comment = Comment::findById($commentId);
 
@@ -83,7 +88,7 @@ class AdminController extends CoreController
      * @param [type] $commentId
      * @return void
      */
-    public function delete(int $commentId)
+    public function delete(int $commentId): void
     {
         $comment = Comment::findById($commentId);
         $currentUserRole = Role::findById($this->userIsConnected()->getRoles());

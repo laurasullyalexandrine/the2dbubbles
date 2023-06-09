@@ -10,8 +10,12 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class ContactController extends CoreController
 {
-
-    public function mailSend()
+    /**
+     * Méthode permettant de gérer le formulaire de contact
+     *
+     * @return void
+     */
+    public function mailSend(): void
     {
         if ($this->isPost()) {
             $subject = filter_input(INPUT_POST, 'subject');

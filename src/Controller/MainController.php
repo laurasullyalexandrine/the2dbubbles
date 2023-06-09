@@ -11,11 +11,8 @@ class MainController extends CoreController {
      *
      * @return void
      */
-    public function home() {
+    public function home(): void
+    {
         $this->show('front/main/home');
-    }
-
-    public function displayContact() {
-        $this->show('front/main/contact');
     }
 }
