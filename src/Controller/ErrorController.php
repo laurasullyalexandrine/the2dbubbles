@@ -12,11 +12,14 @@ class ErrorController extends CoreController {
      *
      * @return void
      */
+
+    
     public function pageNotFoundAction()
     {
         $this->show('error/404');
         return;
     }
+
     /**
      * Page non autorisée
      *
@@ -27,6 +30,7 @@ class ErrorController extends CoreController {
         $this->show('error/403');
         return;
     }
+    
     /**
      * Page erreur serveur
      *
