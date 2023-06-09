@@ -46,7 +46,7 @@ class Role extends CoreModel
         return $roles;
     }
 
-        /**
+    /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
      * @return array
@@ -80,9 +80,8 @@ class Role extends CoreModel
         $sql = '
             SELECT * 
             FROM role 
-            WHERE id = :id'
-        ;
-        
+            WHERE id = :id';
+
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
             'id' => $roleId
@@ -126,8 +125,7 @@ class Role extends CoreModel
         $sql = "
             INSERT INTO `role` (name, roleString)
             VALUES (:name, :roleString)
-            "
-        ;
+            ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
@@ -139,6 +137,7 @@ class Role extends CoreModel
             $this->id = $pdoDBConnexion->lastInsertId();
             return true;
         }
+        
         return false;
     }
 

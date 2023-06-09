@@ -12,6 +12,8 @@ use Twig\Extension\DebugExtension;
 
 class CoreController
 {
+
+
     /**
      * Méthode permettant la gestion des fonctions et affichage dans les templates Twig
      *
@@ -19,8 +21,6 @@ class CoreController
      * @param array $viewVars
      * @return void
      */
-
-    
     protected function show(string $viewName, array $viewVars= []): void
     {
         // Charge le chemin absolu vers le dossier front
@@ -99,6 +99,13 @@ class CoreController
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
+    /**
+     * Permet de créer la clé flashes dans la super globale $_SESSION
+     *
+     * @param string|null $alert
+     * @param string|null $message
+     * @return void
+     */
     protected function flashes(string $alert = null, string $message = null): void
     {
         $flash = [

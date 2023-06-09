@@ -34,6 +34,7 @@ class Post extends CoreModel {
      */
     private $users;
 
+    
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
      *
