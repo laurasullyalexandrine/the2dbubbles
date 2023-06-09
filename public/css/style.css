@@ -1,58 +1,58 @@
 
 /*------ BODY ------*/
 #wrapper {
-    background-color: #ffffff !important;
-    font-family: 'Oswald' !important;
-    font-size: 1.1rem !important;
+    background-color: #ffffff;
+    font-family: 'Oswald';
+    font-size: 1.1rem;
     font-weight: 300;
 }
 
 h1,
 h2 {
-    font-family: "Ubuntu Mono" !important;
+    font-family: "Ubuntu Mono";
 }
 h2 {
-    font-size: 1.5rem !important;
+    font-size: 1.5rem;
 }
 h6 {
-    font-weight: 300 !important;
+    font-weight: 300;
 }
 strong {
     color: #3c6382;
-    font-weight: 400 !important;
+    font-weight: 400;
 }
 .card-title {
-    font-family: "Ubuntu Mono" !important;
+    font-family: "Ubuntu Mono";
 }
 
 .card-link {
-    color: #3c6382 !important;
+    color: #3c6382;
     font-weight: 400;
-    text-decoration: none !important;
+    text-decoration: none;
     border: none;
     margin: 5px 0;
-    padding: 5px 15px !important;
-    border-radius: 3px !important;
+    padding: 5px 15px;
+    border-radius: 3px;
     background-color: transparent;
 }
 .card-link:hover {
-    transition: .6s !important;
-    color: #ffffff !important;
-    background-color: #3c6382 !important;
+    transition: .6s;
+    color: #ffffff;
+    background-color: #3c6382;
 }
 
 .bluegrey {
-    color: #ffffff !important;
-    text-align: center !important;
-    border: 0 !important; 
-    cursor: pointer !important;
-    padding: 5px 15px !important;
-    border-radius: 3px !important;
-    background-color: #38ada9 !important;
+    color: #ffffff;
+    text-align: center;
+    border: 0; 
+    cursor: pointer;
+    padding: 5px 15px;
+    border-radius: 3px;
+    background-color: #38ada9;
 }
 .bluegrey:hover {
-    background-color: #4bccc8 !important;
-    transition: .6s !important;
+    background-color: #4bccc8;
+    transition: .6s;
 }
 
 .delete {
@@ -60,60 +60,63 @@ strong {
     border: none;
     background-color: transparent;
     margin: 5px 0;
-    padding: 5px 15px !important;
-    border-radius: 3px !important;
+    padding: 5px 15px;
+    border-radius: 3px;
 }
 .delete:hover {
-    color: #ffffff !important;
-    background-color: #eb2f06 !important;
-    transition: .8s !important;
+    color: #ffffff;
+    background-color: #eb2f06;
+    transition: .8s;
 }
 
 .marker {
     color: #38ada9;    
 }
 .marker-dark {
-    color: #3c6382 ;    
+    color: #3c6382;    
 }
 
 /*------ NAVBAR FOOTER ------*/
 
 .navbar-toggler,
 .navbar-toggler-icon {
-    color: #38ada9 !important;
-    border: none !important;
+    color: #38ada9;
+    border: none;
 }
 
 .navbar-nav {
-    text-align: center !important;
+    text-align: center;
 }
 
 .nav-link {
-    color: #ffffff !important;
-    padding: 5px 15px !important;
-    border-bottom: 1px solid transparent !important;
+    color: #ffffff;
+    padding: 5px 15px;
+    border-bottom: 1px solid transparent;
 }
 .nav-link:hover {
-    transition: .3s !important;
+    transition: .3s;
     color: #ffffff;
     text-decoration: none;
-    padding: 5px 15px !important;
-    border-radius: 3px !important;
-    background-color: #3c6382 !important;
+    padding: 5px 15px;
+    border-radius: 3px;
+    background-color: #3c6382;
+}
+.active {
+    background-color: #3c6382;
 }
 
 .admin, 
 .logout {
     color: #ffffff;
     text-decoration: none;
-    padding: 5px 15px !important;
-    border-radius: 3px !important;
-    background-color: #3c6382 !important;
+    padding: 5px 15px;
+    border-radius: 3px;
+    background-color: #3c6382;
 }
 .admin:hover {
-    background-color: #577894 !important;
+    background-color: #577894;
 }
 
 .logout:hover {
-    background-color: #577894 !important;
+    background-color: #577894;
 }
