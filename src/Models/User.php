@@ -404,10 +404,9 @@ class User extends CoreModel
     /**
      * Set the value of roleId
      *
-     * @param  int  $roleId
-     *
-     * @return  self
-     */ 
+     * @param integer $roleId
+     * @return self
+     */
     public function setRoleId(int $roleId): self
     {
         $this->roleId = $roleId;
