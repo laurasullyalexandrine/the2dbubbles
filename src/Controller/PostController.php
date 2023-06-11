@@ -37,7 +37,7 @@ class PostController extends CoreController
     {
         $post = new Post();
         
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
@@ -136,7 +136,7 @@ class PostController extends CoreController
     {
         $post = Post::findBySlug($slug);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
@@ -205,7 +205,7 @@ class PostController extends CoreController
     {
         $post = Post::findBySlug($slug);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
         
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login

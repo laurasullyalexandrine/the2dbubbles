@@ -10,9 +10,16 @@
 			<img src="/image/admin.png" alt="image-admin" class="mw-100">
 		</div>
 		<section class="col p-lg-5">
-			<h1>Administration</h1>
-			<h2>Que souhaites tu faire
+			<h1>Bubbles Admin</h1>
+			<h2>Que souhaites tu faire aujourd'hui
 				<strong class="marker-dark">{{ user.pseudo }}</strong> ?!
+				<span style="background-color:pink;">
+					{% if user.roleId == 1 %}
+						Super-Admin
+					{% elseif user.roleId == 2 %}
+						Admin
+					{% endif %}
+				</span>
 			</h2>
 			<div class="d-flex flex-wrap justify-content-between">
 				<div class="col-sm-6 mb-3">
