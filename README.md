@@ -18,9 +18,9 @@ Les commentaires sont soumis à validation avant publication.
 La gestion des comptes utilisateurs.
 
 ## PRÉREQUIS
--  PHP 8.1
--  MySQL ou Mariadb
--  Composer version 2
+  -  PHP 8.1
+  -  MySQL ou Mariadb
+  -  Composer version 2
 
 ## INSTALLATION
 1.  Clôner le projet depuis mon compte gitHub sur votre disque dur.
