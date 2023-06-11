@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 02 juin 2023 à 15:46
+-- Généré le : dim. 11 juin 2023 à 11:22
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.1.12
 
@@ -105,7 +105,7 @@ INSERT INTO `role` (`id`, `name`, `rolestring`, `created_at`, `updated_at`) VALU
 
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
-  `roles` int(11) NOT NULL,
+  `roleId` int(11) NOT NULL,
   `pseudo` varchar(64) NOT NULL,
   `slug` varchar(64) NOT NULL,
   `email` varchar(180) NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE `user` (
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `roles`, `pseudo`, `slug`, `email`, `password`, `token`, `created_at`, `updated_at`) VALUES
+INSERT INTO `user` (`id`, `roleId`, `pseudo`, `slug`, `email`, `password`, `token`, `created_at`, `updated_at`) VALUES
 (1, 1, 'Laura', 'laura', 'laura@2dbubbles.com', '$2y$12$DXtToVp2RVOraZFWssV/dOYFnjxumev9uR4uD4.tninsPhfk70Ac.', '', '2023-06-02 10:47:18', '2023-06-02 10:47:18'),
 (2, 2, 'Paolito', 'paolito', 'paolito@2dbubbles.com', '$2y$12$9JoAVjz0jle9I86aNNfzIOZZ7qO.mCtTZ0u1Bym2PU/x88g5uxlyy', NULL, '2023-05-14 14:06:05', NULL),
 (3, 3, 'Sophie', 'sophie', 'sophiedelage@sfr.com', '$2y$12$o21BtcJOsCLiN6eMJez2Mu8fzO8HoAXyF9FVsdduisB.1aWgxRNcm', 'e2734252d927b0dcbcf9e742edd0a9dcc1b4f0174d1f6b31d2ad9eb9b8bc91a7', '2023-05-26 12:31:59', '2023-05-26 12:31:59'),
@@ -160,7 +160,7 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`),
   ADD UNIQUE KEY `slug` (`slug`),
-  ADD KEY `roles` (`roles`);
+  ADD KEY `roles` (`roleId`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -211,7 +211,7 @@ ALTER TABLE `post`
 -- Contraintes pour la table `user`
 --
 ALTER TABLE `user`
-  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roles`) REFERENCES `role` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
