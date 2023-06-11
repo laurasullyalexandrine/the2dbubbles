@@ -1,6 +1,6 @@
 # TITRE DU PROJET
 Mon premier blog professionnel 2dbubbles 
-Il est développé en from scratch avec PHP 8.1.12, le pattern MVC (Model Vue Controler) et le moteur de template TWIG.
+Il est développé en from scratch avec PHP 8.1.12, le design pattern MVC (Model Vue Controler) Active Record et le moteur de template TWIG.
 
 ## DESCRIPTION DU PROJET
 Mon site web se décompose en deux grandes parties:
