@@ -1,6 +1,6 @@
 # TITRE DU PROJET
 
-Mon premier blog professionnel 2dbubbles
+Mon premier blog professionnel 2dbubbles  
 Il est développé en from scratch avec PHP 8.1.12, le design pattern MVC (Model Vue Controler) Active Record et le moteur de template TWIG.
 
 ## DESCRIPTION DU PROJET
@@ -35,7 +35,7 @@ La gestion des comptes utilisateurs.
 ```composer install```
 4. Noter que le dossier vendor et le vendor/autoload.php script sont générés par Composer.
 5. Créer votre base de données encodée `utf8mb4_general_ci`.
-6. Importer la base de données dans votre SGBDR (Système de Gestion de Base de Données Relationnelle).
+6. Importer la base de données dans votre SGBDR (Système de Gestion de Base de Données Relationnelle).  
 7. Copier le fichier `config.ini.dist` et le coller sous le nom de `config.ini`.
 8. Renseigner les informations de connexion à la base de données.
 
