@@ -145,7 +145,7 @@ class Role extends CoreModel
      * Méthode permetttant l'édition d'un rôle
      *
      */
-    public function update(): void
+    public function update(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -163,7 +163,7 @@ class Role extends CoreModel
         $pdoStatement->bindValue(':name', $this->name, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roleString', $this->roleString, PDO::PARAM_STR);
 
-        $pdoStatement->execute();
+        return $pdoStatement->execute();
     }
 
 

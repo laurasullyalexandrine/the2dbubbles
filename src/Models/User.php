@@ -35,7 +35,7 @@ class User extends CoreModel
     /**
      * @var string
      */
-    private string $token;
+    private ?string $token;
 
     /**
      * @var int
@@ -226,7 +226,7 @@ class User extends CoreModel
      *
      * @return void
      */
-    public function update(): void
+    public function update(): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -251,7 +251,7 @@ class User extends CoreModel
         $pdoStatement->bindValue(':token', $this->token, PDO::PARAM_STR);
         $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
 
-        $pdoStatement->execute();
+        return $pdoStatement->execute();
     }
 
 
@@ -372,7 +372,7 @@ class User extends CoreModel
      *
      * @return  string
      */ 
-    public function getToken(): string
+    public function getToken(): ?string
     {
         return $this->token;
     }

@@ -136,7 +136,7 @@ class CommentController extends CoreController
 
                     if ($comment->update()) {
                         header('Location: /comment/userComment/'. $userCurrent->getSlug());
-                        $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Par contre Il est de nouveau en cours de validation.");
+                        $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Par contre il est de nouveau en cours de validation.");
                         return;
                     } else {
                         $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");

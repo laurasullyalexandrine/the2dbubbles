@@ -15,15 +15,15 @@
 			<form action="create" method="post" class="d-flex flex-column rounded p-3">
 			<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
 				<div class="mb-2">
-					<input type="text" class="form-control border border-2" value="{{ post.title }}" name="title" id="Title">
+					<input type="text" class="form-control border border-2" name="title" id="Title">
 					<label for="Title" class="form-label h6">Titre*</label>
 				</div>
 				<div class="mb-2">
-					<input type="text" class="form-control border border-2" value="{{ post.chapo }}" name="chapo" id="Chapo">
+					<input type="text" class="form-control border border-2" name="chapo" id="Chapo">
 					<label for="Chapo" class="form-label h6">Chapô*</label>
 				</div>
 				<div class="mb-2">
-					<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
+					<textarea class="form-control border border-2" name="content" id="Content" rows="8"></textarea>
 					<label for="Contenu" class="form-label h6">Contenu*</label>
 				</div>
 

@@ -16,7 +16,7 @@ class SecurityController extends CoreController
      * Traitement du formulaire de connexion
      * @return void
      */
-    public function login()
+    public function login(): void
     {
         if ($this->isPost()) {
 
@@ -243,7 +243,7 @@ class SecurityController extends CoreController
      * @param string $token
      * @return void
      */
-    public function resetPassword(string $token)
+    public function resetPassword(string $token): void
     {
         // Vérifier si le token existe en bdd
         $user = User::findOneByToken($token);
@@ -301,7 +301,7 @@ class SecurityController extends CoreController
      * Déconnexion de l'utilisateur
      * @return void
      */
-    public function logout()
+    public function logout(): void
     {
         session_destroy();
         header('Location: /security/login');
