@@ -38,7 +38,7 @@ class CoreController
         $isGranted = new \Twig\TwigFunction('is_granted', function () {
             $user = $this->userIsConnected();
             if ($user) {
-                $userRoleId = $user->getRoles();
+                $userRoleId = $user->getRoleId();
                 $role = Role::findById($userRoleId);
                 $roleName = $role->getName();
 

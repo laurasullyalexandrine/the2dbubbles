@@ -38,7 +38,7 @@ class UserController extends CoreController
         $role = new Role();
         $roles = $role::findAll();
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
@@ -58,7 +58,7 @@ class UserController extends CoreController
                 // Mettre à jour les propriétés de l'instance
                 $user->setPseudo($pseudo);
                 $user->setEmail($email);
-                $user->setRoles($role);
+                $user->setRoleId($role);
 
                 // Vérifier que tous les champs ne sont pas vide 
                 if (empty($pseudo)) {
@@ -143,10 +143,10 @@ class UserController extends CoreController
     public function update(int $userId): void
     {
         $user = User::findById($userId);
-        $updatedRole = $user->getRoles();
+        $updatedRole = $user->getRoleId();
         $roles = Role::findAll();
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
@@ -169,7 +169,7 @@ class UserController extends CoreController
                 $role = (int)filter_input(INPUT_POST, 'role');
                 $user->setPseudo($pseudo);
                 $user->setEmail($email);
-                $user->setRoles($role);
+                $user->setRoleId($role);
 
                 // Vérifier que tous les champs ne sont pas vide 
                 if (empty($pseudo)) {
@@ -201,7 +201,7 @@ class UserController extends CoreController
                 } else {
                     $user->setPseudo(filter_input(INPUT_POST, $pseudo));
                     $user->setEmail(filter_input(INPUT_POST, $email));
-                    $user->setRoles((int)filter_input(INPUT_POST, 'role'));
+                    $user->setRoleId((int)filter_input(INPUT_POST, 'role'));
                 }
             }
             $this->show('admin/user/update', [
@@ -223,7 +223,7 @@ class UserController extends CoreController
     {
         $user = User::findById($userId);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');

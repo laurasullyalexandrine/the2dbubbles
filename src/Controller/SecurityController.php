@@ -139,7 +139,7 @@ class SecurityController extends CoreController
                 );
                 $user->setSlug($slug)
                     ->setPassword($password)
-                    ->setRoles($getIdRoleSubmited);
+                    ->setRoleId($getIdRoleSubmited);
 
                 // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
