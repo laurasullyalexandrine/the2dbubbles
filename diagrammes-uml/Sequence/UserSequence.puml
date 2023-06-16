@@ -7,33 +7,35 @@ actor User as User #Plum
 
 entity Post as Post #LightYellow
 entity Comment as Comment #LightYellow
+entity Admin as Admin #LightYellow
 
-database 2dbubbleas 2dbubble#YellowGreen
+database 2dbubbles as 2dbubbles #HotPink
 
 User -> 2dbubbles: créer un compte
 alt cas réussi
-2dbubble-> User: valider création du compte
+2dbubbles-> User: valider création du compte
 else email déjà existant 
-2dbubble-> User: échec de l'inscription
+2dbubbles-> User: échec de l'inscription
 
 User -> 2dbubbles: demander authentification 
-2dbubble-> User: valider authentification 
+2dbubbles-> User: valider authentification 
 else identification invalides
-2dbubble-> User: échec de l'authentification
+2dbubbles-> User: échec de l'authentification
 
 
 User -> Comment: ajouter commentaire
-Comment -> User: commentaitre publié
-User -> Comment: refuser commentaire
-Comment -> User: commentaire supprimé
+Comment -> User: commentaitre en attente de validation
+else commentaire invalide
+User -> Admin: refuser commentaire
+Admin -> User: commentaire refusé supprimé
 
-User -> Comment: chercher tous ses commentaires
+User -> Comment: consulter tous ses commentaires
 Comment -> User: afficher liste de ses commentaires
 
-User -> Comment: chercher un commentaire
-Comment -> User: afficher détails commentaire
-else ce commentaire n'existe pas
-User -> Comment: le commentaire demandé n'existe pas
+2dbubbles -> User: envoie du formulaire de contact
+2dbubbles -> User: formulaire de contact envoyé
+else il y a des erreurs sur le formulaire
+User -> Comment: le champ email vide 
 
 end
 @enduml

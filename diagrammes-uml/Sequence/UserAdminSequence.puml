@@ -1,44 +1,44 @@
-@startuml UseradminSequence
+@startuml UserAdminSequence
 
 skinparam responseMessageBelowArrow true
 skinparam SequenceMessageAlignment center
 
-actor admin as admin #OliveDrab
+actor Admin as Admin #OliveDrab
 
 entity Post as Post #LightYellow
 entity Comment as Comment #LightYellow
 
-database 2dbubbleas 2dbubble#YellowGreen
+database 2dbubbles as 2dbubbles #HotPink
 
-admin -> 2dbubbles: créer un compte
+Admin -> 2dbubbles: créer un compte
 alt cas réussi
-2dbubble-> admin: valider création du compte
+2dbubbles-> Admin: valider création du compte
 else email déjà existant 
-2dbubble-> admin: échec de l'inscription
+2dbubbles-> Admin: échec de l'inscription
 
-admin  -> 2dbubbles: demander authentification 
-2dbubble-> admin: valider authentification 
+Admin  -> 2dbubbles: demander authentification 
+2dbubbles-> Admin: valider authentification 
 else identification invalides
-2dbubble-> admin: échec de l'authentification
+2dbubbles-> Admin: échec de l'authentification
 
-admin  -> Post: ajouter post
-Post -> admin: valider ajout
-else le titre ne peut être nul
-Post -> admin: échec de l'ajout
+Admin  -> Comment: ajouter comment
+Comment -> Admin: valider ajout
+else erreur durant le traitement
+Comment -> Admin: le commentaire n'a pas pu être ajouté
 
-admin  -> Post: éditer post
-Post -> admin: valider édition
-else ce post n'existe pas
-Post -> admin: le post recherché n'existe pas
+Admin  -> Comment: éditer comment
+Comment -> Admin: valider édition
+else ce comment n'existe pas
+Comment -> Admin: le comment en cours de modification n'existe pas
 
-admin  -> Post: supprimer post
+Admin  -> Post: modifier post
 else erreur 403
-Post -> admin: vous n'avez pas accès à cette ressource
+Comment -> Admin: vous n'avez pas accès à cette ressource
 
-admin  -> Comment: modérer commentaitre
-Comment -> admin: accepter commentaitre
-admin  -> Comment: refuser commentaitre
-Comment -> admin: supprimer commentaitre
+Admin  -> Comment: modérer commentaire
+Comment -> Admin: accepter commentaire
+Admin  -> Comment: refuser commentaire
+Comment -> Admin: supprimer commentaire
 
 end
 @enduml
