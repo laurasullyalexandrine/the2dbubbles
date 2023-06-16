@@ -1,20 +1,23 @@
-
 @startuml Superadmin
 
 left to right direction
 
 actor "Superadmin" as Superadmin #OliveDrab
 
-rectangle 2dbubble{
+rectangle 2dbubbles{
   usecase "Créer un compte" as UC1
   usecase "Se connecter" as UC2
-  usecase "Ajouter des posts" as UC3
-  usecase "Modifier des posts" as UC4
-  usecase "Supprimer des posts" as UC5
-  usecase "Afficher les posts" as UC6
-  usecase "Ajouter des commentaires" as UC7
+  usecase "Ajouter ses posts" as UC3
+  usecase "Modifier ses posts" as UC4
+  usecase "Supprimer ses posts" as UC5
+  usecase "Consulter ses posts" as UC6
+  usecase "Ajouter ses commentaires" as UC7
   usecase "Modérer des commentaires" as UC8
   usecase "Supprimer des commentaires" as UC9
+  usecase "Consulter ses commentaires" as UC10
+  usecase "Ajouter des utilisateurs" as UC11
+  usecase "Modifier des utilisateurs" as UC12
+  usecase "Supprimer des utilisateurs" as UC13
 }
 
 Superadmin --> UC1
@@ -26,5 +29,9 @@ Superadmin --> UC6
 Superadmin --> UC7
 Superadmin --> UC8
 Superadmin --> UC9
+Superadmin --> UC10
+Superadmin --> UC11
+Superadmin --> UC12
+Superadmin --> UC13
 
 @enduml
