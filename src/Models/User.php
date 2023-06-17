@@ -40,7 +40,7 @@ class User extends CoreModel
     /**
      * @var int
      */
-    private int $roleId;
+    private ?int $roleId = null;
 
 
     public function __toString(): string
@@ -194,7 +194,7 @@ class User extends CoreModel
             )
             VALUES (
                 :pseudo,
-                :slug,roleId
+                :slug,
                 :email,
                 :password,
                 :roleId
@@ -402,12 +402,10 @@ class User extends CoreModel
     }
 
     /**
-     * Set the value of roleId
-     *
-     * @param  int  $roleId
+     * Set the value of roles
      *
      * @return  self
-     */ 
+     */
     public function setRoleId(int $roleId): self
     {
         $this->roleId = $roleId;

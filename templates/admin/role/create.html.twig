@@ -15,7 +15,7 @@
 			<form action="create" method="post" class="row g-3">
 				<p class="text-danger">Les champs marqués d'un * sont obligatoires.</p>
 				<div class="mb-2">
-					<input type="text" class="form-control border border-2" name="role" id="Role">
+					<input type="text" class="form-control border border-2" name="role" id="Role" value="{{ role.name }}">
 					<label for="Role" class="form-label h6">Nom*</label>
 				</div>
 				<button class="bluegrey my-4" type="submit">Créer</button>

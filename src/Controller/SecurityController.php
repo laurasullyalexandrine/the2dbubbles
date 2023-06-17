@@ -144,12 +144,12 @@ class SecurityController extends CoreController
                 // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
                     if ($user->insert()) {
-                        $this->flashes('success', 'Ton compte a bien été créé, merci de te connecter.');
+                        $this->flashes('success', 'Ton Bubbles Space a bien été créé, C\'est parti!');
                         header('Location: /security/login');
                         return;
                     } // Si erreur lors de l'enregistrement
                     else {
-                        $this->flashes('danger', "Ton compte n'a pas été créé!");
+                        $this->flashes('danger', "Ton Bubbles Space n'a pas été créé!");
                     }
                 } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
                     if ($e->getCode() === '23000') {

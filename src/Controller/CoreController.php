@@ -53,7 +53,6 @@ class CoreController
         $user = new \Twig\TwigFunction('user', function () {
             $userCurrent = $this->userIsConnected();
             if ($userCurrent) {
-
                 return $userCurrent;
             } else {
                 return;
