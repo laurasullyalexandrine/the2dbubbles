@@ -38,7 +38,7 @@ class CoreController
         $isGranted = new \Twig\TwigFunction('is_granted', function () {
             $user = $this->userIsConnected();
             if ($user) {
-                $userRoleId = $user->getRoles();
+                $userRoleId = $user->getRoleId();
                 $role = Role::findById($userRoleId);
                 $roleName = $role->getName();
 
@@ -53,7 +53,6 @@ class CoreController
         $user = new \Twig\TwigFunction('user', function () {
             $userCurrent = $this->userIsConnected();
             if ($userCurrent) {
-
                 return $userCurrent;
             } else {
                 return;

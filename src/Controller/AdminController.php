@@ -39,7 +39,7 @@ class AdminController extends CoreController
         }
 
         // Récupérer le role du user en session
-        $roleId = $userCurrent->getRoles();
+        $roleId = $userCurrent->getRoleId();
         $role = Role::findById($roleId);
 
         if (!$userCurrent) {
@@ -91,7 +91,7 @@ class AdminController extends CoreController
     public function delete(int $commentId): void
     {
         $comment = Comment::findById($commentId);
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');

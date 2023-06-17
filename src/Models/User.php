@@ -40,7 +40,7 @@ class User extends CoreModel
     /**
      * @var int
      */
-    private int $roles;
+    private ?int $roleId = null;
 
 
     public function __toString(): string
@@ -60,9 +60,9 @@ class User extends CoreModel
             SELECT u.id, pseudo, email, r.name AS role
             FROM user u
             LEFT JOIN role r
-            ON r.id = u.roles
-            WHERE u.roles 
-            ORDER BY u.roles ASC
+            ON r.id = u.roleId
+            WHERE u.roleId 
+            ORDER BY u.roleId ASC
             "
         ;
         $pdoStatement = $pdoDBConnexion->prepare($sql);
@@ -190,14 +190,14 @@ class User extends CoreModel
                 slug,
                 email,
                 password,
-                roles
+                roleId
             )
             VALUES (
                 :pseudo,
                 :slug,
                 :email,
                 :password,
-                :roles
+                :roleId
             )
         "
     ;
@@ -209,7 +209,7 @@ class User extends CoreModel
                 'slug' => $this->slug,
                 'email' => $this->email,
                 'password' => $this->password,
-                'roles' => $this->roles,
+                'roleId' => $this->roleId,
             ]);
 
 
@@ -237,7 +237,7 @@ class User extends CoreModel
                 email = :email,
                 password = :password,
                 token = :token,
-                roles = :roles,
+                roleId = :roleId,
                 updated_at = NOW()
             WHERE id = :id
         "
@@ -249,7 +249,7 @@ class User extends CoreModel
         $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
         $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
         $pdoStatement->bindValue(':token', $this->token, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':roles', $this->roles, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':roleId', $this->roleId, PDO::PARAM_INT);
 
         return $pdoStatement->execute();
     }
@@ -392,21 +392,24 @@ class User extends CoreModel
     }
 
     /**
-     * Get the value of roles
-     */
-    public function getRoles(): int
+     * Get the value of roleId
+     *
+     * @return  int
+     */ 
+    public function getRoleId(): int
     {
-        return $this->roles;
+        return $this->roleId;
     }
 
     /**
-     * Set the value of roles
+     * Set the value of roleId
      *
-     * @return  self
+     * @param integer $roleId
+     * @return self
      */
-    public function setRoles(int $roles): self
+    public function setRoleId(int $roleId): self
     {
-        $this->roles = $roles;
+        $this->roleId = $roleId;
 
         return $this;
     }

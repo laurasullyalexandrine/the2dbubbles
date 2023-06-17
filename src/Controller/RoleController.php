@@ -33,7 +33,7 @@ class RoleController extends CoreController
     {
         $role = new Role();
         $userCurrent = $this->userIsConnected();
-        $currentUserRole = Role::findById($userCurrent->getRoles());
+        $currentUserRole = Role::findById($userCurrent->getRoleId());
         if (!$userCurrent) {
             header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "super_admin") {
@@ -84,7 +84,7 @@ class RoleController extends CoreController
     {
         $role = role::findById($roleId);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
@@ -137,7 +137,7 @@ class RoleController extends CoreController
     {
         $role = Role::findById($roleId);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoles());
+        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');

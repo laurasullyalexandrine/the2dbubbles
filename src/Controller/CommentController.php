@@ -108,7 +108,7 @@ class CommentController extends CoreController
         $userCurrent = $this->userIsConnected();
 
         // Récupérer le role du user en session
-        $roleId = $userCurrent->getRoles();
+        $roleId = $userCurrent->getRoleId();
         Role::findById($roleId);
 
         // Récupérer l'id de lauteur du commentaire
