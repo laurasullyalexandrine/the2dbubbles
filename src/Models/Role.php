@@ -10,16 +10,15 @@ use App\Utils\Database;
 class Role extends CoreModel
 {
 
+    /**
+     * @var string
+     */
+    private ?string $name = null;
 
     /**
      * @var string
      */
-    private string $name;
-
-    /**
-     * @var string
-     */
-    private string $roleString;
+    private ?string $roleString = null;
 
 
     public function __toString(): string
@@ -190,7 +189,7 @@ class Role extends CoreModel
     /**
      * Get the value of name
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }

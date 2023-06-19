@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 11 juin 2023 à 11:22
+-- Généré le : lun. 19 juin 2023 à 13:36
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.1.12
 
@@ -120,7 +120,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `roleId`, `pseudo`, `slug`, `email`, `password`, `token`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Laura', 'laura', 'laura@2dbubbles.com', '$2y$12$DXtToVp2RVOraZFWssV/dOYFnjxumev9uR4uD4.tninsPhfk70Ac.', '', '2023-06-02 10:47:18', '2023-06-02 10:47:18'),
+(1, 1, 'Laura', 'laura', 'laura@2dbubbles.com', '$2y$12$OOe9CT00VCtU9PL0aIDVTeHpovZCF1ue8LQGq2.GexgOnUlkflH4i', '', '2023-06-19 11:35:48', '2023-06-19 11:35:48'),
 (2, 2, 'Paolito', 'paolito', 'paolito@2dbubbles.com', '$2y$12$9JoAVjz0jle9I86aNNfzIOZZ7qO.mCtTZ0u1Bym2PU/x88g5uxlyy', NULL, '2023-05-14 14:06:05', NULL),
 (3, 3, 'Sophie', 'sophie', 'sophiedelage@sfr.com', '$2y$12$o21BtcJOsCLiN6eMJez2Mu8fzO8HoAXyF9FVsdduisB.1aWgxRNcm', 'e2734252d927b0dcbcf9e742edd0a9dcc1b4f0174d1f6b31d2ad9eb9b8bc91a7', '2023-05-26 12:31:59', '2023-05-26 12:31:59'),
 (4, 3, 'Julie', 'julie', 'julielescault@gmail.com', '$2y$12$EWcgYQtnqYcIBm1Z7y/6NuuItdrNVxfVUAspXLrfA/ExGoq5XSCnW', '', '2023-05-30 18:43:08', '2023-05-30 18:43:08'),
@@ -170,7 +170,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `post`
@@ -188,7 +188,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Contraintes pour les tables déchargées

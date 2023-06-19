@@ -4,7 +4,6 @@
     },
     "require": {
         "twig/twig": "^3.5",
-        "altorouter/altorouter": "^2.0",
         "symfony/asset": "^6.2",
         "phpmailer/phpmailer": "^6.8"
     },

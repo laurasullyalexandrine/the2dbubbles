@@ -1,17 +1,17 @@
-
 @startuml admin
 
 left to right direction
 
 actor "admin" as admin #OliveDrab
 
-rectangle 2dbubble{
+rectangle 2dbubbles{
   usecase "Créer un compte" as UC1
   usecase "Se connecter" as UC2
-  usecase "Ajouter des posts" as UC3
-  usecase "Modifier les posts" as UC4
-  usecase "Afficher les posts" as UC5
-  usecase "Ajouter des commentaires" as UC6
+  usecase "Lire les posts" as UC3
+  usecase "Ajouter ses commentaires" as UC4
+  usecase "Modifier ses commentaires" as UC5
+  usecase "Modérer des commentaires" as UC6
+  usecase "Supprimer des commentaires" as UC7
 }
 
 admin --> UC1
@@ -20,5 +20,6 @@ admin --> UC3
 admin --> UC4
 admin --> UC5
 admin --> UC6
+admin --> UC7
 
 @enduml

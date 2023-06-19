@@ -10,7 +10,7 @@
 
 		<form action="/comment/create/{{ post.slug }}" method="post" class="row g-3">
 			<div class="mb-2">
-				<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ post.content }}"></textarea>
+				<textarea class="form-control border border-2" name="content" id="Content" rows="8" value="{{ comment.content }}"></textarea>
 				<label for="Contenu" class="form-label h6">Contenu*</label>
 			</div>
 			<button class="bluegrey my-4" type="submit">Publier</button>
