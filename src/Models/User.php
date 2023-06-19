@@ -15,17 +15,17 @@ class User extends CoreModel
     /**
      * @var string
      */
-    private string $pseudo;
+    private ?string $pseudo = null;
 
     /**
      * @var string
      */
-    private string $slug;
+    private ?string $slug = null;
 
     /**
      * @var string
      */
-    private string $email;
+    private ?string $email = null;
 
     /**
      * @var string
@@ -285,7 +285,7 @@ class User extends CoreModel
      *
      * @return  string
      */ 
-    public function getPseudo(): string
+    public function getPseudo(): ?string
     {
         return $this->pseudo;
     }
@@ -308,7 +308,7 @@ class User extends CoreModel
      *
      * @return  string
      */ 
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }

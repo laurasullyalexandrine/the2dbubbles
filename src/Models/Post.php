@@ -12,22 +12,22 @@ class Post extends CoreModel {
     /**
      * @var string
      */
-    private string $title;
+    private ?string $title = null;
 
     /**
      * @var string
      */
-    private string $slug;
+    private ?string $slug = null;
 
     /**
      * @var string
      */
-    private string $chapo;
+    private ?string $chapo = null;
 
     /**
      * @var string
      */
-    private string $content;
+    private ?string $content = null;
 
     /**
      * @var int
@@ -216,7 +216,7 @@ class Post extends CoreModel {
     /**
      * Get the value of title
      */ 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -238,7 +238,7 @@ class Post extends CoreModel {
      *
      * @return  string
      */ 
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -260,7 +260,7 @@ class Post extends CoreModel {
     /**
      * Get the value of chapo
      */ 
-    public function getChapo(): string
+    public function getChapo(): ?string
     {
         return $this->chapo;
     }
@@ -282,7 +282,7 @@ class Post extends CoreModel {
      *
      * @return  string
      */ 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }
