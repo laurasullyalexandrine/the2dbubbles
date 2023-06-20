@@ -7,16 +7,10 @@
 	<article class="row d-flex flex-wrap justify-content-between">
 		<p class="align-self-end"><a class="card-link" href="/post/list">Retour</a></p>
 		{# Formulaire d'ajout de commentaire #}
-		{% if is_granted() == "utilisateur" %}
 			<section class="col">
 				{{ include('front/comment/create.html.twig') }}
 			</section>
-		{% else %}
-			<div class="col-lg-5 mt-lg-4">
-				<img src="/image/post.png" alt="image-post" class="w-100">
-			</div>
-		{% endif %}
-
+			
 		{# Article #}
 		<section class="col-lg-5 col-sm-6 mt-lg-4 p-4 d-flex flex-column">
 			<div>
