@@ -22,10 +22,18 @@ class User
 
     private $updated_at;
 
+
+    public function __toString(): string
+    {
+        return $this->pseudo;
+    }
+    
     /**
-     * Get the value of id
+     * Get the id of the entity
+     *
+     * @return  int
      */ 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -44,8 +52,10 @@ class User
 
     /**
      * Get the value of pseudo
+     *
+     * @return  string
      */ 
-    public function getPseudo()
+    public function getPseudo(): ?string
     {
         return $this->pseudo;
     }

@@ -6,8 +6,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Models\Role;
-use App\Models\UserRepository;
+use App\Repository\UserRepository;
 use App\Controller\ErrorController;
+use App\Repository\RoleRepository;
 
 /**
  * Controller dédié à la gestion des utilisateurs
@@ -32,7 +33,6 @@ class UserController extends CoreController
         ]);
     }
 
-
     /**
      * Ajout d'un nouvel utilisateur
      * 
@@ -40,11 +40,11 @@ class UserController extends CoreController
      */
     public function create(): void
     {
+        $user =  new User();
+        $roleRepository = new RoleRepository();
+        $roles = $roleRepository->findAll();
 
-        $role = new Role();
-        $roles = $role::findAll();
-
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $currentUserRole = $roleRepository->findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
             // Sinon le rediriger vers la page de login
             header('Location: /security/login');
@@ -63,7 +63,7 @@ class UserController extends CoreController
                 // Contraindre le type de la valeur soumis 
                 $role = (int)filter_input(INPUT_POST, 'role');
 
-                $user =  new User();
+           
                 // Mettre à jour les propriétés de l'instance
                 $user->setPseudo($pseudo);
                 $user->setEmail($email);
@@ -88,10 +88,12 @@ class UserController extends CoreController
                 if ($password !== $password_2) {
                     $this->flashes('danger', 'Les mots de passe ne corresponde pas!');
                 }
-
+                
+                // TODO: Corriger cette erreur
                 // Contrôler si le rôle soumis est un rôle existant en BDD 
                 $roleExist = false;
                 foreach ($roles as $existingRole) {
+                    // dd($existingRole);
                     // Si l'id du rôle soumis existe en base de données
                     if ($existingRole->getId() === $role) {
                         $roleExist = true;

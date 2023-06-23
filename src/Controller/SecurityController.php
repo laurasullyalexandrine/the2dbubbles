@@ -6,7 +6,8 @@ namespace App\Controller;
 
 use App\Models\Role;
 use App\Entity\User;
-use App\Models\UserRepository;
+use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
 
 /**
  * Controller dédié à la gestion des posts
@@ -82,12 +83,12 @@ class SecurityController extends CoreController
     public function register(): void
     {
         $user = new User();
-        $role = new Role();
-        $roles = $role::findAll();
-
+        $roleRepository = new RoleRepository();
+        $roles = $roleRepository->findAll();
+        // dd($roles);
         if ($this->isPost()) {
 
-            // Récupérer les données recues du formalaire d'inscription
+            // Récupérer les données reçues du formalaire d'inscription
             $pseudo = filter_input(INPUT_POST, 'pseudo');
             $slug = $this->slugify($pseudo);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -114,11 +115,12 @@ class SecurityController extends CoreController
                 $this->flashes('danger', 'Les mots de passe de correspondent pas!');
             }
 
-
+            // TODO: Corriger cette erreur
             // Contrôler si le rôle soumis est un rôle existant en BDD 
             $rolesIdArray = [];
             $roleExist = false;
             foreach ($roles as $existingRole) {
+                dd($existingRole->getId());
                 $rolesIdArray[] = $existingRole->getId();
                 $getIdRoleSubmited = $existingRole::findByName($hiddenRole)->getId();
 

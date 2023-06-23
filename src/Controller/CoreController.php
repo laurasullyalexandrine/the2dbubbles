@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Role;
+use App\Entity\Role;
 use App\Entity\User;
+use App\Repository\RoleRepository;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Extension\DebugExtension;
 
 class CoreController
 {
-
-
     /**
      * Méthode permettant la gestion des fonctions et affichage dans les templates Twig
      *
@@ -37,9 +36,10 @@ class CoreController
          */
         $isGranted = new \Twig\TwigFunction('is_granted', function () {
             $user = $this->userIsConnected();
+            $roleRepository = new RoleRepository();
             if ($user) {
                 $userRoleId = $user->getRoleId();
-                $role = Role::findById($userRoleId);
+                $role = $roleRepository->findById($userRoleId);
                 $roleName = $role->getName();
 
                 return $roleName;
@@ -96,11 +96,6 @@ class CoreController
     protected function isPost(): bool
     {
         return $_SERVER['REQUEST_METHOD'] === 'POST';
-    }
-
-    protected function isGet(): bool
-    {
-        return $_SERVER['REQUEST_METHOD'] === 'GET';
     }
 
     /**
@@ -177,7 +172,7 @@ class CoreController
      */
     protected function getRoles(): array
     {
-        $role = new Role();
+        $role = new RoleRepository();
   
         $roles = $role->findAll();
 

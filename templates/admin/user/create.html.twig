@@ -14,7 +14,7 @@
 				<div class="mb-2">
 					{% for role in roles %}
 							<div class="form-check ms-1">
-								<input class="form-check-input border-2" type="checkbox" name="role" id="Role" value="{{ role.id }}">
+								<input class="form-check-input border-2" type="radio" name="role" id="Role" value="{{ role.id }}">
 								<label class="form-check-label" for="Role">{{ role.name }}</label>
 							</div>
 					{% endfor %}

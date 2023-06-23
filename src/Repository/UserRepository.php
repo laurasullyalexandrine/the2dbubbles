@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Repository;
 
 use PDO;
 use App\Utils\Database;
@@ -12,41 +12,35 @@ class UserRepository extends Database
 {
     const HASH_COST = 12;
 
-    /**
-     * @var string
-     */
-    private ?string $pseudo = null;
+    // /**
+    //  * @var string
+    //  */
+    // private ?string $pseudo = null;
 
-    /**
-     * @var string
-     */
-    private ?string $slug = null;
+    // /**
+    //  * @var string
+    //  */
+    // private ?string $slug = null;
 
-    /**
-     * @var string
-     */
-    private ?string $email = null;
+    // /**
+    //  * @var string
+    //  */
+    // private ?string $email = null;
 
-    /**
-     * @var string
-     */
-    private string $password;
+    // /**
+    //  * @var string
+    //  */
+    // private string $password;
 
-    /**
-     * @var string
-     */
-    private ?string $token;
+    // /**
+    //  * @var string
+    //  */
+    // private ?string $token;
 
-    /**
-     * @var int
-     */
-    private ?int $roleId = null;
-
-
-    public function __toString(): string
-    {
-        return $this->pseudo;
-    }
+    // /**
+    //  * @var int
+    //  */
+    // private ?int $roleId = null;
 
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table user
@@ -270,136 +264,136 @@ class UserRepository extends Database
         return ($pdoStatement->rowCount() > 0);
     }
 
-    /**
-     * Get the value of pseudo
-     *
-     * @return  string
-     */ 
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
+    // /**
+    //  * Get the value of pseudo
+    //  *
+    //  * @return  string
+    //  */ 
+    // public function getPseudo(): ?string
+    // {
+    //     return $this->pseudo;
+    // }
 
-    /**
-     * Set the value of pseudo
-     *
-     * @param  string  $pseudo
-     *
-     * @return  self
-     */ 
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
+    // /**
+    //  * Set the value of pseudo
+    //  *
+    //  * @param  string  $pseudo
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setPseudo(string $pseudo): self
+    // {
+    //     $this->pseudo = $pseudo;
 
-        return $this;
-    }
-    /**
-     * Get the value of slug
-     *
-     * @return  string
-     */ 
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
+    //     return $this;
+    // }
+    // /**
+    //  * Get the value of slug
+    //  *
+    //  * @return  string
+    //  */ 
+    // public function getSlug(): ?string
+    // {
+    //     return $this->slug;
+    // }
 
-    /**
-     * Set the value of slug
-     *
-     * @param  string  $slug
-     *
-     * @return  self
-     */ 
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
+    // /**
+    //  * Set the value of slug
+    //  *
+    //  * @param  string  $slug
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setSlug(string $slug): self
+    // {
+    //     $this->slug = $slug;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of email
-     */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
+    // /**
+    //  * Get the value of email
+    //  */
+    // public function getEmail(): ?string
+    // {
+    //     return $this->email;
+    // }
 
-    /**
-     * Set the value of email
-     *
-     * @return  self
-     */
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
+    // /**
+    //  * Set the value of email
+    //  *
+    //  * @return  self
+    //  */
+    // public function setEmail(string $email): self
+    // {
+    //     $this->email = $email;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of password
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
+    // /**
+    //  * Get the value of password
+    //  */
+    // public function getPassword(): string
+    // {
+    //     return $this->password;
+    // }
 
-    /**
-     * Set the value of password
-     *
-     * @return  self
-     */
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
+    // /**
+    //  * Set the value of password
+    //  *
+    //  * @return  self
+    //  */
+    // public function setPassword(string $password): self
+    // {
+    //     $this->password = $password;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of token
-     *
-     * @return  string
-     */ 
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
+    // /**
+    //  * Get the value of token
+    //  *
+    //  * @return  string
+    //  */ 
+    // public function getToken(): ?string
+    // {
+    //     return $this->token;
+    // }
 
-    /**
-     * Set the value of token
-     *
-     * @param  string  $token
-     *
-     * @return  self
-     */ 
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
+    // /**
+    //  * Set the value of token
+    //  *
+    //  * @param  string  $token
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setToken(string $token): self
+    // {
+    //     $this->token = $token;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of roleId
-     *
-     * @return  int
-     */ 
-    public function getRoleId(): int
-    {
-        return $this->roleId;
-    }
+    // /**
+    //  * Get the value of roleId
+    //  *
+    //  * @return  int
+    //  */ 
+    // public function getRoleId(): int
+    // {
+    //     return $this->roleId;
+    // }
 
-    /**
-     * Set the value of roles
-     *
-     * @return  self
-     */
-    public function setRoleId(int $roleId): self
-    {
-        $this->roleId = $roleId;
+    // /**
+    //  * Set the value of roles
+    //  *
+    //  * @return  self
+    //  */
+    // public function setRoleId(int $roleId): self
+    // {
+    //     $this->roleId = $roleId;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

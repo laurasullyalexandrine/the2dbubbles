@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Role;
+use App\Entity\Role;
+use App\Repository\RoleRepository;
 use Exception;
 
 class RoleController extends CoreController
 {
-
+    protected RoleRepository $roleRepository;
+    public function __construct()
+    {
+        $this->roleRepository = new RoleRepository();
+    }
     
     /**
      * Afficher tous les rôles de la base de données au role super_admin et l'admin
@@ -18,7 +23,7 @@ class RoleController extends CoreController
      */
     public function read()
     {
-        $roles = Role::findAll();
+        $roles = $this->roleRepository->findAll();
         $this->show('admin/role/read', [
             'roles' => $roles
         ]);
@@ -33,7 +38,7 @@ class RoleController extends CoreController
     {
         $role = new Role();
         $userCurrent = $this->userIsConnected();
-        $currentUserRole = Role::findById($userCurrent->getRoleId());
+        $currentUserRole = $this->roleRepository->findById($userCurrent->getRoleId());
         if (!$userCurrent) {
             header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "super_admin") {
@@ -53,7 +58,7 @@ class RoleController extends CoreController
                         $role->setName($roleName)
                             ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
-                        if ($role->insert()) {
+                        if ($this->roleRepository->insert($role)) {
                             $this->flashes('success', 'Le rôle a bien été créé.');
                             header('Location: /role/read');
                             return;
@@ -82,9 +87,9 @@ class RoleController extends CoreController
      */
     public function update(int $roleId): void
     {
-        $role = role::findById($roleId);
+        $role = $this->roleRepository->findById($roleId);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
@@ -106,7 +111,7 @@ class RoleController extends CoreController
                     $role->setName($roleName)
                         ->setRoleString('ROLE_' . mb_strtoupper($roleName));
 
-                    if ($role->update()) {
+                    if ($this->roleRepository->update($role)) {
                         header('Location: /role/read');
                         $this->flashes('success', 'Le rôle ' . $role->getName() . ' a bien été modifié.');
                         return;
@@ -135,9 +140,9 @@ class RoleController extends CoreController
      */
     public function delete(int $roleId)
     {
-        $role = Role::findById($roleId);
+        $role = $this->roleRepository->findById($roleId);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
@@ -146,7 +151,7 @@ class RoleController extends CoreController
             $error403->accessDenied();
         } else {
             if ($role) {
-                $role->delete();
+                $this->roleRepository->delete($roleId);
                 $this->flashes('success', 'Le Bubbles Role' . ' ' . $role->getName() . ' ' . 'a bien été supprimé.');
                 header('Location: /role/read');
                 return;
