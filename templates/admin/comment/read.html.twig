@@ -31,7 +31,7 @@
 														<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 														Validé
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="1" checked>
+													<input class="form-check-input" type="radio" name="status" id="status" value="1" checked>
 												</div>
 
 												<div class="form-check">
@@ -39,7 +39,7 @@
 														<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 														En attente
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
+													<input class="form-check-input" type="radio" name="status" id="status" value="2">
 												</div>
 
 												<div class="form-check">
@@ -47,7 +47,7 @@
 														<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 														Rejeté
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
+													<input class="form-check-input" type="radio" name="status" id="status" value="0">
 												</div>
 											{# Status en attente #}
 											{% elseif  comment.status == 2 %}
@@ -56,7 +56,7 @@
 														<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 														Validé &ensp;
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
+													<input class="form-check-input" type="radio" name="status" id="status" value="1">
 												</div>
 
 												<div class="form-check">
@@ -64,7 +64,7 @@
 														<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 														En attente
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="2" checked>
+													<input class="form-check-input" type="radio" name="status" id="status" value="2" checked>
 												</div>
 
 												<div class="form-check">
@@ -72,7 +72,7 @@
 														<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 														Rejeté
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="0">
+													<input class="form-check-input" type="radio" name="status" id="status" value="0">
 												</div>
 
 											{# Status rejété #}
@@ -82,7 +82,7 @@
 														<i class="fa-solid fa-face-smile" style="color: #17cf1a;"></i>
 														Validé &ensp;
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="1">
+													<input class="form-check-input" type="radio" name="status" id="status" value="1">
 												</div>
 
 												<div class="form-check">
@@ -90,7 +90,7 @@
 														<i class="fa-solid fa-circle-question" style="color: #eda507;"></i>
 														En attente
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="2">
+													<input class="form-check-input" type="radio" name="status" id="status" value="2">
 												</div>
 
 												<div class="form-check">
@@ -98,7 +98,7 @@
 														<i class="fa-solid fa-circle-xmark" style="color: #ed072a;"></i>
 														Rejeté
 													</label>
-													<input class="form-check-input" type="checkbox" name="status" id="status" value="0" checked>
+													<input class="form-check-input" type="radio" name="status" id="status" value="0" checked>
 												</div>
 											{% endif %}
 										{% endif %}
