@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Models\Role;
+use App\Entity\Role;
 use App\Repository\UserRepository;
 use App\Controller\ErrorController;
 use App\Repository\RoleRepository;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Post;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Comment;
+use App\Entity\Post;
+use App\Entity\Role;
+use App\Entity\User;
+use App\Entity\Comment;
 
 class CommentController extends CoreController
 {

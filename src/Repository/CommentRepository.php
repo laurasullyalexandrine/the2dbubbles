@@ -2,32 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\Models;
+namespace App\Repository;
 
 use PDO;
+use App\Entity\Comment;
 use App\Utils\Database;
 
-class Comment extends CoreModel
+class CommentRepository extends Database
 {
-    /**
-     * @var string
-     */
-    private string $content;
+    // /**
+    //  * @var string
+    //  */
+    // private string $content;
 
-    /**
-     * @var int
-     */
-    private int $status;
+    // /**
+    //  * @var int
+    //  */
+    // private int $status;
 
-    /**
-     * @var int
-     */
-    private ?int $userId = null;
+    // /**
+    //  * @var int
+    //  */
+    // private ?int $userId = null;
 
-    /**
-     * @var int
-     */
-    private ?int $postId = null;
+    // /**
+    //  * @var int
+    //  */
+    // private ?int $postId = null;
 
     /**
      * Méthode permettant de récupérer tous les commentaires
@@ -57,20 +58,19 @@ class Comment extends CoreModel
      * @param [type] $commentId
      * @return Comment
      */
-    public static function findById(int $commentId): Comment
+    public function findById(int $commentId): Comment
     {
-        $pdoDBConnexion = Database::getPDO();
         $sql = "
             SELECT * 
             FROM comment 
             WHERE id = :id
             "
         ;
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $commentId, PDO::PARAM_INT);
         $pdoStatement->execute();
 
-        $comment = $pdoStatement->fetchObject(self::class);
+        $comment = $pdoStatement->fetchObject(Comment::class);
 
         return $comment;
     }
@@ -80,10 +80,8 @@ class Comment extends CoreModel
      *
      * @return array
      */
-    public static function findByUser(string $slug): array
+    public function findByUser(string $slug): array
     {
-        $pdoDBConnexion = Database::getPDO();
-
         $sql = "
             SELECT c.id, c.content, c.status, c.created_at, c.updated_at, u.slug AS user, p.title AS post
             FROM comment c
@@ -96,7 +94,7 @@ class Comment extends CoreModel
             "
         ;
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
 
@@ -111,9 +109,8 @@ class Comment extends CoreModel
      * @param [type] $slug
      * @return array
      */
-    public static function findBySlugPost(string $slug): array
+    public function findBySlugPost(string $slug): array
     {
-        $pdoDBConnexion = Database::getPDO();
         $sql = "
             SELECT c.id, c.content, c.status, c.created_at, c.updated_at, p.slug AS slug, u.pseudo
             FROM comment c
@@ -125,12 +122,12 @@ class Comment extends CoreModel
             ORDER BY c.created_at ASC 
             "
         ;
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
 
         $comments = [];
-        while($comment = $pdoStatement->fetchObject(self::class)) {
+        while($comment = $pdoStatement->fetchObject(Comment::class)) {
             $comments[] = $comment;
         }
  
@@ -143,9 +140,8 @@ class Comment extends CoreModel
      *
      * @return bool
      */
-    public function insert(): bool
+    public function insert(Comment $comment): bool
     {
-        $pdoDBConnexion = Database::getPDO();
         $sql = "
             INSERT INTO comment(
                     posts, 
@@ -162,16 +158,15 @@ class Comment extends CoreModel
             "
         ;
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute([
-            'posts' => $this->postId,
-            'users' => $this->userId,
-            'content' => $this->content,
-            'status' => $this->status
+            'postId' => $comment->getPostId(),
+            'userId' => $comment->getUserId(),
+            'content' => $comment->getContent(),
+            'status' => $comment->getStatus()
         ]);
     
         if ($pdoStatement->rowCount() > 0) {
-            $this->id = $pdoDBConnexion->lastInsertId();
             return true;
         } 
 
@@ -183,7 +178,7 @@ class Comment extends CoreModel
      *
      * @return bool
      */
-    public function update(): bool
+    public function update(Comment $comment): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
@@ -197,9 +192,9 @@ class Comment extends CoreModel
         ";
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $pdoStatement->bindValue(':content', $this->content, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':status', $this->status, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':id', $comment->getId(), PDO::PARAM_INT);
+        $pdoStatement->bindValue(':content', $comment->getContent(), PDO::PARAM_STR);
+        $pdoStatement->bindValue(':status', $comment->getStatus(), PDO::PARAM_INT);
 
         return $pdoStatement->execute();
     }
@@ -210,116 +205,114 @@ class Comment extends CoreModel
      *
      * @return bool
      */
-    public function delete(): bool
+    public function delete(int $id): bool
     {
-        $pdoDBConnexion = Database::getPDO();
-
         $sql = "
             DELETE 
             FROM comment
             WHERE id = :id
             "
         ;
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement = $this->dbh->prepare($sql);
+        $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
         $pdoStatement->execute();
         
         return ($pdoStatement->rowCount() > 0);
     }
 
-    /**
-     * Get the content of the entities Post and Comment
-     *
-     * @return  string
-     */ 
-    public function getContent(): string
-    {
-        return $this->content;
-    }
+    // /**
+    //  * Get the content of the entities Post and Comment
+    //  *
+    //  * @return  string
+    //  */ 
+    // public function getContent(): string
+    // {
+    //     return $this->content;
+    // }
 
-    /**
-     * Set the content of the entities Post and Comment
-     *
-     * @param  string  $content  The content of the entities Post and Comment
-     *
-     * @return  self
-     */ 
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
+    // /**
+    //  * Set the content of the entities Post and Comment
+    //  *
+    //  * @param  string  $content  The content of the entities Post and Comment
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setContent(string $content): self
+    // {
+    //     $this->content = $content;
 
-        return $this;
-    }
+    //     return $this;
+    // }
     
-    /**
-     * Get the value of status
-     *
-     * @return  int
-     */ 
-    public function getStatus(): int
-    {
-        return $this->status;
-    }
+    // /**
+    //  * Get the value of status
+    //  *
+    //  * @return  int
+    //  */ 
+    // public function getStatus(): int
+    // {
+    //     return $this->status;
+    // }
 
-    /**
-     * Set the value of status
-     *
-     * @param  int  $status
-     *
-     * @return  self
-     */ 
-    public function setStatus(int $status): self
-    {
-        $this->status = $status;
+    // /**
+    //  * Set the value of status
+    //  *
+    //  * @param  int  $status
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setStatus(int $status): self
+    // {
+    //     $this->status = $status;
 
-        return $this;
-    }
+    //     return $this;
+    // }
     
-    /**
-     * Get the value of userId
-     *
-     * @return  int
-     */ 
-    public function getUserId()
-    {
-        return $this->userId;
-    }
+    // /**
+    //  * Get the value of userId
+    //  *
+    //  * @return  int
+    //  */ 
+    // public function getUserId()
+    // {
+    //     return $this->userId;
+    // }
 
-    /**
-     * Set the value of userId
-     *
-     * @param  int  $userId
-     *
-     * @return  self
-     */ 
-    public function setUserId(int $userId)
-    {
-        $this->userId = $userId;
+    // /**
+    //  * Set the value of userId
+    //  *
+    //  * @param  int  $userId
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setUserId(int $userId)
+    // {
+    //     $this->userId = $userId;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    /**
-     * Get the value of postId
-     *
-     * @return  int
-     */ 
-    public function getPostId()
-    {
-        return $this->postId;
-    }
+    // /**
+    //  * Get the value of postId
+    //  *
+    //  * @return  int
+    //  */ 
+    // public function getPostId()
+    // {
+    //     return $this->postId;
+    // }
 
-    /**
-     * Set the value of postId
-     *
-     * @param  int  $postId
-     *
-     * @return  self
-     */ 
-    public function setPostId(int $postId)
-    {
-        $this->postId = $postId;
+    // /**
+    //  * Set the value of postId
+    //  *
+    //  * @param  int  $postId
+    //  *
+    //  * @return  self
+    //  */ 
+    // public function setPostId(int $postId)
+    // {
+    //     $this->postId = $postId;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

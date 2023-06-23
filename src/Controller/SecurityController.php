@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Role;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;

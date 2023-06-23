@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Role;
-use App\Models\Comment;
+use App\Entity\Role;
+use App\Entity\Comment;
 use App\Controller\CoreController;
 use App\Controller\ErrorController;
+use App\Repository\CommentRepository;
+use App\Repository\RoleRepository;
 
 class AdminController extends CoreController
 {
-
+    protected CommentRepository $commentRepository;
+    protected RoleRepository $roleRepository;
+    public function __construct()
+    {
+        $this->commentRepository = new CommentRepository();
+    }
     /**
      * Afficher la page admin réservé au rôle super_admin et l'admin
      *
@@ -36,11 +43,11 @@ class AdminController extends CoreController
      */
     public function comments()
     {
-        if ($this->isGet()) {
+        if (!$this->userIsConnected()) {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
-            $comments = Comment::findAll();
+            $comments = $this->commentRepository->findAll();
             // Stocker le user en session
             $userCurrent = $this->userIsConnected();
             foreach ($comments as $comment) {
@@ -49,7 +56,7 @@ class AdminController extends CoreController
     
             // Récupérer le role du user en session
             $roleId = $userCurrent->getRoleId();
-            $role = Role::findById($roleId);
+            $role = $this->roleRepository->findById($roleId);
     
             if (!$userCurrent) {
                 $this->flashes('warning', 'Une petite connexion avant ?!');
@@ -77,13 +84,12 @@ class AdminController extends CoreController
      */
     public function update(int $commentId): void
     {
-        $comment = Comment::findById($commentId);
-
+        $comment = $this->commentRepository->findById($commentId);
         if ($this->isPost()) {
             $status = (int)filter_input(INPUT_POST, 'status');
             $comment->setStatus($status);
 
-            if ($comment->update()) {
+            if ($this->commentRepository->update($comment)) {
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été modifié.");
                 header('Location: /admin/comments');
                 return;
@@ -101,8 +107,8 @@ class AdminController extends CoreController
      */
     public function delete(int $commentId): void
     {
-        $comment = Comment::findById($commentId);
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $comment = $this->commentRepository->findById($commentId);
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
@@ -112,7 +118,7 @@ class AdminController extends CoreController
             $error403->accessDenied();
         } else {
             if ($comment) {
-                $comment->delete();
+                $this->commentRepository->delete($commentId);
                 $this->flashes('success', "Le Bubbles Comment $commentId a bien été supprimé.");
                 header('Location: /admin/comments');
                 return;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Post;
-use App\Models\Role;
-use App\Models\Comment;
+use App\Entity\Post;
+use App\Entity\Role;
+use App\Entity\Comment;
 
 /**
  * Controller dédié à la gestion des posts
