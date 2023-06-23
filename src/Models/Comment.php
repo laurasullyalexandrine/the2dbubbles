@@ -22,12 +22,12 @@ class Comment extends CoreModel
     /**
      * @var int
      */
-    private int $users;
+    private ?int $userId = null;
 
     /**
      * @var int
      */
-    private int $posts;
+    private ?int $postId = null;
 
     /**
      * Méthode permettant de récupérer tous les commentaires
@@ -164,8 +164,8 @@ class Comment extends CoreModel
 
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute([
-            'posts' => $this->posts,
-            'users' => $this->users,
+            'posts' => $this->postId,
+            'users' => $this->userId,
             'content' => $this->content,
             'status' => $this->status
         ]);
@@ -274,51 +274,51 @@ class Comment extends CoreModel
 
         return $this;
     }
-
+    
     /**
-     * Get the value of users
+     * Get the value of userId
      *
      * @return  int
      */ 
-    public function getUsers(): int
+    public function getUserId()
     {
-        return $this->users;
+        return $this->userId;
     }
 
     /**
-     * Set the value of users
+     * Set the value of userId
      *
-     * @param  int  $users
+     * @param  int  $userId
      *
      * @return  self
      */ 
-    public function setUsers(int $users): self
+    public function setUserId(int $userId)
     {
-        $this->users = $users;
+        $this->userId = $userId;
 
         return $this;
     }
 
     /**
-     * Get the value of posts
+     * Get the value of postId
      *
      * @return  int
      */ 
-    public function getPosts(): int
+    public function getPostId()
     {
-        return $this->posts;
+        return $this->postId;
     }
 
     /**
-     * Set the value of posts
+     * Set the value of postId
      *
-     * @param  int  $posts
+     * @param  int  $postId
      *
      * @return  self
      */ 
-    public function setPosts(int $posts): self
+    public function setPostId(int $postId)
     {
-        $this->posts = $posts;
+        $this->postId = $postId;
 
         return $this;
     }
