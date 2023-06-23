@@ -7,17 +7,15 @@ use PDO;
 class Database {
 
     /** @var PDO */
-    private $dbh;
+    protected $dbh;
 
-    /** @var Database  */
-    private static $_instance;
 
     /**
      * Constructeur
      * en visibilité private
      * => seule le code de la classe a le droit de créer une instance de cette classe
      */
-    private function __construct() {
+    public function __construct() {
         
         // Récupération des données du fichier de config
         // la fonction parse_ini_file parse le fichier et retourne un array associatif
@@ -46,19 +44,14 @@ class Database {
     // 
     /**
      * Permet de créer une connexion si elle n'existe pas
-     *
+     * TODO à retirer quand la migration est terminée
      * @return PDO
      */
     public static function getPDO() {
 
-        // Si l'instance de classe n'est pas encore créée alors ...
-        if (empty(self::$_instance)) {
-            // Créer cette instance et on la stocke dans la propriété statique $_instance
-            self::$_instance = new Database();
-        }
-        // Sinon, rien l'instance a déjà été créée
+       $instance = new self();
 
-        // Retourner la propriété dbh de l'instance unique de Database
-        return self::$_instance->dbh;
+       return $instance->dbh;
+
     }
 }

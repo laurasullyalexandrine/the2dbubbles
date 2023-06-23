@@ -67,7 +67,6 @@ class AdminController extends CoreController
             $this->show('/admin/comment/read', [
                 'comments' => $comments
             ]);
-
         }
     }
     /**

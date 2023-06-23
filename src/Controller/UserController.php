@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Models\Role;
-use App\Models\User;
+use App\Models\UserRepository;
 use App\Controller\ErrorController;
 
 /**
@@ -13,6 +14,11 @@ use App\Controller\ErrorController;
  */
 class UserController extends CoreController
 {
+    protected UserRepository $userRepository;
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
     /**
      * Afficher tous les utilisateurs de la base de données
      * 
@@ -20,7 +26,7 @@ class UserController extends CoreController
      */
     public function read()
     {
-        $users = User::findAll();
+        $users = $this->userRepository->findAll();
         $this->show('admin/user/read', [
             'users' => $users
         ]);
@@ -34,7 +40,7 @@ class UserController extends CoreController
      */
     public function create(): void
     {
-        $user = new User();
+
         $role = new Role();
         $roles = $role::findAll();
 
@@ -47,6 +53,7 @@ class UserController extends CoreController
             $error403->accessDenied();
         } else {
             if ($this->isPost()) {
+                
                 // Récupérer les données recues du formalaire d'inscription
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
                 $slug = $this->slugify($pseudo);
@@ -55,6 +62,8 @@ class UserController extends CoreController
                 $password_2 = filter_input(INPUT_POST, 'password_2');
                 // Contraindre le type de la valeur soumis 
                 $role = (int)filter_input(INPUT_POST, 'role');
+
+                $user =  new User();
                 // Mettre à jour les propriétés de l'instance
                 $user->setPseudo($pseudo);
                 $user->setEmail($email);
@@ -98,7 +107,7 @@ class UserController extends CoreController
                 // Si le formulaire est valide alors ...
                 if (empty($_SESSION["flashes"])) {
                     // Hasher le mot de passe 
-                    $option = ['cost' => User::HASH_COST];
+                    $option = ['cost' => UserRepository::HASH_COST];
                     $password = password_hash(
                         $password,
                         PASSWORD_BCRYPT,
@@ -110,7 +119,7 @@ class UserController extends CoreController
 
                     // Essayer de faire l'insertion du nouvel utilisateur 
                     try {
-                        if ($user->insert()) {
+                        if ($this->userRepository->insert($user)) {
                             $this->flashes('success', "Ton compte a bien été créé.");
                             header('Location: /user/read');
                             return;
@@ -127,8 +136,9 @@ class UserController extends CoreController
                     }
                 }
             }
+            // TODO: voir si user n'existe pas faire le new user avant le if
             $this->show('admin/user/create', [
-                'user' => $user,
+                'user' => $user, 
                 'roles' => $roles
             ]);
         }
@@ -142,7 +152,7 @@ class UserController extends CoreController
      */
     public function update(int $userId): void
     {
-        $user = User::findById($userId);
+        $user = $this->userRepository->findById($userId);
         $updatedRole = $user->getRoleId();
         $roles = Role::findAll();
 
@@ -183,7 +193,7 @@ class UserController extends CoreController
                 }
 
                 if (empty($_SESSION["flashes"])) {
-                    $option = ['cost' => User::HASH_COST];
+                    $option = ['cost' => UserRepository::HASH_COST];
                     $password = password_hash(
                         $password,
                         PASSWORD_BCRYPT,
@@ -191,7 +201,7 @@ class UserController extends CoreController
                     );
                     $user->setSlug($slug)
                         ->setPassword($password);
-                    if ($user->update()) {
+                    if ($this->userRepository->update($user)) {
                         $this->flashes('success', 'Le Bubbles User'. ' ' . $user->getPseudo(). ' ' . 'a bien été modifié.');
                         header('Location: /user/read');
                         return;
@@ -221,7 +231,7 @@ class UserController extends CoreController
      */
     public function delete(int $userId)
     {
-        $user = User::findById($userId);
+        $user = $this->userRepository->findById($userId);
 
         $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
 
@@ -232,7 +242,7 @@ class UserController extends CoreController
             $error403->accessDenied();
         } else {
             if ($user) {
-                $user->delete();
+                $this->userRepository->delete($userId);
                 $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été supprimé.');
                 header('Location: /user/read');
                 return;

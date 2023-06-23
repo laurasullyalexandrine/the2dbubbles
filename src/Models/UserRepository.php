@@ -6,9 +6,9 @@ namespace App\Models;
 
 use PDO;
 use App\Utils\Database;
-use Exception;
+use App\Entity\User;
 
-class User extends CoreModel
+class UserRepository extends Database
 {
     const HASH_COST = 12;
 
@@ -53,9 +53,8 @@ class User extends CoreModel
      *
      * @return array
      */
-    public static function findAll(): array
+    public function findAll(): array
     {
-        $pdoDBConnexion = Database::getPDO();
         $sql = "
             SELECT u.id, pseudo, email, r.name AS role
             FROM user u
@@ -65,7 +64,7 @@ class User extends CoreModel
             ORDER BY u.roleId ASC
             "
         ;
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
 
@@ -78,20 +77,20 @@ class User extends CoreModel
      * @param integer $userId
      * @return User
      */
-    public static function findById(int $userId): User
+    public function findById(int $userId): User
     {
-        $pdoDBConnexion = Database::getPDO();
+    
         $sql = "
             SELECT * 
             FROM user 
             WHERE id = :id
             "
         ;
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $userId, PDO::PARAM_INT);
         $pdoStatement->execute();
 
-        $user = $pdoStatement->fetchObject(self::class);
+        $user = $pdoStatement->fetchObject(User::class);
 
         return $user;
     }
@@ -102,22 +101,20 @@ class User extends CoreModel
      * @param string $email
      * @return ?User
      */
-    public static function findByEmail(string $email): ?User
+    public function findByEmail(string $email): ?User
     {
-        $pdoDBConnexion = Database::getPDO();
-
         $sql = "
             SELECT *
             FROM user
             WHERE email = :email
             "
         ;
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         // Méthode bindValue() permet de contraintes les types de données saisies 
         $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);
         $pdoStatement->execute();
 
-        $user = $pdoStatement->fetchObject(self::class);
+        $user = $pdoStatement->fetchObject(User::class);
 
         return $user instanceof User ? $user : null;
     }
@@ -128,9 +125,8 @@ class User extends CoreModel
      * @param string $pseudo
      * @return ?User
      */
-    public static function findByPseudo(string $pseudo): ?User
+    public function findByPseudo(string $pseudo): ?User
     {
-        $pdoDBConnexion = Database::getPDO();
 
         $sql = "
             SELECT * 
@@ -139,11 +135,11 @@ class User extends CoreModel
             "
         ;
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
         $pdoStatement->execute();
 
-        $user = $pdoStatement->fetchObject(self::class);
+        $user = $pdoStatement->fetchObject(User::class);
 
         return $user instanceof User ? $user : null;
         
@@ -155,9 +151,8 @@ class User extends CoreModel
      * @param string $token
      * @return ?User
      */
-    public static function findOneByToken(string $token): ?User
+    public function findOneByToken(string $token): ?User
     {
-        $pdoDBConnexion = Database::getPDO();
 
         $sql = "
             SELECT * 
@@ -166,11 +161,11 @@ class User extends CoreModel
             "
         ;
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':token', $token, PDO::PARAM_STR);
         $pdoStatement->execute();
 
-        $user = $pdoStatement->fetchObject(self::class);
+        $user = $pdoStatement->fetchObject(User::class);
 
         return $user instanceof User ? $user : null;
     }
@@ -180,9 +175,8 @@ class User extends CoreModel
      *
      * @return bool
      */
-    public function insert(): bool
+    public function insert(User $user): bool
     {
-        $pdoDBConnexion = Database::getPDO();
 
         $sql = "
             INSERT INTO user (
@@ -203,19 +197,17 @@ class User extends CoreModel
     ;
 
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
             $pdoStatement->execute([
-                'pseudo' => $this->pseudo,
-                'slug' => $this->slug,
-                'email' => $this->email,
-                'password' => $this->password,
-                'roleId' => $this->roleId,
+                'pseudo' => $user->getPseudo(),
+                'slug' => $user->getSlug(),
+                'email' => $user->getEmail(),
+                'password' => $user->getPassword(),
+                'roleId' => $user->getRoleId(),
             ]);
 
 
         if ($pdoStatement->rowCount() > 0) {
-            $this->id = $pdoDBConnexion->lastInsertId();
-
             return true;
         }
         return false;
@@ -226,9 +218,8 @@ class User extends CoreModel
      *
      * @return void
      */
-    public function update(): bool
+    public function update(User $user): bool
     {
-        $pdoDBConnexion = Database::getPDO();
 
         $sql = "
             UPDATE user
@@ -243,13 +234,13 @@ class User extends CoreModel
         "
     ;
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $pdoStatement->bindValue('pseudo', $this->pseudo, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':email', $this->email, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':password', $this->password, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':token', $this->token, PDO::PARAM_STR);
-        $pdoStatement->bindValue(':roleId', $this->roleId, PDO::PARAM_INT);
+        $pdoStatement = $this->dbh->prepare($sql);
+        $pdoStatement->bindValue(':id', $user->getId(), PDO::PARAM_INT);
+        $pdoStatement->bindValue('pseudo', $user->getPseudo(), PDO::PARAM_STR);
+        $pdoStatement->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
+        $pdoStatement->bindValue(':password', $user->getPassword(), PDO::PARAM_STR);
+        $pdoStatement->bindValue(':token', $user->getToken(), PDO::PARAM_STR);
+        $pdoStatement->bindValue(':roleId', $user->getRoleId(), PDO::PARAM_INT);
 
         return $pdoStatement->execute();
     }
@@ -260,10 +251,9 @@ class User extends CoreModel
      *
      * @return bool
      */
-    public function delete(): bool
+    public function delete(int $id): bool
     {
-        $pdoDBConnexion = Database::getPDO();
-
+    
         $sql = "
             DELETE 
             FROM user
@@ -271,9 +261,9 @@ class User extends CoreModel
             "
         ;
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         // Permet d'associer une valeur à un paramètre et de contraindre la donnée attendue
-        $pdoStatement->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
         $pdoStatement->execute();
 
         // Retourne vrai si au moins une ligne a été supprimée

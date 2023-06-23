@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Models\Role;
-use App\Models\User;
+use App\Entity\User;
+use App\Models\UserRepository;
 
 /**
  * Controller dédié à la gestion des posts
  */
 class SecurityController extends CoreController
 {
+    protected UserRepository $userRepository;
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+    }
+
     /**
      * Traitement du formulaire de connexion
      * @return void
@@ -24,7 +31,7 @@ class SecurityController extends CoreController
             $password = filter_input(INPUT_POST, 'password');
 
             // Vérifier l'existence du user
-            $userCurrent = User::findByEmail($email);
+            $userCurrent = $this->userRepository->findByEmail($email);
 
             // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
             if (empty($password)) {
@@ -131,7 +138,7 @@ class SecurityController extends CoreController
             // Si le formulaire est valide alors ...
             if (empty($_SESSION["flashes"])) {
                 // Hasher le mot de passe 
-                $option = ['cost' => User::HASH_COST];
+                $option = ['cost' => UserRepository::HASH_COST];
                 $password = password_hash(
                     $password,
                     PASSWORD_BCRYPT,
@@ -143,7 +150,7 @@ class SecurityController extends CoreController
 
                 // Permettra de vérifier si l'email soumis n'exite pas en base
                 try {
-                    if ($user->insert()) {
+                    if ($this->userRepository->insert($user)) {
                         $this->flashes('success', 'Ton Bubbles Space a bien été créé, C\'est parti!');
                         header('Location: /security/login');
                         return;
@@ -186,7 +193,7 @@ class SecurityController extends CoreController
             if (empty($email)) {
                 $this->flashes('warning', "Celui il est important parce sinon on va rien pourvoir faire...");
             }
-            $user = User::findByEmail($email);
+            $user = $this->userRepository->findByEmail($email);
 
             try {
                 if (!$user instanceof User) {
@@ -199,7 +206,7 @@ class SecurityController extends CoreController
 
                 // Ajout du token généré à l'utilisateur reconnu
                 $user->setToken($token);
-                $user->update();
+                $this->userRepository->update($user);
                 $host = $_SERVER["HTTP_HOST"];
                 $scheme = array_key_exists("HTTPS", $_SERVER) ? "https" : "http";
 
@@ -246,7 +253,7 @@ class SecurityController extends CoreController
     public function resetPassword(string $token): void
     {
         // Vérifier si le token existe en bdd
-        $user = User::findOneByToken($token);
+        $user = $this->userRepository->findOneByToken($token);
 
         if ($this->isPost()) {
             $password = filter_input(INPUT_POST, 'password');
@@ -272,7 +279,7 @@ class SecurityController extends CoreController
                     $user->setToken('');
 
                     // Hasher et remplacer le mot de passe 
-                    $option = ['cost' => User::HASH_COST];
+                    $option = ['cost' => UserRepository::HASH_COST];
                     $password = password_hash(
                         $password,
                         PASSWORD_BCRYPT,
@@ -280,7 +287,7 @@ class SecurityController extends CoreController
                     );
                     $user->setPassword($password);
 
-                    if ($user->update()) {
+                    if ($this->userRepository->update($user)) {
                         $this->flashes('success', 'Ton mot de passe est maintenant modifié. Ah! Tu peux te connecter maintenant.');
                         header('Location: /security/login');
                         return;
