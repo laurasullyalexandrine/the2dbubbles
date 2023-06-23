@@ -42,10 +42,10 @@ class CommentController extends CoreController
                 }
                 if (empty($_SESSION["flashes"])) {
                     $comment->setContent($content)
-                        ->setPosts($postId)
+                        ->setPostId($postId)
                         ->setStatus(2);
                     $userId = $userCurrent->getId();
-                    $comment->setUsers($userId);
+                    $comment->setUserId($userId);
 
                     if ($comment->insert()) {
                         $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
@@ -112,7 +112,7 @@ class CommentController extends CoreController
         Role::findById($roleId);
 
         // Récupérer l'id de lauteur du commentaire
-        $idAuthorComment = $comment->getUsers();
+        $idAuthorComment = $comment->getUserId();
 
         // Vérifier qu'il y a bien un user connecté
         if (!$userCurrent) {
@@ -159,7 +159,7 @@ class CommentController extends CoreController
     public function delete(int $commentId)
     {
         $comment = Comment::findById($commentId);
-        $idAuthorComment = $comment->getUsers();
+        $idAuthorComment = $comment->getUserId();
 
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
