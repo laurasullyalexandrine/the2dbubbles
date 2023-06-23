@@ -19,7 +19,12 @@ class AdminController extends CoreController
      */
     public function dashboard()
     {
-        $this->show('admin/dashboard');
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
+        } else {
+            $this->show('admin/dashboard');
+        }
     }
 
 
@@ -31,32 +36,39 @@ class AdminController extends CoreController
      */
     public function comments()
     {
-        $comments = Comment::findAll();
-        // Stocker le user en session
-        $userCurrent = $this->userIsConnected();
-        foreach ($comments as $comment) {
-            $commentId = $comment->getId();
-        }
-
-        // Récupérer le role du user en session
-        $roleId = $userCurrent->getRoleId();
-        $role = Role::findById($roleId);
-
-        if (!$userCurrent) {
-            $this->flashes('warning', 'Une petite connexion avant ?!');
-            header('Location: /security/login');
-        } elseif ($role->getName() == "utilisateur") {
+        if ($this->isGet()) {
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {
-            if ($this->isPost()) {
-                $this->update($commentId);
+            $comments = Comment::findAll();
+            // Stocker le user en session
+            $userCurrent = $this->userIsConnected();
+            foreach ($comments as $comment) {
+                $commentId = $comment->getId();
             }
+    
+            // Récupérer le role du user en session
+            $roleId = $userCurrent->getRoleId();
+            $role = Role::findById($roleId);
+    
+            if (!$userCurrent) {
+                $this->flashes('warning', 'Une petite connexion avant ?!');
+                header('Location: /security/login');
+            } elseif ($role->getName() == "utilisateur") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            } else {
+                if ($this->isPost()) {
+                    $this->update($commentId);
+                }
+            }
+            
+            // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
+            $this->show('/admin/comment/read', [
+                'comments' => $comments
+            ]);
+
         }
-        // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
-        $this->show('/admin/comment/read', [
-            'comments' => $comments
-        ]);
     }
     /**
      * Méthode permettant de récupérer un commentaire

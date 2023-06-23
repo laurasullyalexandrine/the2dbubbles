@@ -98,6 +98,11 @@ class CoreController
         return $_SERVER['REQUEST_METHOD'] === 'POST';
     }
 
+    protected function isGet(): bool
+    {
+        return $_SERVER['REQUEST_METHOD'] === 'GET';
+    }
+
     /**
      * Permet de créer la clé flashes dans la super globale $_SESSION
      *
@@ -163,6 +168,20 @@ class CoreController
         } else {
             return null;
         }
+    }
+
+    /**
+     * Méthode permettant de récupérer un tableau des roles
+     *
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        $role = new Role();
+  
+        $roles = $role->findAll();
+
+        return $roles;
     }
 
     /**
