@@ -146,7 +146,7 @@ class RoleRepository extends Database
      *
      * @return bool
      */
-    public function delete($id): bool
+    public function delete(int $id): bool
     {
         $sql = "
             DELETE FROM `role`

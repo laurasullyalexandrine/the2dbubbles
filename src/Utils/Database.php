@@ -40,18 +40,4 @@ class Database {
             return;
         }
     }
-
-    // 
-    /**
-     * Permet de créer une connexion si elle n'existe pas
-     * TODO à retirer quand la migration est terminée
-     * @return PDO
-     */
-    public static function getPDO() {
-
-       $instance = new self();
-
-       return $instance->dbh;
-
-    }
 }

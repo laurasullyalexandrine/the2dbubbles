@@ -55,7 +55,7 @@ class Role
      *
      * @return  self
      */ 
-    public function setId($id):self
+    public function setId(int $id):self
     {
         $this->id = $id;
 

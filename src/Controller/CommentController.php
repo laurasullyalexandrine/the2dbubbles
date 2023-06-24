@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Post;
-use App\Entity\User;
 use App\Entity\Comment;
 use App\Repository\PostRepository;
 use App\Repository\RoleRepository;

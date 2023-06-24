@@ -17,8 +17,6 @@ class CommentRepository extends Database
      */
     public function findAll(): array
     {
-        $pdoDBConnexion = Database::getPDO();
-
         $sql = "
             SELECT *
             FROM comment
@@ -26,7 +24,7 @@ class CommentRepository extends Database
             "
         ;
         
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
         $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Comment::class);
 
@@ -161,8 +159,6 @@ class CommentRepository extends Database
      */
     public function update(Comment $comment): bool
     {
-        $pdoDBConnexion = Database::getPDO();
-
         $sql = "
             UPDATE comment
             SET 
@@ -172,7 +168,7 @@ class CommentRepository extends Database
             WHERE id = :id
         ";
 
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
+        $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $comment->getId(), PDO::PARAM_INT);
         $pdoStatement->bindValue(':content', $comment->getContent(), PDO::PARAM_STR);
         $pdoStatement->bindValue(':status', $comment->getStatus(), PDO::PARAM_INT);

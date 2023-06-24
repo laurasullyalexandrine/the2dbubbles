@@ -78,7 +78,7 @@ class User
      *
      * @return  self
      */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -100,7 +100,7 @@ class User
      *
      * @return  self
      */
-    public function setPseudo($pseudo): self
+    public function setPseudo(string $pseudo): self
     {
         $this->pseudo = $pseudo;
 
@@ -122,7 +122,7 @@ class User
      *
      * @return  self
      */
-    public function setSlug($slug): self
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -144,7 +144,7 @@ class User
      *
      * @return  self
      */
-    public function setEmail($email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -166,7 +166,7 @@ class User
      *
      * @return  self
      */
-    public function setPassword($password): self
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -188,7 +188,7 @@ class User
      *
      * @return  self
      */
-    public function setToken($token): self
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
@@ -210,7 +210,7 @@ class User
      *
      * @return  self
      */
-    public function setRoleId($roleId): self
+    public function setRoleId(int $roleId): self
     {
         $this->roleId = $roleId;
 

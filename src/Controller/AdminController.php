@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Role;
 use App\Entity\Comment;
 use App\Controller\CoreController;
 use App\Controller\ErrorController;

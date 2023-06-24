@@ -94,7 +94,6 @@ class UserController extends CoreController
                 // Contrôler si le rôle soumis est un rôle existant en BDD 
                 $roleExist = false;
                 foreach ($roles as $existingRole) {
-                    // dd($existingRole);
                     // Si l'id du rôle soumis existe en base de données
                     if ($existingRole->getId() === $role) {
                         $roleExist = true;
@@ -139,7 +138,6 @@ class UserController extends CoreController
                     }
                 }
             }
-            // TODO: voir si user n'existe pas faire le new user avant le if
             $this->show('admin/user/create', [
                 'user' => $user, 
                 'roles' => $roles

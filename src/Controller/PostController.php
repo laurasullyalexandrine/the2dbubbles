@@ -16,13 +16,11 @@ use App\Repository\RoleRepository;
  */
 class PostController extends CoreController
 {
-    // protected UserRepository $userRepository;
     protected PostRepository $postRepository;
     protected RoleRepository $roleRepository;
     protected CommentRepository $commentRepository;
     public function __construct()
     {
-        // $this->userRepository = new UserRepository();
         $this->postRepository = new PostRepository();
         $this->roleRepository = new RoleRepository();
         $this->commentRepository = new CommentRepository();
@@ -90,7 +88,7 @@ class PostController extends CoreController
                 if (empty($_SESSION["flashes"])) {
 
                     $userId = $userCurrent->getId();
-                    $post->setUsers($userId);
+                    $post->setUserId($userId);
 
                     if ( $this->postRepository->insert($post)) {
                         $this->flashes('success', "L'article a bien été créé.");
@@ -194,7 +192,7 @@ class PostController extends CoreController
                         ->setSlug($slug);
 
                     $userId = $userCurrent->getId();
-                    $post->setUsers($userId);
+                    $post->setUserId($userId);
 
                     if ($this->postRepository->update($post)) {
                         $this->flashes('success', "L'article a bien été modifié.");
