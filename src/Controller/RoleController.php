@@ -94,6 +94,10 @@ class RoleController extends CoreController
      */
     public function update(int $roleId): void
     {
+        if (!$this->roleRepository->findById($roleId)) {
+            $error404 = new ErrorController();
+            $error404->pageNotFoundAction();
+        } else {
         $role = $this->roleRepository->findById($roleId);
 
         $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
@@ -139,7 +143,7 @@ class RoleController extends CoreController
             ]);
         }
     }
-
+    }
     /**
      * Suppression d'un rôle au role super_admin
      *

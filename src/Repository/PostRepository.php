@@ -37,15 +37,16 @@ class PostRepository extends Database
      *  Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un id donné
      *
      * @param [type] $postId
-     * @return Post
+     * @return ?Post
      */
-    public function findById(int $postId): Post
+    public function findById(int $postId): ?Post
     {
         $sql = "
             SELECT * 
             FROM post 
             WHERE id = :id
-            ";
+            "
+            ;
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $postId, PDO::PARAM_INT);
         $pdoStatement->execute();

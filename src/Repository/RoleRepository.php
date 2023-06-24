@@ -51,22 +51,25 @@ class RoleRepository extends Database
      *  Méthode permettant de récupérer un enregistrement de la table Role en fonction d'un id donné
      *
      * @param [type] $roleId
-     * @return Role
+     * @return ?Role
      */
-    public function findById(int $roleId): Role
+    public function findById(int $roleId): ?Role
     {
-        $sql = '
+        $sql = "
             SELECT * 
             FROM role 
-            WHERE id = :id';
+            WHERE id = :id
+            "
+            ;
 
         $pdoStatement = $this->dbh->prepare($sql);
-        $pdoStatement->execute([
-            'id' => $roleId
-        ]);
+        $pdoStatement->bindValue(':id', $roleId, PDO::PARAM_INT);
+        $pdoStatement->execute();
+
         $role = $pdoStatement->fetchObject(Role::class);
 
         if (!$role) {
+            // dd($role);
             return null;
         } else {
             return $role;
@@ -93,11 +96,7 @@ class RoleRepository extends Database
         ]);
         $role = $pdoStatement->fetchObject(Role::class);
 
-        if (!$role) {
-            return null;
-        } else {
-            return $role;
-        }
+        return $role;
     }
 
     /**
