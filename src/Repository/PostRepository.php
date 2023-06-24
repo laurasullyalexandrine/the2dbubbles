@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 declare(strict_types=1);
 
@@ -8,7 +8,7 @@ use PDO;
 use App\Entity\Post;
 use App\Utils\Database;
 
-class PostRepository extends Database 
+class PostRepository extends Database
 {
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
@@ -24,16 +24,15 @@ class PostRepository extends Database
             ON u.id = p.userId
             WHERE p.userId
             ORDER BY created_at DESC
-            "
-        ;
-        
+            ";
+
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
         $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Post::class);
 
         return $posts;
     }
-    
+
     /**
      *  Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un id donné
      *
@@ -46,8 +45,7 @@ class PostRepository extends Database
             SELECT * 
             FROM post 
             WHERE id = :id
-            "
-        ;
+            ";
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $postId, PDO::PARAM_INT);
         $pdoStatement->execute();
@@ -71,15 +69,18 @@ class PostRepository extends Database
             LEFT JOIN user u
             ON u.id = p.userId
             WHERE p.slug = :slug
-            "
-        ;
+            ";
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
         $post = $pdoStatement->fetchObject(Post::class);
 
-        return $post;
+        if (!$post) {
+            return null;
+        } else {
+            return $post;
+        }
     }
 
 
@@ -106,12 +107,11 @@ class PostRepository extends Database
                 :content, 
                 :slug
             )
-            "
-        ;
+            ";
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute([
-            'users' => $post->getUserId(),
+            'userId' => $post->getUserId(),
             'title' => $post->getTitle(),
             'chapo' => $post->getChapo(),
             'content' => $post->getContent(),
@@ -122,10 +122,10 @@ class PostRepository extends Database
         // Si il y a au moins une ligne ajoutée alors...
         if ($pdoStatement->rowCount() > 0) {
             return true;
-        } 
+        }
         return false;
     }
-    
+
     /**
      * Méthode permettant l'édition d'un article
      *

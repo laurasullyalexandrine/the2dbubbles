@@ -6,7 +6,6 @@ namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
-use App\Repository\UserRepository;
 
 class User
 {

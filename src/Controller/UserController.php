@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Entity\Role;
 use App\Repository\UserRepository;
 use App\Controller\ErrorController;
 use App\Repository\RoleRepository;
@@ -29,10 +28,15 @@ class UserController extends CoreController
      */
     public function read()
     {
-        $users = $this->userRepository->findAll();
-        $this->show('admin/user/read', [
-            'users' => $users
-        ]);
+        if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
+        } else {
+            $users = $this->userRepository->findAll();
+            $this->show('admin/user/read', [
+                'users' => $users
+            ]);
+        }
     }
 
     /**
@@ -43,19 +47,18 @@ class UserController extends CoreController
     public function create(): void
     {
         $user =  new User();
-        $roleRepository = new RoleRepository();
-        $roles = $roleRepository->findAll();
+        $roles = $this->roleRepository->findAll();
 
-        $currentUserRole = $roleRepository->findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
+            $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
         } else {
+            $currentUserRole =  $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+            if ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            }
             if ($this->isPost()) {
-                
                 // Récupérer les données recues du formalaire d'inscription
                 $pseudo = filter_input(INPUT_POST, 'pseudo');
                 $slug = $this->slugify($pseudo);
@@ -65,7 +68,6 @@ class UserController extends CoreController
                 // Contraindre le type de la valeur soumis 
                 $role = (int)filter_input(INPUT_POST, 'role');
 
-           
                 // Mettre à jour les propriétés de l'instance
                 $user->setPseudo($pseudo);
                 $user->setEmail($email);
@@ -137,11 +139,11 @@ class UserController extends CoreController
                         }
                     }
                 }
+                $this->show('admin/user/create', [
+                    'user' => $user,
+                    'roles' => $roles
+                ]);
             }
-            $this->show('admin/user/create', [
-                'user' => $user, 
-                'roles' => $roles
-            ]);
         }
     }
 
@@ -157,14 +159,16 @@ class UserController extends CoreController
         $updatedRole = $user->getRoleId();
         $roles = $this->roleRepository->findAll();
 
-        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-
         if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
         } else {
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+            if ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            }
+
             // Vérifier si le rôle soumis existe en base
             foreach ($roles as $existingRole) {
                 if ($existingRole->getId() === $updatedRole) {
@@ -203,7 +207,7 @@ class UserController extends CoreController
                     $user->setSlug($slug)
                         ->setPassword($password);
                     if ($this->userRepository->update($user)) {
-                        $this->flashes('success', 'Le Bubbles User'. ' ' . $user->getPseudo(). ' ' . 'a bien été modifié.');
+                        $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été modifié.');
                         header('Location: /user/read');
                         return;
                     } else {
@@ -214,13 +218,13 @@ class UserController extends CoreController
                     $user->setEmail(filter_input(INPUT_POST, $email));
                     $user->setRoleId((int)filter_input(INPUT_POST, 'role'));
                 }
+                $this->show('admin/user/update', [
+                    'user' => $user,
+                    'role_current_user' => $updatedRole,
+                    'role_name_user' => $updatedRoleName,
+                    'roles' => $roles
+                ]);
             }
-            $this->show('admin/user/update', [
-                'user' => $user,
-                'role_current_user' => $updatedRole,
-                'role_name_user' => $updatedRoleName,
-                'roles' => $roles
-            ]);
         }
     }
 
@@ -234,14 +238,16 @@ class UserController extends CoreController
     {
         $user = $this->userRepository->findById($userId);
 
-        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-
         if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
         } else {
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+            if ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            }
+
             if ($user) {
                 $this->userRepository->delete($userId);
                 $this->flashes('success', 'Le Bubbles User' . ' ' . $user->getPseudo() . ' ' . 'a bien été supprimé.');

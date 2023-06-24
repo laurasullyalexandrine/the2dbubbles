@@ -110,12 +110,14 @@ class AdminController extends CoreController
     public function delete(int $commentId): void
     {
         $comment = $this->commentRepository->findById($commentId);
-        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+       
 
         if (!$this->userIsConnected()) {
             $error403 = new ErrorController;
             $error403->accessDenied();
-        } elseif ($currentUserRole->getName() === "utilisateur") {
+        } elseif ($this->userIsConnected()) {
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+            if ($currentUserRole->getName() === "utilisateur")
             $error403 = new ErrorController;
             $error403->accessDenied();
         } else {

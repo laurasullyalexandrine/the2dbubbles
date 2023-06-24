@@ -6,7 +6,6 @@ namespace App\Controller;
 
 use App\Entity\Role;
 use App\Repository\RoleRepository;
-use Exception;
 
 class RoleController extends CoreController
 {
@@ -15,7 +14,7 @@ class RoleController extends CoreController
     {
         $this->roleRepository = new RoleRepository();
     }
-    
+
     /**
      * Afficher tous les rôles de la base de données au role super_admin et l'admin
      * 
@@ -24,8 +23,8 @@ class RoleController extends CoreController
     public function read()
     {
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
             $roles = $this->roleRepository->findAll();
             $this->show('admin/role/read', [
@@ -43,16 +42,18 @@ class RoleController extends CoreController
     {
         $role = new Role();
         $userCurrent = $this->userIsConnected();
-        $currentUserRole = $this->roleRepository->findById($userCurrent->getRoleId());
-        if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
-        } else {
-            $userCurrent = $this->userIsConnected(); {
 
+        if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
+        } else {
+            $currentUserRole = $this->roleRepository->findById($userCurrent->getRoleId());
+            if ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            }
+
+            $userCurrent = $this->userIsConnected(); {
                 if ($this->isPost()) {
                     $roleName = filter_input(INPUT_POST, 'role');
 
@@ -77,11 +78,11 @@ class RoleController extends CoreController
                             'user' => $userCurrent
                         ]);
                     }
+                    $this->show('/admin/role/create', [
+                        'role' => new role(),
+                    ]);
                 }
             }
-            $this->show('/admin/role/create', [
-                'role' => new role(),
-            ]);
         }
     }
 
@@ -98,8 +99,8 @@ class RoleController extends CoreController
         $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
@@ -133,10 +134,10 @@ class RoleController extends CoreController
                     ]);
                 }
             }
+            $this->show('/admin/role/update', [
+                'role' => $role
+            ]);
         }
-        $this->show('/admin/role/update', [
-            'role' => $role
-        ]);
     }
 
     /**
@@ -152,8 +153,8 @@ class RoleController extends CoreController
         $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();

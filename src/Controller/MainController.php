@@ -15,8 +15,8 @@ class MainController extends CoreController
     public function home(): void
     {
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
             $this->show('front/main/home');
         }

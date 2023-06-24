@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Exception;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\PHPMailer;
-
 class ContactController extends CoreController
 {
     /**

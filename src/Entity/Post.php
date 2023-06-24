@@ -79,7 +79,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -103,7 +103,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -127,7 +127,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getChapo(): string
+    public function getChapo(): ?string
     {
         return $this->chapo;
     }
@@ -151,7 +151,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getContent(): string
+    public function getContent(): ?string
     {
         return $this->content;
     }

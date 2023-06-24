@@ -28,7 +28,6 @@ class SecurityController extends CoreController
     public function login(): void
     {
         if ($this->isPost()) {
-
             $email =  filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
             $password = filter_input(INPUT_POST, 'password');
 

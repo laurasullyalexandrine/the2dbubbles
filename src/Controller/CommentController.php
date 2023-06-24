@@ -32,8 +32,8 @@ class CommentController extends CoreController
     {
         $comment = new Comment();
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
             // Trouver le Post à l'aide slug qui sera transmis à la vue
             $post =  $this->postRepository->findBySlug($this->slugify($slug));
@@ -92,8 +92,8 @@ class CommentController extends CoreController
     {
         $comments = $this->commentRepository->findByUser($slug);
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
             if (empty($comments)) {
                 $author = null;
@@ -124,26 +124,26 @@ class CommentController extends CoreController
     {
         $comment = $this->commentRepository->findById($commentId);
 
-
         // Stocker le user en session
         $userCurrent = $this->userIsConnected();
 
-        // Récupérer le role du user en session
-        $roleId = $userCurrent->getRoleId();
-        $this->roleRepository->findById($roleId);
-
-        // Récupérer l'id de lauteur du commentaire
-        $idAuthorComment = $comment->getUserId();
-
         // Vérifier qu'il y a bien un user connecté
         if (!$userCurrent) {
-            // Sinon le rediriger vers la page de login
+            $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif($userCurrent->getId() !== $idAuthorComment) {
-            // Si le user connecté n'est pas l'auteur du commentaire
-            $error403 = new ErrorController;
-            $error403->accessDenied(); 
         } else {
+            // Récupérer le role du user en session
+            $roleId = $userCurrent->getRoleId();
+            $this->roleRepository->findById($roleId);
+
+            // Récupérer l'id de lauteur du commentaire
+            $idAuthorComment = $comment->getUserId();
+            if ($userCurrent->getId() !== $idAuthorComment) {
+                // Si le user connecté n'est pas l'auteur du commentaire
+                $error403 = new ErrorController;
+                $error403->accessDenied(); 
+            }
+
             if ($this->isPost()) {
                 $content = filter_input(INPUT_POST, 'content');
         
@@ -164,11 +164,11 @@ class CommentController extends CoreController
                     }
                 }
             }
+            // Afficher la vue en transmettant les infos du Comment et des messages d'alerte.
+            $this->show('front/comment/update', [
+                'comment' => $comment
+            ]);
         }
-        // Afficher la vue en transmettant les infos du Comment et des messages d'alerte.
-        $this->show('front/comment/update', [
-            'comment' => $comment
-        ]);
     }
 
     /**
