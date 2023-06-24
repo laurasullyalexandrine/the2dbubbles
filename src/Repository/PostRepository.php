@@ -52,7 +52,11 @@ class PostRepository extends Database
 
         $post = $pdoStatement->fetchObject(Post::class);
 
-        return $post;
+        if (!$post) {
+            return null;
+        } else {
+            return $post;
+        }
     }
 
     /**

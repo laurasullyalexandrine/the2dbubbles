@@ -51,32 +51,32 @@ class RoleController extends CoreController
             if ($currentUserRole->getName() !== "super_admin") {
                 $error403 = new ErrorController;
                 $error403->accessDenied();
-            }
+            } else {
+                $userCurrent = $this->userIsConnected(); {
+                    if ($this->isPost()) {
+                        $roleName = filter_input(INPUT_POST, 'role');
 
-            $userCurrent = $this->userIsConnected(); {
-                if ($this->isPost()) {
-                    $roleName = filter_input(INPUT_POST, 'role');
-
-                    if (empty($roleName)) {
-                        $this->flashes('warning', 'Le champ du rôle est vide.');
-                    }
-
-                    if (empty($_SESSION["flashes"])) {
-                        $role->setName($roleName)
-                            ->setRoleString('ROLE_' . mb_strtoupper($roleName));
-
-                        if ($this->roleRepository->insert($role)) {
-                            $this->flashes('success', 'Le rôle a bien été créé.');
-                            header('Location: /role/read');
-                            return;
-                        } else {
-                            $this->flashes('danger', "Le rôle n'a pas été créé!");
+                        if (empty($roleName)) {
+                            $this->flashes('warning', 'Le champ du rôle est vide.');
                         }
-                    } else {
-                        $role->setName($roleName);
-                        $this->show('admin/role/create', [
-                            'user' => $userCurrent
-                        ]);
+
+                        if (empty($_SESSION["flashes"])) {
+                            $role->setName($roleName)
+                                ->setRoleString('ROLE_' . mb_strtoupper($roleName));
+
+                            if ($this->roleRepository->insert($role)) {
+                                $this->flashes('success', 'Le rôle a bien été créé.');
+                                header('Location: /role/read');
+                                return;
+                            } else {
+                                $this->flashes('danger', "Le rôle n'a pas été créé!");
+                            }
+                        } else {
+                            $role->setName($roleName);
+                            $this->show('admin/role/create', [
+                                'user' => $userCurrent
+                            ]);
+                        }
                     }
                     $this->show('/admin/role/create', [
                         'role' => new role(),

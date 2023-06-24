@@ -66,7 +66,11 @@ class RoleRepository extends Database
         ]);
         $role = $pdoStatement->fetchObject(Role::class);
 
-        return $role;
+        if (!$role) {
+            return null;
+        } else {
+            return $role;
+        }
     }
 
     /**
@@ -89,7 +93,11 @@ class RoleRepository extends Database
         ]);
         $role = $pdoStatement->fetchObject(Role::class);
 
-        return $role;
+        if (!$role) {
+            return null;
+        } else {
+            return $role;
+        }
     }
 
     /**

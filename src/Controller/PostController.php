@@ -129,18 +129,16 @@ class PostController extends CoreController
                 $error404 = new ErrorController();
                 $error404->pageNotFoundAction();
             } else {
-
                 $post =  $this->postRepository->findBySlug($slug);
                 // Récupérer les tableaux des commentaires
                 $comments = $this->commentRepository->findBySlugPost($slug);
                 $commentsCheck = [];
-    
+
                 foreach ($comments as $comment) {
                     if ($comment->getStatus() === 1) {
                         $commentsCheck[] = $comment;
                     }
                 }
-    
                 // On les envoie à la vue
                 $this->show('/front/post/read', [
                     'post' => $post,
@@ -159,63 +157,68 @@ class PostController extends CoreController
      */
     public function update(string $slug): void
     {
-        $post = $this->postRepository->findBySlug($slug);
-        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-        if (!$this->userIsConnected()) {
-            $this->flashes('warning', 'Merci de te connecter!');
-            header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+        if (!$this->postRepository->findBySlug($slug)) {
+            $error404 = new ErrorController();
+            $error404->pageNotFoundAction();
         } else {
-            // Récupérer le user connecté
-            $userCurrent = $this->userIsConnected();
+            $post = $this->postRepository->findBySlug($slug);
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+            if (!$this->userIsConnected()) {
+                $this->flashes('warning', 'Merci de te connecter!');
+                header('Location: /security/login');
+            } elseif ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            } else {
+                // Récupérer le user connecté
+                $userCurrent = $this->userIsConnected();
 
-            if ($this->isPost()) {
-                $title = filter_input(INPUT_POST, 'title');
-                $slug = $this->slugify($title);
-                $chapo = filter_input(INPUT_POST, 'chapo');
-                $content = filter_input(INPUT_POST, 'content');
-
-                if (empty($title)) {
-                    $this->flashes('warning', 'Le champ titre est vide.');
-                }
-                if (empty($chapo)) {
-                    $this->flashes('warning', 'Le champ chapô est vide.');
-                }
-                if (empty($content)) {
-                    $this->flashes('warning', 'Le champ contenu est vide.');
-                }
-
-                if (empty($_SESSION["flashes"])) {
-
-                    $post->setTitle($title)
-                        ->setChapo($chapo)
-                        ->setContent($content)
-                        ->setSlug($slug);
-
-                    $userId = $userCurrent->getId();
-                    $post->setUserId($userId);
-
-                    if ($this->postRepository->update($post)) {
-                        $this->flashes('success', "L'article a bien été modifié.");
-                        header('Location: /post/list');
-                        return;
-                    } else {
-                        $this->flashes('danger', "L'article n'a pas été modifié!");
-                    }
-                } else {
+                if ($this->isPost()) {
+                    $title = filter_input(INPUT_POST, 'title');
                     $slug = $this->slugify($title);
+                    $chapo = filter_input(INPUT_POST, 'chapo');
+                    $content = filter_input(INPUT_POST, 'content');
 
-                    $this->show('admin/post/update', [
-                        'post' => $post
-                    ]);
+                    if (empty($title)) {
+                        $this->flashes('warning', 'Le champ titre est vide.');
+                    }
+                    if (empty($chapo)) {
+                        $this->flashes('warning', 'Le champ chapô est vide.');
+                    }
+                    if (empty($content)) {
+                        $this->flashes('warning', 'Le champ contenu est vide.');
+                    }
+
+                    if (empty($_SESSION["flashes"])) {
+
+                        $post->setTitle($title)
+                            ->setChapo($chapo)
+                            ->setContent($content)
+                            ->setSlug($slug);
+
+                        $userId = $userCurrent->getId();
+                        $post->setUserId($userId);
+
+                        if ($this->postRepository->update($post)) {
+                            $this->flashes('success', "L'article a bien été modifié.");
+                            header('Location: /post/list');
+                            return;
+                        } else {
+                            $this->flashes('danger', "L'article n'a pas été modifié!");
+                        }
+                    } else {
+                        $slug = $this->slugify($title);
+
+                        $this->show('admin/post/update', [
+                            'post' => $post
+                        ]);
+                    }
                 }
+                // On affiche notre vue en transmettant les infos du post et des messages d'alerte
+                $this->show('admin/post/update', [
+                    'post' => $post,
+                ]);
             }
-            // On affiche notre vue en transmettant les infos du post et des messages d'alerte
-            $this->show('admin/post/update', [
-                'post' => $post,
-            ]);
         }
     }
 
@@ -228,27 +231,32 @@ class PostController extends CoreController
     public function delete(string $slug)
     {
         if (!$this->userIsConnected()) {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
-            $post = $this->postRepository->findBySlug($slug);
-            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-
-            if ($currentUserRole->getName() !== "super_admin") {
-                $error403 = new ErrorController;
-                $error403->accessDenied();
+            if (!$this->postRepository->findBySlug($slug)) {
+                $error404 = new ErrorController();
+                $error404->pageNotFoundAction();
             } else {
-                if ($post) {
-                    $this->postRepository->delete($post->getId());
-                    $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
-                    header('Location: /post/list');
-                    return;
+                $post = $this->postRepository->findBySlug($slug);
+                $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+
+                if ($currentUserRole->getName() !== "super_admin") {
+                    $error403 = new ErrorController;
+                    $error403->accessDenied();
                 } else {
-                    $this->flashes('danger', "Cet article n'existe pas!");
+                    if ($post) {
+                        $this->postRepository->delete($post->getId());
+                        $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
+                        header('Location: /post/list');
+                        return;
+                    } else {
+                        $this->flashes('danger', "Cet article n'existe pas!");
+                    }
+                    $this->show('/admin/post/read', [
+                        'post' => $post
+                    ]);
                 }
-                $this->show('/admin/post/read', [
-                    'post' => $post
-                ]);
             }
         }
     }
