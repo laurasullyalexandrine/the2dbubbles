@@ -47,7 +47,7 @@ class CommentRepository extends Database
         
         $pdoStatement = $pdoDBConnexion->prepare($sql);
         $pdoStatement->execute();
-        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Comment::class);
 
         return $comments;
     }
@@ -98,7 +98,7 @@ class CommentRepository extends Database
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
 
-        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        $comments = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Comment::class);
 
         return $comments;
     }

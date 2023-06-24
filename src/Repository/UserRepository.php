@@ -60,7 +60,7 @@ class UserRepository extends Database
         ;
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
-        $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, User::class);
 
         return $users;
     }
@@ -147,7 +147,6 @@ class UserRepository extends Database
      */
     public function findOneByToken(string $token): ?User
     {
-
         $sql = "
             SELECT * 
             FROM user 

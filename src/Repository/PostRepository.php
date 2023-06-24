@@ -55,7 +55,7 @@ class PostRepository extends Database {
         
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
-        $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        $posts = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Post::class);
 
         return $posts;
     }
@@ -87,9 +87,9 @@ class PostRepository extends Database {
      * Undocumented function
      *
      * @param string $slug
-     * @return self
+     * @return ?Post
      */
-    public function findBySlug(string $slug): self
+    public function findBySlug(string $slug): ?Post
     {
         $sql = "
             SELECT p.id, p.title, p.chapo, p.content, p.slug, p.created_at, p.updated_at, u.pseudo AS user
@@ -103,7 +103,7 @@ class PostRepository extends Database {
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
-        $post = $pdoStatement->fetchObject(self::class);
+        $post = $pdoStatement->fetchObject(Post::class);
 
         return $post;
     }
@@ -188,16 +188,16 @@ class PostRepository extends Database {
      *
      * @return bool
      */
-    public function delete(int $id): bool
+    public function delete(string $slug): bool
     {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
             DELETE FROM `post`
-            WHERE id = :id
+            WHERE slug = :slug
         ";
         $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
+        $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_INT);
         $pdoStatement->execute();
 
         return ($pdoStatement->rowCount() > 0);

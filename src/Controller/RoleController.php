@@ -23,10 +23,15 @@ class RoleController extends CoreController
      */
     public function read()
     {
-        $roles = $this->roleRepository->findAll();
-        $this->show('admin/role/read', [
-            'roles' => $roles
-        ]);
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
+        } else {
+            $roles = $this->roleRepository->findAll();
+            $this->show('admin/role/read', [
+                'roles' => $roles
+            ]);
+        }
     }
 
     /**
@@ -39,8 +44,9 @@ class RoleController extends CoreController
         $role = new Role();
         $userCurrent = $this->userIsConnected();
         $currentUserRole = $this->roleRepository->findById($userCurrent->getRoleId());
-        if (!$userCurrent) {
-            header('Location: /security/login');
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
@@ -92,7 +98,8 @@ class RoleController extends CoreController
         $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
-            header('Location: /security/login');
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();
@@ -145,7 +152,8 @@ class RoleController extends CoreController
         $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
-            header('Location: /security/login');
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } elseif ($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
             $error403->accessDenied();

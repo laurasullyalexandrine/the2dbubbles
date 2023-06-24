@@ -8,9 +8,23 @@ use App\Entity\Post;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Comment;
+use App\Repository\PostRepository;
+use App\Repository\RoleRepository;
+use App\Repository\CommentRepository;
 
 class CommentController extends CoreController
 {
+    // protected UserRepository $userRepository;
+    protected CommentRepository $commentRepository;
+    protected RoleRepository $roleRepository;
+    protected PostRepository $postRepository;
+    public function __construct()
+    {
+        // $this->userRepository = new UserRepository();
+        $this->commentRepository = new CommentRepository();
+        $this->roleRepository = new RoleRepository();
+        $this->postRepository = new PostRepository();
+    }
     /**
      * Ajout d'un nouveau commentaire
      * 
@@ -19,50 +33,54 @@ class CommentController extends CoreController
     public function create(string $slug): void
     {
         $comment = new Comment();
-
-        // Trouver le Post à l'aide slug qui sera transmis à la vue
-        $post = Post::findBySlug($this->slugify($slug));
-
-        // Récupérer l'id du Post afin de le setter sur le Comment en cours de création
-        $postId = $post->getId();
-
-        // Si pas de user connecté
         if (!$this->userIsConnected()) {
-            // le rediriger vers la page de login
-            header('Location: /security/login');
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } else {
-            // Si oui Récupérer le user connecté
-            $userCurrent = $this->userIsConnected();
-
-            if ($this->isPost()) {
-                $content = filter_input(INPUT_POST, 'content');
-
-                if (empty($content)) {
-                    $this->flashes('warning', 'Le champ contenu est vide');
-                }
-                if (empty($_SESSION["flashes"])) {
-                    $comment->setContent($content)
-                        ->setPostId($postId)
-                        ->setStatus(2);
-                    $userId = $userCurrent->getId();
-                    $comment->setUserId($userId);
-
-                    if ($comment->insert()) {
-                        $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
-                        header('Location: /post/read/' . $post->getSlug());
-                        return;
-                    } else {
-                        $this->flashes('danger', "Le commentaire n'a pas été créé!");
+            // Trouver le Post à l'aide slug qui sera transmis à la vue
+            $post =  $this->postRepository->findBySlug($this->slugify($slug));
+            dd($post);
+            // Récupérer l'id du Post afin de le setter sur le Comment en cours de création
+            $postId = $post->getId();
+    
+            // Si pas de user connecté
+            if (!$this->userIsConnected()) {
+                // le rediriger vers la page de login
+                header('Location: /security/login');
+            } else {
+                // Si oui Récupérer le user connecté
+                $userCurrent = $this->userIsConnected();
+    
+                if ($this->isPost()) {
+                    $content = filter_input(INPUT_POST, 'content');
+    
+                    if (empty($content)) {
+                        $this->flashes('warning', 'Le champ contenu est vide');
                     }
-                } else {
-                    $comment->setContent(filter_input(INPUT_POST, $content));
+                    if (empty($_SESSION["flashes"])) {
+                        $comment->setContent($content)
+                            ->setPostId($postId)
+                            ->setStatus(2);
+                        $userId = $userCurrent->getId();
+                        $comment->setUserId($userId);
+    
+                        if ($this->commentRepository->insert($comment)) {
+                            $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
+                            header('Location: /post/read/' . $post->getSlug());
+                            return;
+                        } else {
+                            $this->flashes('danger', "Le commentaire n'a pas été créé!");
+                        }
+                    } else {
+                        $comment->setContent(filter_input(INPUT_POST, $content));
+                    }
                 }
+                $this->show('/front/comment/create', [
+                    'Comment' => new Comment(),
+                    'user' => $userCurrent,
+                    'post' => $post
+                ]);
             }
-            $this->show('/front/comment/create', [
-                'Comment' => new Comment(),
-                'user' => $userCurrent,
-                'post' => $post
-            ]);
         }
     }
 
@@ -75,23 +93,27 @@ class CommentController extends CoreController
     public function userComment(string $slug): void
     {
         $comments = Comment::findByUser($slug);
-
-        if (empty($comments)) {
-            $author = null;
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } else {
-            $posts = [];
-            foreach ($comments as $comment) {
-                $posts[] = Post::findBySlug($this->slugify($comment->post));
-                
-                foreach ($posts as $post) {
-                    $author = User::findByPseudo($post->user);
+            if (empty($comments)) {
+                $author = null;
+            } else {
+                $posts = [];
+                foreach ($comments as $comment) {
+                    $posts[] = Post::findBySlug($this->slugify($comment->post));
+                    
+                    foreach ($posts as $post) {
+                        $author = User::findByPseudo($post->user);
+                    }
                 }
             }
+            $this->show('front/comment/read', [
+                'comments' => $comments,
+                'author' => $author
+            ]);
         }
-        $this->show('front/comment/read', [
-            'comments' => $comments,
-            'author' => $author
-        ]);
     }
 
     /**
@@ -102,14 +124,15 @@ class CommentController extends CoreController
      */
     public function update(int $commentId): void
     {
-        $comment = Comment::findById($commentId);
+        $comment = $this->commentRepository->findById($commentId);
+
 
         // Stocker le user en session
         $userCurrent = $this->userIsConnected();
 
         // Récupérer le role du user en session
         $roleId = $userCurrent->getRoleId();
-        Role::findById($roleId);
+        $this->roleRepository->findById($roleId);
 
         // Récupérer l'id de lauteur du commentaire
         $idAuthorComment = $comment->getUserId();

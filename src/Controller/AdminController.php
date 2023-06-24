@@ -34,7 +34,6 @@ class AdminController extends CoreController
         }
     }
 
-
     /**
      * Édition des commentaires
      *
@@ -51,6 +50,7 @@ class AdminController extends CoreController
             // Stocker le user en session
             $userCurrent = $this->userIsConnected();
             foreach ($comments as $comment) {
+                dd($comment);
                 $commentId = $comment->getId();
             }
     
@@ -85,16 +85,22 @@ class AdminController extends CoreController
     public function update(int $commentId): void
     {
         $comment = $this->commentRepository->findById($commentId);
-        if ($this->isPost()) {
-            $status = (int)filter_input(INPUT_POST, 'status');
-            $comment->setStatus($status);
-
-            if ($this->commentRepository->update($comment)) {
-                $this->flashes('success', "Le Bubbles Comment $commentId a bien été modifié.");
-                header('Location: /admin/comments');
-                return;
-            } else {
-                $this->flashes('danger', "Le Bubbles Comment  $commentId n'a pas été modifié!");
+        
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
+        } else {
+            if ($this->isPost()) {
+                $status = (int)filter_input(INPUT_POST, 'status');
+                $comment->setStatus($status);
+    
+                if ($this->commentRepository->update($comment)) {
+                    $this->flashes('success', "Le Bubbles Comment $commentId a bien été modifié.");
+                    header('Location: /admin/comments');
+                    return;
+                } else {
+                    $this->flashes('danger', "Le Bubbles Comment  $commentId n'a pas été modifié!");
+                }
             }
         }
     }
@@ -111,8 +117,8 @@ class AdminController extends CoreController
         $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
-            $this->flashes('warning', 'Merci de te connecter!');
-            header('Location: /security/login');
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } elseif ($currentUserRole->getName() === "utilisateur") {
             $error403 = new ErrorController;
             $error403->accessDenied();

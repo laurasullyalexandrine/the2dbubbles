@@ -16,9 +16,11 @@ use App\Repository\RoleRepository;
 class UserController extends CoreController
 {
     protected UserRepository $userRepository;
+    protected RoleRepository $roleRepository;
     public function __construct()
     {
         $this->userRepository = new UserRepository();
+        $this->roleRepository = new RoleRepository();
     }
     /**
      * Afficher tous les utilisateurs de la base de données
@@ -156,9 +158,9 @@ class UserController extends CoreController
     {
         $user = $this->userRepository->findById($userId);
         $updatedRole = $user->getRoleId();
-        $roles = Role::findAll();
+        $roles = $this->roleRepository->findAll();
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');
@@ -235,7 +237,7 @@ class UserController extends CoreController
     {
         $user = $this->userRepository->findById($userId);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
         if (!$this->userIsConnected()) {
             header('Location: /security/login');

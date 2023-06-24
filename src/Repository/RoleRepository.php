@@ -33,7 +33,7 @@ class RoleRepository extends Database
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
-        $roles = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        $roles = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Role::class);
 
         return $roles;
     }
@@ -45,16 +45,16 @@ class RoleRepository extends Database
      */
     public function findByUser(): array
     {
-
-        $sql = '
+        $sql = "
             SELECT * 
             FROM role
-            LEFT JOIN user ON role.id = user.roles';
-
+            LEFT JOIN user ON role.id = user.roles
+            "
+        ;
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
-        $roles = $pdoStatement->fetchAll(PDO::FETCH_CLASS, self::class);
+        $roles = $pdoStatement->fetchAll(PDO::FETCH_CLASS, Role::class);
 
         return $roles;
     }

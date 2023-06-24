@@ -7,12 +7,26 @@ namespace App\Controller;
 use App\Entity\Post;
 use App\Entity\Role;
 use App\Entity\Comment;
+use App\Repository\CommentRepository;
+use App\Repository\PostRepository;
+use App\Repository\RoleRepository;
 
 /**
  * Controller dédié à la gestion des posts
  */
 class PostController extends CoreController
 {
+    // protected UserRepository $userRepository;
+    protected PostRepository $postRepository;
+    protected RoleRepository $roleRepository;
+    protected CommentRepository $commentRepository;
+    public function __construct()
+    {
+        // $this->userRepository = new UserRepository();
+        $this->postRepository = new PostRepository();
+        $this->roleRepository = new RoleRepository();
+        $this->commentRepository = new CommentRepository();
+    }
     /**
      * Afficher tous les artilces de la base de données
      * 
@@ -20,12 +34,16 @@ class PostController extends CoreController
      */
     public function list()
     {
-        $posts = Post::findAll();
-
-        // On les envoie à la vue
-        $this->show('/front/post/list', [
-            'posts' => $posts
-        ]);
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
+        } else {
+            $posts = $this->postRepository->findAll();
+            // On les envoie à la vue
+            $this->show('/front/post/list', [
+                'posts' => $posts
+            ]);
+        }
     }
 
     /**
@@ -36,14 +54,14 @@ class PostController extends CoreController
     public function create(): void
     {
         $post = new Post();
-        
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
-            header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
-            $error403->accessDenied(); 
+            $error403->accessDenied();
+        } elseif ($currentUserRole->getName() !== "super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
@@ -74,7 +92,7 @@ class PostController extends CoreController
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
-                    if ($post->insert()) {
+                    if ( $this->postRepository->insert($post)) {
                         $this->flashes('success', "L'article a bien été créé.");
                         header('Location: /post/list');
                         return;
@@ -105,25 +123,30 @@ class PostController extends CoreController
      */
     public function read(string $slug)
     {
-        $post = Post::findBySlug($slug);
+        if (!$this->userIsConnected()) {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
+        } else {
+            $post =  $this->postRepository->findBySlug($slug);
+    
+            // Récupérer les tableaux des commentaires
+            $comments = $this->commentRepository->findBySlugPost($slug);
+            $commentsCheck = [];
 
-        // Récupérer les tableaux des commentaires
-        $comments = Comment::findBySlugPost($slug);
-        $commentsCheck = [];
-       
-
-        foreach ($comments as $comment) {
-            if ($comment->getStatus() === 1) {
-                $commentsCheck[] = $comment;
+            foreach ($comments as $comment) {
+                if ($comment->getStatus() === 1) {
+                    $commentsCheck[] = $comment;
+                }
             }
-        }
+    
+            // On les envoie à la vue
+            $this->show('/front/post/read', [
+                'post' => $post,
+                'comments' => $comments,
+                'commentsCheck' => $commentsCheck
+            ]);
 
-        // On les envoie à la vue
-        $this->show('/front/post/read', [
-            'post' => $post,
-            'comments' => $comments,
-            'commentsCheck' => $commentsCheck
-        ]);
+        }
     }
 
     /**
@@ -134,15 +157,15 @@ class PostController extends CoreController
      */
     public function update(string $slug): void
     {
-        $post = Post::findBySlug($slug);
+        $post = $this->postRepository->findBySlug($slug);
 
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
+        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
         if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
-            header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
-            $error403->accessDenied(); 
+            $error403->accessDenied();
+        } elseif ($currentUserRole->getName() !== "super_admin") {
+            $error403 = new ErrorController;
+            $error403->accessDenied();
         } else {
             // Récupérer le user connecté
             $userCurrent = $this->userIsConnected();
@@ -173,7 +196,7 @@ class PostController extends CoreController
                     $userId = $userCurrent->getId();
                     $post->setUsers($userId);
 
-                    if ($post->update()) {
+                    if ($this->postRepository->update($post)) {
                         $this->flashes('success', "L'article a bien été modifié.");
                         header('Location: /post/list');
                         return;
@@ -203,28 +226,33 @@ class PostController extends CoreController
      */
     public function delete(string $slug)
     {
-        $post = Post::findBySlug($slug);
-
-        $currentUserRole = Role::findById($this->userIsConnected()->getRoleId());
-        
         if (!$this->userIsConnected()) {
-            // Sinon le rediriger vers la page de login
-            header('Location: /security/login');
-        } elseif($currentUserRole->getName() !== "super_admin") {
             $error403 = new ErrorController;
-            $error403->accessDenied(); 
+            $error403->accessDenied();
         } else {
-            if ($post) {
-                $post->delete();
-                $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
-                header('Location: /post/list');
-                return;
+            $post = $this->postRepository->findBySlug($slug);
+    
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+    
+            if (!$this->userIsConnected()) {
+                // Sinon le rediriger vers la page de login
+                header('Location: /security/login');
+            } elseif ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
             } else {
-                $this->flashes('danger', "Cet article n'existe pas!");
+                if ($post) {
+                    $this->postRepository->delete($slug);
+                    $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
+                    header('Location: /post/list');
+                    return;
+                } else {
+                    $this->flashes('danger', "Cet article n'existe pas!");
+                }
             }
+            $this->show('/admin/post/read', [
+                'post' => $post
+            ]);
         }
-        $this->show('/admin/post/read', [
-            'post' => $post
-        ]);
     }
 }

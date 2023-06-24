@@ -6,7 +6,6 @@ class Comment
 {
     private $id;
 
-    
     /**
      * @var string
      */
