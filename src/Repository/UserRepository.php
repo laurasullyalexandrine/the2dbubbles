@@ -12,36 +12,6 @@ class UserRepository extends Database
 {
     const HASH_COST = 12;
 
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $pseudo = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $slug = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $email = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private string $password;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $token;
-
-    // /**
-    //  * @var int
-    //  */
-    // private ?int $roleId = null;
-
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table user
      *
@@ -56,8 +26,7 @@ class UserRepository extends Database
             ON r.id = u.roleId
             WHERE u.roleId 
             ORDER BY u.roleId ASC
-            "
-        ;
+            ";
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute();
         $users = $pdoStatement->fetchAll(PDO::FETCH_CLASS, User::class);
@@ -73,13 +42,11 @@ class UserRepository extends Database
      */
     public function findById(int $userId): User
     {
-    
         $sql = "
             SELECT * 
             FROM user 
             WHERE id = :id
-            "
-        ;
+            ";
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $userId, PDO::PARAM_INT);
         $pdoStatement->execute();
@@ -101,8 +68,7 @@ class UserRepository extends Database
             SELECT *
             FROM user
             WHERE email = :email
-            "
-        ;
+            ";
         $pdoStatement = $this->dbh->prepare($sql);
         // Méthode bindValue() permet de contraintes les types de données saisies 
         $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);
@@ -121,13 +87,11 @@ class UserRepository extends Database
      */
     public function findByPseudo(string $pseudo): ?User
     {
-
         $sql = "
             SELECT * 
             FROM user 
             WHERE pseudo = :pseudo
-            "
-        ;
+            ";
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':pseudo', $pseudo, PDO::PARAM_STR);
@@ -136,7 +100,6 @@ class UserRepository extends Database
         $user = $pdoStatement->fetchObject(User::class);
 
         return $user instanceof User ? $user : null;
-        
     }
 
     /**
@@ -151,8 +114,7 @@ class UserRepository extends Database
             SELECT * 
             FROM user 
             WHERE token = :token
-            "
-        ;
+            ";
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':token', $token, PDO::PARAM_STR);
@@ -170,7 +132,6 @@ class UserRepository extends Database
      */
     public function insert(User $user): bool
     {
-
         $sql = "
             INSERT INTO user (
                 pseudo,
@@ -186,18 +147,17 @@ class UserRepository extends Database
                 :password,
                 :roleId
             )
-        "
-    ;
+        ";
 
         // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
         $pdoStatement = $this->dbh->prepare($sql);
-            $pdoStatement->execute([
-                'pseudo' => $user->getPseudo(),
-                'slug' => $user->getSlug(),
-                'email' => $user->getEmail(),
-                'password' => $user->getPassword(),
-                'roleId' => $user->getRoleId(),
-            ]);
+        $pdoStatement->execute([
+            'pseudo' => $user->getPseudo(),
+            'slug' => $user->getSlug(),
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'roleId' => $user->getRoleId(),
+        ]);
 
 
         if ($pdoStatement->rowCount() > 0) {
@@ -213,7 +173,6 @@ class UserRepository extends Database
      */
     public function update(User $user): bool
     {
-
         $sql = "
             UPDATE user
             SET 
@@ -224,8 +183,7 @@ class UserRepository extends Database
                 roleId = :roleId,
                 updated_at = NOW()
             WHERE id = :id
-        "
-    ;
+        ";
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $user->getId(), PDO::PARAM_INT);
@@ -246,13 +204,11 @@ class UserRepository extends Database
      */
     public function delete(int $id): bool
     {
-    
         $sql = "
             DELETE 
             FROM user
             WHERE id = :id
-            "
-        ;
+            ";
 
         $pdoStatement = $this->dbh->prepare($sql);
         // Permet d'associer une valeur à un paramètre et de contraindre la donnée attendue
@@ -262,137 +218,4 @@ class UserRepository extends Database
         // Retourne vrai si au moins une ligne a été supprimée
         return ($pdoStatement->rowCount() > 0);
     }
-
-    // /**
-    //  * Get the value of pseudo
-    //  *
-    //  * @return  string
-    //  */ 
-    // public function getPseudo(): ?string
-    // {
-    //     return $this->pseudo;
-    // }
-
-    // /**
-    //  * Set the value of pseudo
-    //  *
-    //  * @param  string  $pseudo
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setPseudo(string $pseudo): self
-    // {
-    //     $this->pseudo = $pseudo;
-
-    //     return $this;
-    // }
-    // /**
-    //  * Get the value of slug
-    //  *
-    //  * @return  string
-    //  */ 
-    // public function getSlug(): ?string
-    // {
-    //     return $this->slug;
-    // }
-
-    // /**
-    //  * Set the value of slug
-    //  *
-    //  * @param  string  $slug
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setSlug(string $slug): self
-    // {
-    //     $this->slug = $slug;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of email
-    //  */
-    // public function getEmail(): ?string
-    // {
-    //     return $this->email;
-    // }
-
-    // /**
-    //  * Set the value of email
-    //  *
-    //  * @return  self
-    //  */
-    // public function setEmail(string $email): self
-    // {
-    //     $this->email = $email;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of password
-    //  */
-    // public function getPassword(): string
-    // {
-    //     return $this->password;
-    // }
-
-    // /**
-    //  * Set the value of password
-    //  *
-    //  * @return  self
-    //  */
-    // public function setPassword(string $password): self
-    // {
-    //     $this->password = $password;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of token
-    //  *
-    //  * @return  string
-    //  */ 
-    // public function getToken(): ?string
-    // {
-    //     return $this->token;
-    // }
-
-    // /**
-    //  * Set the value of token
-    //  *
-    //  * @param  string  $token
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setToken(string $token): self
-    // {
-    //     $this->token = $token;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of roleId
-    //  *
-    //  * @return  int
-    //  */ 
-    // public function getRoleId(): int
-    // {
-    //     return $this->roleId;
-    // }
-
-    // /**
-    //  * Set the value of roles
-    //  *
-    //  * @return  self
-    //  */
-    // public function setRoleId(int $roleId): self
-    // {
-    //     $this->roleId = $roleId;
-
-    //     return $this;
-    // }
 }

@@ -90,8 +90,7 @@ class UserController extends CoreController
                 if ($password !== $password_2) {
                     $this->flashes('danger', 'Les mots de passe ne corresponde pas!');
                 }
-                
-                // TODO: Corriger cette erreur
+
                 // Contrôler si le rôle soumis est un rôle existant en BDD 
                 $roleExist = false;
                 foreach ($roles as $existingRole) {

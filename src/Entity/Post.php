@@ -1,6 +1,11 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace App\Entity;
+
+use DateTime;
+use DateTimeInterface;
 
 class Post
 {
@@ -29,17 +34,28 @@ class Post
      */
     private ?string $content = null;
 
+    
+    /**
+     * @var string|null
+     */
+    private ?string $created_at = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $updated_at = null;
+
     /**
      * @var int
      */
-    private int $users;
+    private int $userId;
 
     /**
      * Get the value of id
      *
      * @return  integer
      */ 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -51,33 +67,9 @@ class Post
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($id): self
     {
         $this->id = $id;
-
-        return $this;
-    }
-    
-    /**
-     * Get the value of users
-     *
-     * @return  int
-     */ 
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
-    /**
-     * Set the value of users
-     *
-     * @param  int  $users
-     *
-     * @return  self
-     */ 
-    public function setUsers(int $users)
-    {
-        $this->users = $users;
 
         return $this;
     }
@@ -87,7 +79,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -99,7 +91,7 @@ class Post
      *
      * @return  self
      */ 
-    public function setTitle(string $title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -111,7 +103,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -123,7 +115,7 @@ class Post
      *
      * @return  self
      */ 
-    public function setSlug(string $slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
@@ -135,7 +127,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getChapo()
+    public function getChapo(): string
     {
         return $this->chapo;
     }
@@ -147,7 +139,7 @@ class Post
      *
      * @return  self
      */ 
-    public function setChapo(string $chapo)
+    public function setChapo(string $chapo): self
     {
         $this->chapo = $chapo;
 
@@ -159,7 +151,7 @@ class Post
      *
      * @return  string
      */ 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -171,9 +163,82 @@ class Post
      *
      * @return  self
      */ 
-    public function setContent(string $content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of created_at
+     * Permet d'indiquer à twig que la valeur retourner doit être un objet de type DateTime()
+     */ 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        if ($this->created_at === null) {
+            return null;
+        } else {
+            return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
+        }
+    }
+
+    /**
+     * Set the value of created_at
+     *
+     * @return  self
+     */
+    public function setCreatedAt(DateTime $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of updated_at and creating a date format from the DateTime class
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        if ($this->created_at === null) {
+            return null;
+        } else {
+            return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
+        }
+    }
+
+    /**
+     * Set the value of updated_at
+     *
+     * @return  self
+     */ 
+    public function setUpdatedAt(DateTime $updated_at): self
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of userId
+     *
+     * @return  int
+     */ 
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Set the value of userId
+     *
+     * @param  int  $userId
+     *
+     * @return  self
+     */ 
+    public function setUserId(int $userId)
+    {
+        $this->userId = $userId;
 
         return $this;
     }

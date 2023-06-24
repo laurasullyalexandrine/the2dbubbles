@@ -10,18 +10,6 @@ use App\Entity\Role;
 
 class RoleRepository extends Database
 {
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $name = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $roleString = null;
-
-
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table role
      *
@@ -153,7 +141,6 @@ class RoleRepository extends Database
         return $pdoStatement->execute();
     }
 
-
     /**
      * Méthode permettant la supression d'un rôle
      *
@@ -171,60 +158,4 @@ class RoleRepository extends Database
 
         return ($pdoStatement->rowCount() > 0);
     }
-
-    // /**
-    //  * Get the value of name
-    //  */
-    // public function getName(): ?string
-    // {
-    //     return $this->name;
-    // }
-
-    // /**
-    //  * Set the value of name
-    //  *
-    //  * @return  self
-    //  */
-    // public function setName(string $name): self
-    // {
-    //     $this->name = $name;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of roleString
-    //  */
-    // public function getRoleString(): ?string
-    // {
-    //     return $this->roleString;
-    // }
-
-    // /**
-    //  * Set the value of roleString
-    //  *
-    //  * @return  self
-    //  */
-    // public function setRoleString(string $roleString): self
-    // {
-    //     $this->roleString = $roleString;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Méthode permettant d'afficher les roles
-    //  *
-    //  * @return string
-    //  */
-    // public function getDisplayRole(): string
-    // {
-    //     if ($this->roleString === "ROLE_SUPER_ADMIN") {
-    //         return "Super admin";
-    //     } elseif ($this->roleString === "ROLE_SUPER_ADMIN") {
-    //         return "admin";
-    //     } else {
-    //         return "utilisateur";
-    //     }
-    // }
 }

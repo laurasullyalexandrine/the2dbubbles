@@ -231,18 +231,14 @@ class PostController extends CoreController
             $error403->accessDenied();
         } else {
             $post = $this->postRepository->findBySlug($slug);
-    
             $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
     
-            if (!$this->userIsConnected()) {
-                // Sinon le rediriger vers la page de login
-                header('Location: /security/login');
-            } elseif ($currentUserRole->getName() !== "super_admin") {
+            if ($currentUserRole->getName() !== "super_admin") {
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {
                 if ($post) {
-                    $this->postRepository->delete($slug);
+                    $this->postRepository->delete($post->getId());
                     $this->flashes('success', "Le Bubbles Post $slug a bien été supprimé.");
                     header('Location: /post/list');
                     return;

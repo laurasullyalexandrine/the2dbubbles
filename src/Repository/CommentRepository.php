@@ -10,38 +10,19 @@ use App\Utils\Database;
 
 class CommentRepository extends Database
 {
-    // /**
-    //  * @var string
-    //  */
-    // private string $content;
-
-    // /**
-    //  * @var int
-    //  */
-    // private int $status;
-
-    // /**
-    //  * @var int
-    //  */
-    // private ?int $userId = null;
-
-    // /**
-    //  * @var int
-    //  */
-    // private ?int $postId = null;
-
     /**
      * Méthode permettant de récupérer tous les commentaires
      *
      * @return array
      */
-    public static function findAll(): array
+    public function findAll(): array
     {
         $pdoDBConnexion = Database::getPDO();
 
         $sql = "
             SELECT *
             FROM comment
+            ORDER BY created_at DESC
             "
         ;
         
@@ -86,11 +67,11 @@ class CommentRepository extends Database
             SELECT c.id, c.content, c.status, c.created_at, c.updated_at, u.slug AS user, p.title AS post
             FROM comment c
             LEFT JOIN user u
-            ON u.id = c.users
+            ON u.id = c.userId
             LEFT JOIN post p
-            ON p.id = c.posts
+            ON p.id = c.postId
             WHERE u.slug = :slug
-            ORDER BY created_at ASC
+            ORDER BY created_at DESC
             "
         ;
 
@@ -115,11 +96,11 @@ class CommentRepository extends Database
             SELECT c.id, c.content, c.status, c.created_at, c.updated_at, p.slug AS slug, u.pseudo
             FROM comment c
             LEFT JOIN post p
-            ON p.id = c.posts
+            ON p.id = c.postId
             LEFT JOIN user u
-            ON u.id = c.users
+            ON u.id = c.userId
             WHERE p.slug = :slug
-            ORDER BY c.created_at ASC 
+            ORDER BY c.created_at DESC 
             "
         ;
         $pdoStatement = $this->dbh->prepare($sql);
@@ -144,14 +125,14 @@ class CommentRepository extends Database
     {
         $sql = "
             INSERT INTO comment(
-                    posts, 
-                    users, 
+                    postId, 
+                    userId, 
                     content, 
                     status
                 )
                 VALUES (
-                    :posts, 
-                    :users, 
+                    :postId, 
+                    :userId, 
                     :content, 
                     :status
                 )
@@ -219,100 +200,4 @@ class CommentRepository extends Database
         
         return ($pdoStatement->rowCount() > 0);
     }
-
-    // /**
-    //  * Get the content of the entities Post and Comment
-    //  *
-    //  * @return  string
-    //  */ 
-    // public function getContent(): string
-    // {
-    //     return $this->content;
-    // }
-
-    // /**
-    //  * Set the content of the entities Post and Comment
-    //  *
-    //  * @param  string  $content  The content of the entities Post and Comment
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setContent(string $content): self
-    // {
-    //     $this->content = $content;
-
-    //     return $this;
-    // }
-    
-    // /**
-    //  * Get the value of status
-    //  *
-    //  * @return  int
-    //  */ 
-    // public function getStatus(): int
-    // {
-    //     return $this->status;
-    // }
-
-    // /**
-    //  * Set the value of status
-    //  *
-    //  * @param  int  $status
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setStatus(int $status): self
-    // {
-    //     $this->status = $status;
-
-    //     return $this;
-    // }
-    
-    // /**
-    //  * Get the value of userId
-    //  *
-    //  * @return  int
-    //  */ 
-    // public function getUserId()
-    // {
-    //     return $this->userId;
-    // }
-
-    // /**
-    //  * Set the value of userId
-    //  *
-    //  * @param  int  $userId
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setUserId(int $userId)
-    // {
-    //     $this->userId = $userId;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of postId
-    //  *
-    //  * @return  int
-    //  */ 
-    // public function getPostId()
-    // {
-    //     return $this->postId;
-    // }
-
-    // /**
-    //  * Set the value of postId
-    //  *
-    //  * @param  int  $postId
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setPostId(int $postId)
-    // {
-    //     $this->postId = $postId;
-
-    //     return $this;
-    // }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Role;
 use App\Entity\User;
 use App\Repository\RoleRepository;
 use App\Repository\UserRepository;
@@ -15,9 +14,11 @@ use App\Repository\UserRepository;
 class SecurityController extends CoreController
 {
     protected UserRepository $userRepository;
+    protected RoleRepository $roleRepository;
     public function __construct()
     {
         $this->userRepository = new UserRepository();
+        $this->roleRepository = new RoleRepository();
     }
 
     /**
@@ -83,9 +84,8 @@ class SecurityController extends CoreController
     public function register(): void
     {
         $user = new User();
-        $roleRepository = new RoleRepository();
-        $roles = $roleRepository->findAll();
-        // dd($roles);
+        $roles = $this->roleRepository->findAll();
+
         if ($this->isPost()) {
 
             // Récupérer les données reçues du formalaire d'inscription
@@ -115,14 +115,12 @@ class SecurityController extends CoreController
                 $this->flashes('danger', 'Les mots de passe de correspondent pas!');
             }
 
-            // TODO: Corriger cette erreur
             // Contrôler si le rôle soumis est un rôle existant en BDD 
             $rolesIdArray = [];
             $roleExist = false;
             foreach ($roles as $existingRole) {
-                dd($existingRole->getId());
                 $rolesIdArray[] = $existingRole->getId();
-                $getIdRoleSubmited = $existingRole::findByName($hiddenRole)->getId();
+                $getIdRoleSubmited = $this->roleRepository->findByName($hiddenRole)->getId();
 
                 // Si l'id du rôle soumis existe en base de données alors
                 if (in_array($getIdRoleSubmited, $rolesIdArray)) {

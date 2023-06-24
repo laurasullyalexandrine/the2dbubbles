@@ -8,34 +8,8 @@ use PDO;
 use App\Entity\Post;
 use App\Utils\Database;
 
-class PostRepository extends Database {
-    
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $title = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $slug = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $chapo = null;
-
-    // /**
-    //  * @var string
-    //  */
-    // private ?string $content = null;
-
-    // /**
-    //  * @var int
-    //  */
-    // private int $users;
-
-    
+class PostRepository extends Database 
+{
     /**
      * Méthode permettant de récupérer tous les enregistrements de la table post
      *
@@ -47,8 +21,8 @@ class PostRepository extends Database {
             SELECT p.id, title, chapo, p.content, p.slug, p.created_at, p.updated_at, u.id, u.pseudo AS user
             FROM post p
             INNER JOIN user u
-            ON u.id = p.users
-            WHERE p.users
+            ON u.id = p.userId
+            WHERE p.userId
             ORDER BY created_at DESC
             "
         ;
@@ -84,7 +58,7 @@ class PostRepository extends Database {
     }
 
     /**
-     * Undocumented function
+     * Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un slug donné
      *
      * @param string $slug
      * @return ?Post
@@ -95,7 +69,7 @@ class PostRepository extends Database {
             SELECT p.id, p.title, p.chapo, p.content, p.slug, p.created_at, p.updated_at, u.pseudo AS user
             FROM post p
             LEFT JOIN user u
-            ON u.id = p.users
+            ON u.id = p.userId
             WHERE p.slug = :slug
             "
         ;
@@ -119,14 +93,14 @@ class PostRepository extends Database {
     {
         $sql = "
             INSERT INTO post (
-                users, 
+                userId, 
                 title, 
                 chapo, 
                 content, 
                 slug
             )
             VALUES (
-                :users, 
+                :userId, 
                 :title, 
                 :chapo, 
                 :content, 
@@ -137,7 +111,7 @@ class PostRepository extends Database {
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute([
-            'users' => $post->getUsers(),
+            'users' => $post->getUserId(),
             'title' => $post->getTitle(),
             'chapo' => $post->getChapo(),
             'content' => $post->getContent(),
@@ -162,7 +136,7 @@ class PostRepository extends Database {
         $sql = "
             UPDATE `post`
             SET 
-                users = :users,
+                userId = :userId,
                 title = :title,
                 chapo = :chapo,
                 content = :content,
@@ -173,7 +147,7 @@ class PostRepository extends Database {
 
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->bindValue(':id', $post->getId(), PDO::PARAM_INT);
-        $pdoStatement->bindValue(':users', $post->getUsers(), PDO::PARAM_INT);
+        $pdoStatement->bindValue(':userId', $post->getUserId(), PDO::PARAM_INT);
         $pdoStatement->bindValue(':title', $post->getTitle(), PDO::PARAM_STR);
         $pdoStatement->bindValue(':chapo', $post->getChapo(), PDO::PARAM_STR);
         $pdoStatement->bindValue(':content', $post->getContent(), PDO::PARAM_STR);
@@ -182,138 +156,21 @@ class PostRepository extends Database {
         return $pdoStatement->execute();
     }
 
-
     /**
      * Méthode permettant la supression d'un commentaire
      *
      * @return bool
      */
-    public function delete(string $slug): bool
+    public function delete(int $id): bool
     {
-        $pdoDBConnexion = Database::getPDO();
-
         $sql = "
             DELETE FROM `post`
-            WHERE slug = :slug
+            WHERE id = :id
         ";
-        $pdoStatement = $pdoDBConnexion->prepare($sql);
-        $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_INT);
+        $pdoStatement = $this->dbh->prepare($sql);
+        $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
         $pdoStatement->execute();
 
         return ($pdoStatement->rowCount() > 0);
     }
-
-     
-
-    // /**
-    //  * Get the value of title
-    //  */ 
-    // public function getTitle(): ?string
-    // {
-    //     return $this->title;
-    // }
-
-    // /**
-    //  * Set the value of title
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setTitle(string $title): self
-    // {
-    //     $this->title = $title;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of slug
-    //  *
-    //  * @return  string
-    //  */ 
-    // public function getSlug(): ?string
-    // {
-    //     return $this->slug;
-    // }
-
-    // /**
-    //  * Set the value of slug
-    //  *
-    //  * @param  string  $slug
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setSlug(string $slug): self
-    // {
-    //     $this->slug = $slug;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of chapo
-    //  */ 
-    // public function getChapo(): ?string
-    // {
-    //     return $this->chapo;
-    // }
-
-    // /**
-    //  * Set the value of chapo
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setChapo(string $chapo): self
-    // {
-    //     $this->chapo = $chapo;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of content
-    //  *
-    //  * @return  string
-    //  */ 
-    // public function getContent(): ?string
-    // {
-    //     return $this->content;
-    // }
-
-    // /**
-    //  * Set the value of content
-    //  *
-    //  * @param  string  $content
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setContent(string $content): self
-    // {
-    //     $this->content = $content;
-
-    //     return $this;
-    // }
-
-    // /**
-    //  * Get the value of users
-    //  *
-    //  * @return  int
-    //  */ 
-    // public function getUsers(): int
-    // {
-    //     return $this->users;
-    // }
-
-    // /**
-    //  * Set the value of users
-    //  *
-    //  * @param  int  $users
-    //  *
-    //  * @return  self
-    //  */ 
-    // public function setUsers(int $users): self
-    // {
-    //     $this->users = $users;
-
-    //     return $this;
-    // }
 }

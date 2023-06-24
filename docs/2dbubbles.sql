@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : lun. 19 juin 2023 à 13:36
--- Version du serveur : 10.4.27-MariaDB
--- Version de PHP : 8.1.12
+-- Généré le : sam. 24 juin 2023 à 09:51
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.1.17
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `comment` (
   `id` int(11) NOT NULL,
-  `posts` int(11) NOT NULL,
-  `users` int(11) NOT NULL,
+  `postId` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `content` text NOT NULL,
   `status` int(1) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
@@ -41,7 +41,7 @@ CREATE TABLE `comment` (
 -- Déchargement des données de la table `comment`
 --
 
-INSERT INTO `comment` (`id`, `posts`, `users`, `content`, `status`, `created_at`, `updated_at`) VALUES
+INSERT INTO `comment` (`id`, `postId`, `userId`, `content`, `status`, `created_at`, `updated_at`) VALUES
 (1, 1, 4, 'C\'est un bon moyen pour moi de décompresser.', 1, '2023-06-02 12:48:18', '2023-06-02 12:48:18'),
 (2, 1, 4, 'Une bonne musique sur le chemin du retour, après une dure journée ! ça c\'est le top!', 1, '2023-06-02 12:48:30', '2023-06-02 12:48:30'),
 (3, 3, 3, 'Je ne sais pas, cela peut-être utile sûrement mais delà à remplacer le travail d\'un être humain. Je pense qu\'il faut prendre conscience des limites et à avoir le courage de les appliquer!', 1, '2023-06-02 12:49:01', '2023-06-02 12:49:01'),
@@ -55,7 +55,7 @@ INSERT INTO `comment` (`id`, `posts`, `users`, `content`, `status`, `created_at`
 
 CREATE TABLE `post` (
   `id` int(11) NOT NULL,
-  `users` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
   `title` varchar(84) NOT NULL,
   `slug` varchar(84) NOT NULL,
   `chapo` varchar(180) NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE `post` (
 -- Déchargement des données de la table `post`
 --
 
-INSERT INTO `post` (`id`, `users`, `title`, `slug`, `chapo`, `content`, `created_at`, `updated_at`) VALUES
+INSERT INTO `post` (`id`, `userId`, `title`, `slug`, `chapo`, `content`, `created_at`, `updated_at`) VALUES
 (1, 1, 'La musique', 'la-musique', 'Composition-inspiration', 'La musique est un art et une activité culturelle consistant à combiner sons et silences au cours du temps. Les paramètres principaux sont le rythme, la hauteur, les nuances et le timbre. Elle est aujourd\'hui considérée comme une forme de poésie moderne. La musique donne lieu à des créations, des représentations. ', '2023-05-24 14:27:01', NULL),
 (2, 1, 'PHP', 'php', 'Langage de programmation serveur', 'PHP: Hypertext Preprocessor, plus connu sous son sigle PHP, est un langage de programmation libre, principalement utilisé pour produire des pages Web dynamiques via un SERVEUR web, mais pouvant également fonctionner comme n\'importe quel langage interprété de façon locale. PHP est un langage impératif orienté objet.', '2023-05-14 15:18:00', '2023-05-14 15:18:00'),
 (3, 1, 'ChatGPT', 'chatgpt', 'Application', 'Une intelligence artificielle au cœur des polémiques, qui déchaine les passions. Alors ?\r\nPOUR ou CONTRE ... NEUTRE peut-être ?', '2023-06-01 21:21:02', '2023-06-01 21:21:02'),
@@ -95,7 +95,8 @@ CREATE TABLE `role` (
 INSERT INTO `role` (`id`, `name`, `rolestring`, `created_at`, `updated_at`) VALUES
 (1, 'super_admin', 'ROLE_SUPER_ADMINE', '2023-06-02 10:16:48', '2023-06-02 10:13:03'),
 (2, 'admin', '[\"ROLE_ADMIN\"]', '2023-05-14 10:33:15', NULL),
-(3, 'utilisateur', '[\"ROLE_UTILISATEUR\"]', '2023-05-14 10:33:15', NULL);
+(3, 'utilisateur', '[\"ROLE_UTILISATEUR\"]', '2023-05-14 10:33:15', NULL),
+(6, 'moderateur', 'ROLE_MODERATEUR', '2023-06-24 07:43:50', NULL);
 
 -- --------------------------------------------------------
 
@@ -136,8 +137,8 @@ INSERT INTO `user` (`id`, `roleId`, `pseudo`, `slug`, `email`, `password`, `toke
 --
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `posts` (`posts`),
-  ADD KEY `users` (`users`);
+  ADD KEY `posts` (`postId`),
+  ADD KEY `users` (`userId`);
 
 --
 -- Index pour la table `post`
@@ -145,7 +146,7 @@ ALTER TABLE `comment`
 ALTER TABLE `post`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `slug` (`slug`),
-  ADD KEY `users` (`users`);
+  ADD KEY `users` (`userId`);
 
 --
 -- Index pour la table `role`
@@ -176,13 +177,13 @@ ALTER TABLE `comment`
 -- AUTO_INCREMENT pour la table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT pour la table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `user`
@@ -198,14 +199,14 @@ ALTER TABLE `user`
 -- Contraintes pour la table `comment`
 --
 ALTER TABLE `comment`
-  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`posts`) REFERENCES `post` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`users`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`postId`) REFERENCES `post` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `post`
 --
 ALTER TABLE `post`
-  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`users`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `post_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 
 --
 -- Contraintes pour la table `user`

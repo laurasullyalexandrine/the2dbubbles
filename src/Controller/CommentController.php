@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Post;
-use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\Comment;
 use App\Repository\PostRepository;
 use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
 use App\Repository\CommentRepository;
 
 class CommentController extends CoreController
 {
-    // protected UserRepository $userRepository;
+    protected UserRepository $userRepository;
     protected CommentRepository $commentRepository;
     protected RoleRepository $roleRepository;
     protected PostRepository $postRepository;
     public function __construct()
     {
-        // $this->userRepository = new UserRepository();
+        $this->userRepository = new UserRepository();
         $this->commentRepository = new CommentRepository();
         $this->roleRepository = new RoleRepository();
         $this->postRepository = new PostRepository();
@@ -39,7 +39,7 @@ class CommentController extends CoreController
         } else {
             // Trouver le Post à l'aide slug qui sera transmis à la vue
             $post =  $this->postRepository->findBySlug($this->slugify($slug));
-            dd($post);
+            
             // Récupérer l'id du Post afin de le setter sur le Comment en cours de création
             $postId = $post->getId();
     
@@ -92,7 +92,7 @@ class CommentController extends CoreController
      */
     public function userComment(string $slug): void
     {
-        $comments = Comment::findByUser($slug);
+        $comments = $this->commentRepository->findByUser($slug);
         if (!$this->userIsConnected()) {
             $error403 = new ErrorController;
             $error403->accessDenied();
@@ -102,10 +102,10 @@ class CommentController extends CoreController
             } else {
                 $posts = [];
                 foreach ($comments as $comment) {
-                    $posts[] = Post::findBySlug($this->slugify($comment->post));
+                    $posts[] = $this->postRepository->findBySlug($this->slugify($comment->post));
                     
                     foreach ($posts as $post) {
-                        $author = User::findByPseudo($post->user);
+                        $author = $this->userRepository->findByPseudo($post->user);
                     }
                 }
             }
@@ -157,7 +157,7 @@ class CommentController extends CoreController
                     $comment->setContent($content)
                         ->setStatus(2);
 
-                    if ($comment->update()) {
+                    if ($this->commentRepository->update($comment)) {
                         header('Location: /comment/userComment/'. $userCurrent->getSlug());
                         $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Par contre il est de nouveau en cours de validation.");
                         return;
@@ -181,7 +181,7 @@ class CommentController extends CoreController
      */
     public function delete(int $commentId)
     {
-        $comment = Comment::findById($commentId);
+        $comment = $this->commentRepository->findById($commentId);
         $idAuthorComment = $comment->getUserId();
 
         if (!$this->userIsConnected()) {
@@ -193,7 +193,7 @@ class CommentController extends CoreController
              $error403->accessDenied();
         } else {
             if ($comment) {
-                $comment->delete();
+                $this->commentRepository->delete($commentId);
                 $this->flashes('success', "Le commentaire a bien été supprimé.");
                 header('Location: /comment/userComment/'. $this->userIsConnected()->getSlug());
                 return;

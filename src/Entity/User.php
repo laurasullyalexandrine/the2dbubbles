@@ -1,39 +1,73 @@
-<?php 
+<?php
+
+declare(strict_types=1);
 
 namespace App\Entity;
+
+use DateTime;
+use DateTimeInterface;
 use App\Repository\UserRepository;
 
-class User 
+class User
 {
+    const HASH_COST = 12;
+
+    /**
+     * @var int
+     */
     private $id;
 
-    private $pseudo;
+    /**
+     * @var string
+     */
+    private ?string $pseudo = null;
 
-    private $slug;
+    /**
+     * @var string
+     */
+    private ?string $slug = null;
 
-    private $email;
+    /**
+     * @var string
+     */
+    private ?string $email = null;
 
-    private $password;
+    /**
+     * @var string
+     */
+    private string $password;
 
-    private $token;
+    /**
+     * @var string
+     */
+    private ?string $token;
 
-    private $roleId;
-    
-    private $created_at;
+    /**
+     * @var string|null
+     */
+    private ?string $created_at = null;
 
-    private $updated_at;
+    /**
+     * @var string|null
+     */
+    private ?string $updated_at = null;
+
+    /**
+     * @var int
+     */
+    private ?int $roleId = null;
 
 
     public function __toString(): string
     {
         return $this->pseudo;
     }
-    
+
     /**
      * Get the id of the entity
      *
      * @return  int
-     */ 
+     */
     public function getId(): int
     {
         return $this->id;
@@ -43,8 +77,8 @@ class User
      * Set the value of id
      *
      * @return  self
-     */ 
-    public function setId($id)
+     */
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -55,7 +89,7 @@ class User
      * Get the value of pseudo
      *
      * @return  string
-     */ 
+     */
     public function getPseudo(): ?string
     {
         return $this->pseudo;
@@ -65,8 +99,8 @@ class User
      * Set the value of pseudo
      *
      * @return  self
-     */ 
-    public function setPseudo($pseudo)
+     */
+    public function setPseudo($pseudo): self
     {
         $this->pseudo = $pseudo;
 
@@ -75,8 +109,10 @@ class User
 
     /**
      * Get the value of slug
-     */ 
-    public function getSlug()
+     * 
+     * @return  string
+     */
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -85,8 +121,8 @@ class User
      * Set the value of slug
      *
      * @return  self
-     */ 
-    public function setSlug($slug)
+     */
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 
@@ -95,8 +131,10 @@ class User
 
     /**
      * Get the value of email
-     */ 
-    public function getEmail()
+     * 
+     * @return  string
+     */
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -105,8 +143,8 @@ class User
      * Set the value of email
      *
      * @return  self
-     */ 
-    public function setEmail($email)
+     */
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -115,8 +153,10 @@ class User
 
     /**
      * Get the value of password
-     */ 
-    public function getPassword()
+     * 
+     * @return  string
+     */
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -125,8 +165,8 @@ class User
      * Set the value of password
      *
      * @return  self
-     */ 
-    public function setPassword($password)
+     */
+    public function setPassword($password): self
     {
         $this->password = $password;
 
@@ -135,8 +175,10 @@ class User
 
     /**
      * Get the value of token
-     */ 
-    public function getToken()
+     * 
+     * @return  string
+     */
+    public function getToken(): ?string
     {
         return $this->token;
     }
@@ -145,8 +187,8 @@ class User
      * Set the value of token
      *
      * @return  self
-     */ 
-    public function setToken($token)
+     */
+    public function setToken($token): self
     {
         $this->token = $token;
 
@@ -155,8 +197,10 @@ class User
 
     /**
      * Get the value of roleId
-     */ 
-    public function getRoleId()
+     * 
+     * @return  int
+     */
+    public function getRoleId(): int
     {
         return $this->roleId;
     }
@@ -165,8 +209,8 @@ class User
      * Set the value of roleId
      *
      * @return  self
-     */ 
-    public function setRoleId($roleId)
+     */
+    public function setRoleId($roleId): self
     {
         $this->roleId = $roleId;
 
@@ -175,18 +219,19 @@ class User
 
     /**
      * Get the value of created_at
+     * Permet d'indiquer à twig que la valeur retourner doit être un objet de type DateTime()
      */ 
-    public function getCreated_at()
+    public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
     }
 
     /**
      * Set the value of created_at
      *
      * @return  self
-     */ 
-    public function setCreated_at($created_at)
+     */
+    public function setCreatedAt(DateTime $created_at): self
     {
         $this->created_at = $created_at;
 
@@ -194,11 +239,11 @@ class User
     }
 
     /**
-     * Get the value of updated_at
-     */ 
-    public function getUpdated_at()
+     * Get the value of updated_at and creating a date format from the DateTime class
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
-        return $this->updated_at;
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
     }
 
     /**
@@ -206,7 +251,7 @@ class User
      *
      * @return  self
      */ 
-    public function setUpdated_at($updated_at)
+    public function setUpdatedAt(DateTime $updated_at): self
     {
         $this->updated_at = $updated_at;
 

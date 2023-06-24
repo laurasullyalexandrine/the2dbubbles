@@ -1,9 +1,17 @@
 <?php 
 
+declare(strict_types=1);
+
 namespace App\Entity;
+
+use DateTime;
+use DateTimeInterface;
 
 class Comment 
 {
+    /**
+     * @var int
+     */
     private $id;
 
     /**
@@ -17,6 +25,21 @@ class Comment
     private int $status;
 
     /**
+     * @var string|null
+     */
+    private ?string $created_at = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $updated_at = null;
+    
+    /**
+     * @var string
+     */
+    private ?string $roleString = null;
+
+    /**
      * @var int
      */
     private ?int $userId = null;
@@ -26,10 +49,13 @@ class Comment
      */
     private ?int $postId = null;
 
+
     /**
      * Get the value of id
+     *
+     * @return  int
      */ 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -37,9 +63,11 @@ class Comment
     /**
      * Set the value of id
      *
+     * @param  int  $id
+     *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId(int $id): self
     {
         $this->id = $id;
 
@@ -47,35 +75,35 @@ class Comment
     }
 
     /**
-     * Get the value of content
+     * Get the content of the entities Post and Comment
      *
      * @return  string
      */ 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
     /**
-     * Set the value of content
+     * Set the content of the entities Post and Comment
      *
-     * @param  string  $content
+     * @param  string  $content  The content of the entities Post and Comment
      *
      * @return  self
      */ 
-    public function setContent(string $content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
-
+    
     /**
      * Get the value of status
      *
      * @return  int
      */ 
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -87,9 +115,50 @@ class Comment
      *
      * @return  self
      */ 
-    public function setStatus(int $status)
+    public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of created_at
+     * Permet d'indiquer à twig que la valeur retourner doit être un objet de type DateTime()
+     */ 
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
+    }
+
+    /**
+     * Set the value of created_at
+     *
+     * @return  self
+     */
+    public function setCreatedAt(DateTime $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of updated_at and creating a date format from the DateTime class
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
+    {
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
+    }
+
+    /**
+     * Set the value of updated_at
+     *
+     * @return  self
+     */ 
+    public function setUpdatedAt(DateTime $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }
@@ -99,7 +168,7 @@ class Comment
      *
      * @return  int
      */ 
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->userId;
     }
@@ -111,7 +180,7 @@ class Comment
      *
      * @return  self
      */ 
-    public function setUserId(int $userId)
+    public function setUserId(int $userId): self
     {
         $this->userId = $userId;
 
@@ -119,11 +188,11 @@ class Comment
     }
 
     /**
-     * Get the value of postId
+     * Get the value of posts
      *
      * @return  int
      */ 
-    public function getPostId()
+    public function getPostId(): int
     {
         return $this->postId;
     }
@@ -135,7 +204,7 @@ class Comment
      *
      * @return  self
      */ 
-    public function setPostId(int $postId)
+    public function setPostId(int $postId): self
     {
         $this->postId = $postId;
 

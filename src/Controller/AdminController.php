@@ -18,6 +18,7 @@ class AdminController extends CoreController
     public function __construct()
     {
         $this->commentRepository = new CommentRepository();
+        $this->roleRepository = new RoleRepository();
     }
     /**
      * Afficher la page admin réservé au rôle super_admin et l'admin
@@ -50,18 +51,14 @@ class AdminController extends CoreController
             // Stocker le user en session
             $userCurrent = $this->userIsConnected();
             foreach ($comments as $comment) {
-                dd($comment);
                 $commentId = $comment->getId();
             }
     
             // Récupérer le role du user en session
             $roleId = $userCurrent->getRoleId();
             $role = $this->roleRepository->findById($roleId);
-    
-            if (!$userCurrent) {
-                $this->flashes('warning', 'Une petite connexion avant ?!');
-                header('Location: /security/login');
-            } elseif ($role->getName() == "utilisateur") {
+
+            if ($role->getName() == "utilisateur") {
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {
