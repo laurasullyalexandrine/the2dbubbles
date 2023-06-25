@@ -58,7 +58,7 @@ class CommentController extends CoreController
                     if (empty($_SESSION["flashes"])) {
                         $comment->setContent($content)
                             ->setPostId($postId)
-                            ->setStatus(2);
+                            ->setStatus(Comment::STATUS_WAITING);
                         $userId = $userCurrent->getId();
                         $comment->setUserId($userId);
 
@@ -158,7 +158,7 @@ class CommentController extends CoreController
 
                     if (empty($_SESSION["flashes"])) {
                         $comment->setContent($content)
-                            ->setStatus(2);
+                            ->setStatus(Comment::STATUS_WAITING);
 
                         if ($this->commentRepository->update($comment)) {
                             header('Location: /comment/userComment/' . $userCurrent->getSlug());

@@ -9,6 +9,10 @@ use DateTimeInterface;
 
 class Comment 
 {
+    const STATUS_ACCEPTED = 1;
+    const STATUS_WAITING = 2;
+    const STATUS_REFUSED = 0;
+    
     /**
      * @var int
      */

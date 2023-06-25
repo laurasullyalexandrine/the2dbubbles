@@ -200,7 +200,11 @@ class Post
      */
     public function getUpdatedAt(): ?DateTimeInterface
     {
-        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
+        if ($this->created_at === null) {
+            return null;
+        } else {
+            return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
+        }
     }
 
     /**
