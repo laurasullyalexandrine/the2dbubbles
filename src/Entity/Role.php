@@ -35,8 +35,6 @@ class Role
     private ?string $updated_at = null;
     
 
-
-
     public function __toString(): string
     {
         return $this->name;
@@ -147,11 +145,7 @@ class Role
      */
     public function getUpdatedAt(): ?DateTimeInterface
     {
-        if ($this->created_at === null) {
-            return null;
-        } else {
-            return \DateTime::createFromFormat('Y-m-d H:i:s', $this->created_at);
-        }
+        return \DateTime::createFromFormat('Y-m-d H:i:s', $this->updated_at);
     }
 
     /**

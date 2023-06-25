@@ -53,11 +53,7 @@ class PostRepository extends Database
 
         $post = $pdoStatement->fetchObject(Post::class);
 
-        if (!$post) {
-            return null;
-        } else {
-            return $post;
-        }
+        return $post instanceof Post ? $post : null;
     }
 
     /**
@@ -81,11 +77,7 @@ class PostRepository extends Database
         $pdoStatement->execute();
         $post = $pdoStatement->fetchObject(Post::class);
 
-        if (!$post) {
-            return null;
-        } else {
-            return $post;
-        }
+        return $post instanceof Post ? $post : null;
     }
 
 

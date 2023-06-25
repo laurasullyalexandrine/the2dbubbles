@@ -35,9 +35,9 @@ class CommentRepository extends Database
      *  Méthode permettant de récupérer un enregistrement de la table Comment en fonction d'un id donné
      *
      * @param [type] $commentId
-     * @return Comment
+     * @return ?Comment
      */
-    public function findById(int $commentId): Comment
+    public function findById(int $commentId): ?Comment
     {
         $sql = "
             SELECT * 
@@ -51,7 +51,7 @@ class CommentRepository extends Database
 
         $comment = $pdoStatement->fetchObject(Comment::class);
 
-        return $comment;
+        return $comment instanceof Comment ? $comment : null;
     }
 
     /**

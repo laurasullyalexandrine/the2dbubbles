@@ -26,10 +26,16 @@ class RoleController extends CoreController
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
         } else {
-            $roles = $this->roleRepository->findAll();
-            $this->show('admin/role/read', [
-                'roles' => $roles
-            ]);
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
+            if ($currentUserRole->getName() === "utilisateur") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            } else {
+                $roles = $this->roleRepository->findAll();
+                $this->show('admin/role/read', [
+                    'roles' => $roles
+                ]);
+            }
         }
     }
 
@@ -94,55 +100,54 @@ class RoleController extends CoreController
      */
     public function update(int $roleId): void
     {
-        if (!$this->roleRepository->findById($roleId)) {
-            $error404 = new ErrorController();
-            $error404->pageNotFoundAction();
-        } else {
-        $role = $this->roleRepository->findById($roleId);
-
-        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
         } else {
-            // Récupérer le user connecté
-            $userCurrent = $this->userIsConnected();
+            $role = $this->roleRepository->findById($roleId);
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
-            if ($this->isPost()) {
-                $roleName = filter_input(INPUT_POST, 'role');
+            if (!$this->roleRepository->findById($roleId)) {
+                $error404 = new ErrorController();
+                $error404->pageNotFoundAction();
+            } elseif ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            } else {
+                // Récupérer le user connecté
+                $userCurrent = $this->userIsConnected();
 
-                if (empty($roleName)) {
-                    $this->flashes('warning', 'Le champ du rôle est vide.');
-                }
+                if ($this->isPost()) {
+                    $roleName = filter_input(INPUT_POST, 'role');
 
-                if (empty($_SESSION["flashes"])) {
-                    $role->setName($roleName)
-                        ->setRoleString('ROLE_' . mb_strtoupper($roleName));
-
-                    if ($this->roleRepository->update($role)) {
-                        header('Location: /role/read');
-                        $this->flashes('success', 'Le rôle ' . $role->getName() . ' a bien été modifié.');
-                        return;
-                    } else {
-                        $this->flashes('danger', 'Le rôle ' . $role->getName() . ' n\'a pas été modifié!');
+                    if (empty($roleName)) {
+                        $this->flashes('warning', 'Le champ du rôle est vide.');
                     }
-                } else {
-                    $role->setName($roleName);
 
-                    $this->show('admin/role/update', [
-                        'user' => $userCurrent
-                    ]);
+                    if (empty($_SESSION["flashes"])) {
+                        $role->setName($roleName)
+                            ->setRoleString('ROLE_' . mb_strtoupper($roleName));
+
+                        if ($this->roleRepository->update($role)) {
+                            header('Location: /role/read');
+                            $this->flashes('success', 'Le rôle ' . $role->getName() . ' a bien été modifié.');
+                            return;
+                        } else {
+                            $this->flashes('danger', 'Le rôle ' . $role->getName() . ' n\'a pas été modifié!');
+                        }
+                    } else {
+                        $role->setName($roleName);
+
+                        $this->show('admin/role/update', [
+                            'user' => $userCurrent
+                        ]);
+                    }
                 }
+                $this->show('/admin/role/update', [
+                    'role' => $role
+                ]);
             }
-            $this->show('/admin/role/update', [
-                'role' => $role
-            ]);
         }
-    }
     }
     /**
      * Suppression d'un rôle au role super_admin
@@ -152,29 +157,27 @@ class RoleController extends CoreController
      */
     public function delete(int $roleId)
     {
-        $role = $this->roleRepository->findById($roleId);
-
-        $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
-        } elseif ($currentUserRole->getName() !== "super_admin") {
-            $error403 = new ErrorController;
-            $error403->accessDenied();
         } else {
-            if ($role) {
-                $this->roleRepository->delete($roleId);
-                $this->flashes('success', 'Le Bubbles Role' . ' ' . $role->getName() . ' ' . 'a bien été supprimé.');
-                header('Location: /role/read');
-                return;
-            } else {
-                $this->flashes('danger', "Ce Bubbles Role n'existe pas!");
-            }
+            $role = $this->roleRepository->findById($roleId);
+            $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
 
-            $this->show('admin/role/read', [
-                'role' => $role,
-            ]);
+            if ($currentUserRole->getName() !== "super_admin") {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
+            } else {
+                if ($role) {
+                    $this->roleRepository->delete($roleId);
+                    $this->flashes('success', 'Le Bubbles Role' . ' ' . $role->getName() . ' ' . 'a bien été supprimé.');
+                    header('Location: /role/read');
+                    return;
+                } else {
+                    $error404 = new ErrorController;
+                    $error404->pageNotFoundAction();
+                }
+            }
         }
     }
 }

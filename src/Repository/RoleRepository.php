@@ -68,21 +68,16 @@ class RoleRepository extends Database
 
         $role = $pdoStatement->fetchObject(Role::class);
 
-        if (!$role) {
-            // dd($role);
-            return null;
-        } else {
-            return $role;
-        }
+        return $role instanceof Role ? $role : null;
     }
 
     /**
      *  Méthode permettant de récupérer un enregistrement de la table Role en fonction d'un id donné
      *
      * @param [type] $roleId
-     * @return Role
+     * @return ?Role
      */
-    public function findByName(string $roleName): Role
+    public function findByName(string $roleName): ?Role
     {
         $sql = "
             SELECT * 
@@ -96,7 +91,7 @@ class RoleRepository extends Database
         ]);
         $role = $pdoStatement->fetchObject(Role::class);
 
-        return $role;
+        return $role instanceof Role ? $role : null;
     }
 
     /**

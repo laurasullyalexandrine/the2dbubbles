@@ -35,11 +35,6 @@ class Comment
     private ?string $updated_at = null;
     
     /**
-     * @var string
-     */
-    private ?string $roleString = null;
-
-    /**
      * @var int
      */
     private ?int $userId = null;

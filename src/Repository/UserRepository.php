@@ -38,9 +38,9 @@ class UserRepository extends Database
      * Méthode permettant de récupérer un enregistrement de la table User en fonction d'un id donné
      *
      * @param integer $userId
-     * @return User
+     * @return ?User
      */
-    public function findById(int $userId): User
+    public function findById(int $userId): ?User
     {
         $sql = "
             SELECT * 
@@ -53,7 +53,7 @@ class UserRepository extends Database
 
         $user = $pdoStatement->fetchObject(User::class);
 
-        return $user;
+        return $user instanceof User ? $user : null;
     }
 
     /**

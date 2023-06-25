@@ -157,15 +157,16 @@ class PostController extends CoreController
      */
     public function update(string $slug): void
     {
-        if (!$this->postRepository->findBySlug($slug)) {
-            $error404 = new ErrorController();
-            $error404->pageNotFoundAction();
+        if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
             $post = $this->postRepository->findBySlug($slug);
             $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-            if (!$this->userIsConnected()) {
-                $this->flashes('warning', 'Merci de te connecter!');
-                header('Location: /security/login');
+            
+            if (!$this->postRepository->findBySlug($slug)) {
+                $error404 = new ErrorController();
+                $error404->pageNotFoundAction();
             } elseif ($currentUserRole->getName() !== "super_admin") {
                 $error403 = new ErrorController;
                 $error403->accessDenied();
@@ -251,11 +252,9 @@ class PostController extends CoreController
                         header('Location: /post/list');
                         return;
                     } else {
-                        $this->flashes('danger', "Cet article n'existe pas!");
+                        $error404 = new ErrorController();
+                        $error404->pageNotFoundAction();
                     }
-                    $this->show('/admin/post/read', [
-                        'post' => $post
-                    ]);
                 }
             }
         }
