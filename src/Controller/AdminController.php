@@ -20,7 +20,7 @@ class AdminController extends CoreController
         $this->roleRepository = new RoleRepository();
     }
     /**
-     * Afficher la page admin réservé au rôle super_admin et l'admin
+     * Display the admin page reserved for the super_admin role and the admin
      *
      * @return void
      */
@@ -41,7 +41,7 @@ class AdminController extends CoreController
     }
 
     /**
-     * Édition des commentaires
+     * Editing comments
      *
      * @param [type] $commentId
      * @return Comment
@@ -53,13 +53,13 @@ class AdminController extends CoreController
             header('Location: /security/login');
         } else {
             $comments = $this->commentRepository->findAll();
-            // Stocker le user en session
+            // Store user in session
             $userCurrent = $this->userIsConnected();
             foreach ($comments as $comment) {
                 $commentId = $comment->getId();
             }
 
-            // Récupérer le role du user en session
+            // Retrieve the role of the user in session
             $roleId = $userCurrent->getRoleId();
             $role = $this->roleRepository->findById($roleId);
 
@@ -72,14 +72,14 @@ class AdminController extends CoreController
                 }
             }
 
-            // On affiche notre vue en transmettant les infos du Comment et des messages d'alerte
+            // We display our view by transmitting the Comment information and alert messages
             $this->show('/admin/comment/read', [
                 'comments' => $comments
             ]);
         }
     }
     /**
-     * Méthode permettant de récupérer un commentaire
+     * Method to retrieve a comment
      *
      * @param integer $commentId
      * @return void
@@ -93,7 +93,7 @@ class AdminController extends CoreController
             header('Location: /security/login');
         } else {
             $userCurrent = $this->userIsConnected();
-            // Récupérer le role du user en session
+            // Retrieve the role of the user in session
             $roleId = $userCurrent->getRoleId();
             $role = $this->roleRepository->findById($roleId);
             if ($role->getName() === "utilisateur") {
@@ -117,7 +117,7 @@ class AdminController extends CoreController
     }
 
     /**
-     * Suppression d'un commentaire seulement par les rôles super_admin et l'admin
+     * Deleting a comment only by super_admin and admin roles
      * 
      * @param [type] $commentId
      * @return void

@@ -8,7 +8,7 @@ class MainController extends CoreController
 {
 
     /**
-     * Afficher la page d'accueil
+     * Show homepage
      *
      * @return void
      */

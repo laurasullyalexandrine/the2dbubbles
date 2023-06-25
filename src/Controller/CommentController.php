@@ -35,18 +35,18 @@ class CommentController extends CoreController
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
         } else {
-            // Trouver le Post à l'aide slug qui sera transmis à la vue
+            // Find the Post using slug which will be passed to the view
             $post =  $this->postRepository->findBySlug($this->slugify($slug));
 
-            // Récupérer l'id du Post afin de le setter sur le Comment en cours de création
+            // Retrieve the Post id in order to set it on the Comment being created
             $postId = $post->getId();
 
-            // Si pas de user connecté
+            // If no user connected
             if (!$this->userIsConnected()) {
-                // le rediriger vers la page de login
+                // redirect him to the login page
                 header('Location: /security/login');
             } else {
-                // Si oui Récupérer le user connecté
+                // If yes Retrieve the connected user
                 $userCurrent = $this->userIsConnected();
 
                 if ($this->isPost()) {
@@ -83,14 +83,14 @@ class CommentController extends CoreController
     }
 
     /**
-     * Voir un Post et ses commentaires
+     * See a Post and its comments
      * 
      * @param int $commentId
      * @return void
      */
     public function userComment(string $slug): void
     {
-        // Récupérer l'auteur des commentaires ou des futures commentaires
+        // Retrieve author of comments or future comments
         $uri= $this->uri();
         $uri = trim($uri, '/');
         $params = explode('/', $uri);
@@ -123,7 +123,7 @@ class CommentController extends CoreController
     }
 
     /**
-     * Édition d'un commentaire
+     * Editing a comment
      *
      * @param [type] $commentId
      * @return void
@@ -136,22 +136,22 @@ class CommentController extends CoreController
         } else {
             $comment = $this->commentRepository->findById($commentId);
 
-            // Stocker le user en session
+            // Store user in session
             $userCurrent = $this->userIsConnected();
 
-            // Vérifier qu'il y a bien un user connecté
+            // Check that there is indeed a connected user
             if (!$userCurrent) {
                 $this->flashes('warning', 'Merci de te connecter!');
                 header('Location: /security/login');
             } else {
-                // Récupérer le role du user en session
+                // Retrieve the role of the user in session
                 $roleId = $userCurrent->getRoleId();
                 $this->roleRepository->findById($roleId);
 
-                // Récupérer l'id de lauteur du commentaire
+                // Get comment author id
                 $idAuthorComment = $comment->getUserId();
                 if ($userCurrent->getId() !== $idAuthorComment) {
-                    // Si le user connecté n'est pas l'auteur du commentaire
+                    // If the connected user is not the author of the comment
                     $error403 = new ErrorController;
                     $error403->accessDenied();
                 }
@@ -176,7 +176,7 @@ class CommentController extends CoreController
                         }
                     }
                 }
-                // Afficher la vue en transmettant les infos du Comment et des messages d'alerte.
+                // Show view by passing Comment info and alert messages
                 $this->show('front/comment/update', [
                     'comment' => $comment
                 ]);
@@ -185,7 +185,7 @@ class CommentController extends CoreController
     }
 
     /**
-     * Suppression d'un commentaire
+     * Deleting a comment
      * 
      * @param [type] $commentId
      * @return void
@@ -203,7 +203,7 @@ class CommentController extends CoreController
                 $this->flashes('warning', 'Merci de te connecter!');
                 header('Location: /security/login');
             } elseif ($this->userIsConnected()->getId() !== $idAuthorComment) {
-                // Si le user connecté n'est pas l'auteur du commentaire
+                // If the connected user is not the author of the comment
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {

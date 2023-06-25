@@ -11,7 +11,7 @@ use App\Utils\Database;
 class PostRepository extends Database
 {
     /**
-     * Méthode permettant de récupérer tous les enregistrements de la table post
+     * Method to retrieve all records from table post
      *
      * @return array
      */
@@ -34,7 +34,7 @@ class PostRepository extends Database
     }
 
     /**
-     *  Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un id donné
+     *  Method to retrieve a record from the Post table based on a given id
      *
      * @param [type] $postId
      * @return ?Post
@@ -57,7 +57,7 @@ class PostRepository extends Database
     }
 
     /**
-     * Méthode permettant de récupérer un enregistrement de la table Post en fonction d'un slug donné
+     * Method to retrieve a record from the Post table given a given slug
      *
      * @param string $slug
      * @return ?Post
@@ -82,8 +82,7 @@ class PostRepository extends Database
 
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table Post.
-     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     * Method to add a record in the Post table
      *
      * @return bool
      */
@@ -115,8 +114,8 @@ class PostRepository extends Database
             'slug' => $post->getSlug()
         ]);
 
-        // Retourne le nombre de lignes affectées par le dernier appel à la fonction PDOStatement::execute()
-        // Si il y a au moins une ligne ajoutée alors...
+        // Returns the number of rows affected by the last call to PDOStatement::execute()
+        // If there is at least one line added then...
         if ($pdoStatement->rowCount() > 0) {
             return true;
         }
@@ -124,7 +123,7 @@ class PostRepository extends Database
     }
 
     /**
-     * Méthode permettant l'édition d'un article
+     * Method for editing an article
      *
      * @return bool
      */
@@ -154,7 +153,7 @@ class PostRepository extends Database
     }
 
     /**
-     * Méthode permettant la supression d'un commentaire
+     * Method for deleting a comment
      *
      * @return bool
      */

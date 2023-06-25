@@ -6,12 +6,12 @@
 {% block body %}
 	<article class="row d-flex flex-wrap justify-content-between">
 		<p class="align-self-end"><a class="card-link" href="/post/list">Retour</a></p>
-		{# Formulaire d'ajout de commentaire #}
+		{# Add comment form #}
 			<section class="col">
 				{{ include('front/comment/create.html.twig') }}
 			</section>
 			
-		{# Article #}
+		{# Post #}
 		<section class="col-lg-5 col-sm-6 mt-lg-4 p-4 d-flex flex-column">
 			<div>
 				<h1 class="p-2 rounded" style="background-color:pink;">{{ post.title }}</h1>

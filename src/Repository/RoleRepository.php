@@ -11,7 +11,7 @@ use App\Entity\Role;
 class RoleRepository extends Database
 {
     /**
-     * Méthode permettant de récupérer tous les enregistrements de la table role
+     * Method to retrieve all records from role table
      *
      * @return array
      */
@@ -27,7 +27,7 @@ class RoleRepository extends Database
     }
 
     /**
-     * Méthode permettant de récupérer tous les enregistrements de la table role
+     * Method to retrieve all records from role table
      *
      * @return array
      */
@@ -48,7 +48,7 @@ class RoleRepository extends Database
     }
 
     /**
-     *  Méthode permettant de récupérer un enregistrement de la table Role en fonction d'un id donné
+     *  Method to retrieve a record from the Role table based on a given id
      *
      * @param [type] $roleId
      * @return ?Role
@@ -72,7 +72,7 @@ class RoleRepository extends Database
     }
 
     /**
-     *  Méthode permettant de récupérer un enregistrement de la table Role en fonction d'un id donné
+     *  Method to retrieve a record from the Role table based on a given id
      *
      * @param [type] $roleId
      * @return ?Role
@@ -95,8 +95,7 @@ class RoleRepository extends Database
     }
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table role.
-     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     * Method to add a record in the role table
      *
      * @return bool
      */
@@ -121,7 +120,7 @@ class RoleRepository extends Database
     }
 
     /**
-     * Méthode permetttant l'édition d'un rôle
+     * Method for editing a role
      *
      */
     public function update(Role $role): bool
@@ -144,7 +143,7 @@ class RoleRepository extends Database
     }
 
     /**
-     * Méthode permettant la supression d'un rôle
+     * Method for deleting a role
      *
      * @return bool
      */

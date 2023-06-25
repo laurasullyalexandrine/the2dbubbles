@@ -9,9 +9,6 @@ use App\Repository\UserRepository;
 use App\Controller\ErrorController;
 use App\Repository\RoleRepository;
 
-/**
- * Controller dédié à la gestion des utilisateurs
- */
 class UserController extends CoreController
 {
     protected UserRepository $userRepository;
@@ -22,7 +19,7 @@ class UserController extends CoreController
         $this->roleRepository = new RoleRepository();
     }
     /**
-     * Afficher tous les utilisateurs de la base de données
+     * Show all database users
      * 
      * @return void
      */
@@ -46,7 +43,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Ajout d'un nouvel utilisateur
+     * Adding a new user
      * 
      * @return void
      */
@@ -65,21 +62,21 @@ class UserController extends CoreController
                 $error403->accessDenied();
             } else {
                 if ($this->isPost()) {
-                    // Récupérer les données recues du formalaire d'inscription
+                    // Retrieve the data received from the registration form
                     $pseudo = filter_input(INPUT_POST, 'pseudo');
                     $slug = $this->slugify($pseudo);
                     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
                     $password = filter_input(INPUT_POST, 'password');
                     $password_2 = filter_input(INPUT_POST, 'password_2');
-                    // Contraindre le type de la valeur soumis 
+                    // Constrain the type of the submitted value
                     $role = (int)filter_input(INPUT_POST, 'role');
 
-                    // Mettre à jour les propriétés de l'instance
+                    // Update instance properties
                     $user->setPseudo($pseudo);
                     $user->setEmail($email);
                     $user->setRoleId($role);
 
-                    // Vérifier que tous les champs ne sont pas vide 
+                    // Check that all fields are not empty
                     if (empty($pseudo)) {
                         $this->flashes('warning', 'Le champ prénom/pseudo est vide.');
                     }
@@ -99,22 +96,22 @@ class UserController extends CoreController
                         $this->flashes('danger', 'Les mots de passe ne corresponde pas!');
                     }
 
-                    // Contrôler si le rôle soumis est un rôle existant en BDD 
+                    // Check if the submitted role is an existing role in BDD
                     $roleExist = false;
                     foreach ($roles as $existingRole) {
-                        // Si l'id du rôle soumis existe en base de données
+                        // If the submitted role id exists in the database
                         if ($existingRole->getId() === $role) {
                             $roleExist = true;
                             break;
                         }
                     }
 
-                    // Si il n'existe pas on affiche le message d'alerte
+                    // If it does not exist, the alert message is displayed.
                     if (!$roleExist) {
                         $this->flashes('warning', 'Le rôle choisi est invalide');
                     }
 
-                    // Si le formulaire est valide alors ...
+                    // If the form is valid then ...
                     if (empty($_SESSION["flashes"])) {
                         // Hasher le mot de passe 
                         $option = ['cost' => UserRepository::HASH_COST];
@@ -123,21 +120,21 @@ class UserController extends CoreController
                             PASSWORD_BCRYPT,
                             $option
                         );
-                        // Mettre à jour le reste des propriétés de l'instance
+                        // Update the rest of the instance properties
                         $user->setSlug($slug)
                             ->setPassword($password);
 
-                        // Essayer de faire l'insertion du nouvel utilisateur 
+                        // Try to insert the new user 
                         try {
                             if ($this->userRepository->insert($user)) {
                                 $this->flashes('success', "Ton compte a bien été créé.");
                                 header('Location: /user/read');
                                 return;
-                            } // Sinon erreur lors de l'enregistrement
+                            } // Otherwise error while saving
                             else {
                                 $this->flashes('danger', "Ton compte n'a pas été créé!");
                             }
-                        } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd que le champ est 'unique')
+                        } catch (\Exception $e) { // Catch exception 23000 which corresponds to MySQL Unique code (before that it indicates in the database that the field is 'unique')
                             if ($e->getCode() === '23000') {
                                 $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
                             } else {
@@ -155,7 +152,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Édition d'un utilisateur seulement par le rôle super_admin
+     * Editing a user only by super_admin role
      *
      * @param [type] $userId
      * @return void
@@ -179,7 +176,7 @@ class UserController extends CoreController
                     $error403 = new ErrorController;
                     $error403->accessDenied();
                 } else {
-                    // Vérifier si le rôle soumis existe en base
+                    // Check if the submitted role exists in the database
                     foreach ($roles as $existingRole) {
                         if ($existingRole->getId() === $updatedRole) {
                             $updatedRoleName = $existingRole->getName();
@@ -193,7 +190,7 @@ class UserController extends CoreController
                         $password = filter_input(INPUT_POST, 'password');
                         $role = (int)filter_input(INPUT_POST, 'role');
 
-                        // Vérifier que tous les champs ne sont pas vide 
+                        // Check that all fields are not empty
                         if (empty($pseudo)) {
                             $this->flashes('warning', 'Le champ Prénom/Pseudo est vide');
                         }
@@ -245,7 +242,7 @@ class UserController extends CoreController
     }
 
     /**
-     * Suppression d'un utilisateur par une rôle super_admin
+     * Deleting a user by a super_admin role
      *
      * @param [type] $userId
      * @return void

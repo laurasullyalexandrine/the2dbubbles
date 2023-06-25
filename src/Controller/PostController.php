@@ -9,9 +9,6 @@ use App\Repository\CommentRepository;
 use App\Repository\PostRepository;
 use App\Repository\RoleRepository;
 
-/**
- * Controller dédié à la gestion des posts
- */
 class PostController extends CoreController
 {
     protected PostRepository $postRepository;
@@ -24,7 +21,7 @@ class PostController extends CoreController
         $this->commentRepository = new CommentRepository();
     }
     /**
-     * Afficher tous les artilces de la base de données
+     * Show all items in the database
      * 
      * @return void
      */
@@ -43,7 +40,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Ajout d'un nouveau post
+     * Added a new post
      * 
      * @return void
      */
@@ -60,7 +57,7 @@ class PostController extends CoreController
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {
-                // Récupérer le user connecté
+                // Get logged in user
                 $userCurrent = $this->userIsConnected();
 
                 if ($this->isPost()) {
@@ -114,7 +111,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Voir un Post et ses commentaires
+     * See a Post and its comments
      *
      * @param string $title
      * @return Post
@@ -130,7 +127,7 @@ class PostController extends CoreController
                 $error404->pageNotFoundAction();
             } else {
                 $post =  $this->postRepository->findBySlug($slug);
-                // Récupérer les tableaux des commentaires
+                // Retrieve comment tables
                 $comments = $this->commentRepository->findBySlugPost($slug);
                 $commentsCheck = [];
 
@@ -139,7 +136,7 @@ class PostController extends CoreController
                         $commentsCheck[] = $comment;
                     }
                 }
-                // On les envoie à la vue
+                // Pass data to view
                 $this->show('/front/post/read', [
                     'post' => $post,
                     'comments' => $comments,
@@ -150,7 +147,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Édition d'un Post (article)
+     * Editing a Post
      *
      * @param string $slug
      * @return void
@@ -171,7 +168,7 @@ class PostController extends CoreController
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {
-                // Récupérer le user connecté
+                // Get logged in user
                 $userCurrent = $this->userIsConnected();
 
                 if ($this->isPost()) {
@@ -215,7 +212,7 @@ class PostController extends CoreController
                         ]);
                     }
                 }
-                // On affiche notre vue en transmettant les infos du post et des messages d'alerte
+                // Display the view with the data retrieved from the db
                 $this->show('admin/post/update', [
                     'post' => $post,
                 ]);
@@ -224,7 +221,7 @@ class PostController extends CoreController
     }
 
     /**
-     * Suppression d'un post uniquement avec le rôle super_admin
+     * Deleting a post only with super_admin role
      *
      * @param string $slug
      * @return void

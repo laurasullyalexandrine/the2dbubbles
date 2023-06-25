@@ -11,17 +11,17 @@ class Database {
 
 
     /**
-     * Constructeur
-     * en visibilité private
-     * => seule le code de la classe a le droit de créer une instance de cette classe
+     * Builder
+     * n private visibility
+     * => only the code of the class has the right to create an instance of this class
      */
     public function __construct() {
         
-        // Récupération des données du fichier de config
-        // la fonction parse_ini_file parse le fichier et retourne un array associatif
+        // Retrieving data from config file
+        // the parse_ini_file function parses the file and returns an associative array
         $configData = parse_ini_file(__DIR__. '/../config.ini') ;
 
-        // PHP essaie d'exécuter tout le code à l'intérieur du bloc "try", mais...
+        // PHP tries to execute all the code inside the "try" block, but...
         try {
             $this->dbh = new PDO(
                 "mysql:host={$configData['DB_HOST']};dbname={$configData['DB_NAME']};charset=utf8",
@@ -30,7 +30,7 @@ class Database {
                 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION) // Affiche les erreurs SQL à l'écran
             );
         } 
-        // ... mais si une erreur (Exception) survient, alors on attrapte l'exception et on exécute le code que l'on souhaite (ici, on affiche un message d'erreur)
+        // ... but if an error (Exception) occurs, then we catch the exception and we execute the code we want (here, we display an error message)
         catch (\Exception $exception) {
             echo 'Erreur de connexion...<br>';
             echo $exception->getMessage() . '<br>';

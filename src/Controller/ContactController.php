@@ -7,7 +7,7 @@ namespace App\Controller;
 class ContactController extends CoreController
 {
     /**
-     * Méthode permettant de gérer le formulaire de contact
+     * Method to manage the contact form
      *
      * @return void
      */

@@ -16,7 +16,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Afficher tous les rôles de la base de données au role super_admin et l'admin
+     * Show all database roles to role super_admin and admin
      * 
      * @return void
      */
@@ -40,7 +40,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Ajout d'un nouveau rôle réservé au role super_admin
+     * Added a new role reserved for the super_admin role
      * 
      * @return void
      */
@@ -93,7 +93,7 @@ class RoleController extends CoreController
     }
 
     /**
-     * Édition d'un rôle réservé au role super_admin
+     * Editing a role reserved for the super_admin role
      * 
      * @param [type] $roleId
      * @return void
@@ -114,7 +114,6 @@ class RoleController extends CoreController
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {
-                // Récupérer le user connecté
                 $userCurrent = $this->userIsConnected();
 
                 if ($this->isPost()) {
@@ -150,7 +149,7 @@ class RoleController extends CoreController
         }
     }
     /**
-     * Suppression d'un rôle au role super_admin
+     * Removing a role from the super_admin role
      *
      * @param [type] $roleId
      * @return void

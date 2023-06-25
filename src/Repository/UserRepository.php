@@ -13,7 +13,7 @@ class UserRepository extends Database
     const HASH_COST = 12;
 
     /**
-     * Méthode permettant de récupérer tous les enregistrements de la table user
+     * Method to retrieve all records from user table
      *
      * @return array
      */
@@ -35,7 +35,7 @@ class UserRepository extends Database
     }
 
     /**
-     * Méthode permettant de récupérer un enregistrement de la table User en fonction d'un id donné
+     * Method to retrieve a record from the User table based on a given id
      *
      * @param integer $userId
      * @return ?User
@@ -57,7 +57,7 @@ class UserRepository extends Database
     }
 
     /**
-     * Méthode permettant de récupérer un user par son email
+     * Method to retrieve a user by his email
      *
      * @param string $email
      * @return ?User
@@ -70,7 +70,7 @@ class UserRepository extends Database
             WHERE email = :email
             ";
         $pdoStatement = $this->dbh->prepare($sql);
-        // Méthode bindValue() permet de contraintes les types de données saisies 
+        // bindValue() method allows constraints on input data types
         $pdoStatement->bindValue(':email', $email, PDO::PARAM_STR);
         $pdoStatement->execute();
 
@@ -88,7 +88,7 @@ class UserRepository extends Database
             WHERE slug = :slug
             ";
         $pdoStatement = $this->dbh->prepare($sql);
-        // Méthode bindValue() permet de contraintes les types de données saisies 
+        // bindValue() method allows constraints on input data types
         $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
         $pdoStatement->execute();
 
@@ -98,8 +98,8 @@ class UserRepository extends Database
     }
 
     /**
-     * Méthode permettant de trouver les posts et commentaire par son pseudo
-     *
+     * Method to find posts and comments by nickname
+     * 
      * @param string $pseudo
      * @return ?User
      */
@@ -121,7 +121,7 @@ class UserRepository extends Database
     }
 
     /**
-     * Trouver un user par son token
+     * Find a user by his token
      *
      * @param string $token
      * @return ?User
@@ -144,7 +144,7 @@ class UserRepository extends Database
     }
 
     /**
-     * Méthode permettant de modifier un user
+     * Method to modify a user
      *
      * @return bool
      */
@@ -167,7 +167,7 @@ class UserRepository extends Database
             )
         ";
 
-        // Préparer et sécuriser de la requête d'insertion qui retournera un objet PDOStatement
+        // Prepare and secure the insert query that will return a PDOStatement object
         $pdoStatement = $this->dbh->prepare($sql);
         $pdoStatement->execute([
             'pseudo' => $user->getPseudo(),
@@ -185,7 +185,7 @@ class UserRepository extends Database
     }
 
     /**
-     * Mettre à jour un utilisateur
+     * Update a user
      *
      * @return void
      */
@@ -216,7 +216,7 @@ class UserRepository extends Database
 
 
     /**
-     * Méthode permettant la supression d'un utilisateur
+     * Method for deleting a user
      *
      * @return bool
      */
@@ -229,11 +229,11 @@ class UserRepository extends Database
             ";
 
         $pdoStatement = $this->dbh->prepare($sql);
-        // Permet d'associer une valeur à un paramètre et de contraindre la donnée attendue
+        // Used to associate a value with a parameter and to constrain the expected data
         $pdoStatement->bindValue(':id', $id, PDO::PARAM_INT);
         $pdoStatement->execute();
 
-        // Retourne vrai si au moins une ligne a été supprimée
+        // Returns true if at least one row has been deleted
         return ($pdoStatement->rowCount() > 0);
     }
 }

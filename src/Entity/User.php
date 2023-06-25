@@ -218,7 +218,7 @@ class User
 
     /**
      * Get the value of created_at
-     * Permet d'indiquer à twig que la valeur retourner doit être un objet de type DateTime()
+     * Allows you to tell twig that the return value must be a DateTime() type object
      */ 
     public function getCreatedAt(): ?\DateTimeInterface
     {

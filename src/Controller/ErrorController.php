@@ -8,7 +8,7 @@ use App\Controller\CoreController;
 
 class ErrorController extends CoreController {
     /**
-     * Page non trouvée
+     * Page not found
      *
      * @return void
      */
@@ -21,7 +21,7 @@ class ErrorController extends CoreController {
     }
 
     /**
-     * Page non autorisée
+     * Unauthorized page
      *
      * @return void
      */
@@ -32,7 +32,7 @@ class ErrorController extends CoreController {
     }
     
     /**
-     * Page erreur serveur
+     * Server error page
      *
      * @return void
      */

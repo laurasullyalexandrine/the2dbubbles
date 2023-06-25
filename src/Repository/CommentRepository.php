@@ -11,7 +11,7 @@ use App\Utils\Database;
 class CommentRepository extends Database
 {
     /**
-     * Méthode permettant de récupérer tous les commentaires
+     * Method to retrieve all comments
      *
      * @return array
      */
@@ -32,7 +32,7 @@ class CommentRepository extends Database
     }
 
     /**
-     *  Méthode permettant de récupérer un enregistrement de la table Comment en fonction d'un id donné
+     *  Method to retrieve a record from the Comment table given a given id
      *
      * @param [type] $commentId
      * @return ?Comment
@@ -83,7 +83,7 @@ class CommentRepository extends Database
     }
 
     /**
-     * Permet de trouver tous les commentaires d'un Post
+     * Allows you to find all the comments of a Post
      *
      * @param [type] $slug
      * @return array
@@ -114,8 +114,8 @@ class CommentRepository extends Database
     }
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table comment.
-     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     * Method for adding a record to the comment table.
+     * The current object must contain all the data to add: 1 property => 1 column in the table
      *
      * @return bool
      */
@@ -153,7 +153,7 @@ class CommentRepository extends Database
     }
 
     /**
-     * Méthode permettant l'édition d'un commentaire
+     * Method for editing a comment
      *
      * @return bool
      */
@@ -178,7 +178,7 @@ class CommentRepository extends Database
 
 
     /**
-     * Méthode permettant la supression d'un commentaire
+     * Method for deleting a comment
      *
      * @return bool
      */
