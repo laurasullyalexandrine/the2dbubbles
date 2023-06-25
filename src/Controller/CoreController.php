@@ -94,7 +94,17 @@ class CoreController
      */
     protected function isPost(): bool
     {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
+        return $_SERVER["REQUEST_METHOD"] === 'POST';
+    }
+
+    /**
+     * Permet de donner à accès à la super global $_SERVER
+     *
+     * @return string
+     */
+    protected function uri(): string
+    {
+        return $_SERVER["REQUEST_URI"];
     }
 
     /**

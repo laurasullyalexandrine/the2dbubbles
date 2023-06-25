@@ -90,15 +90,19 @@ class CommentController extends CoreController
      */
     public function userComment(string $slug): void
     {
-        // TODO: trouver comment comparer le user author et le user connecté
+        // Récupérer l'auteur des commentaires ou des futures commentaires
+        $uri= $this->uri();
+        $uri = trim($uri, '/');
+        $params = explode('/', $uri);
+        $userCurrentslug = end($params);
+
         $comments = $this->commentRepository->findByUser($slug);
         if (!$this->userIsConnected()) {
             $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
         } else {
-            if (empty($comments)) {
-                $author = null;
-            } else {
+            $author = $this->userRepository->findBySlug($userCurrentslug);
+            if ($author == $this->userIsConnected()) {
                 $posts = [];
                 foreach ($comments as $comment) {
                     $posts[] = $this->postRepository->findBySlug($this->slugify($comment->post));
@@ -107,11 +111,14 @@ class CommentController extends CoreController
                         $author = $this->userRepository->findByPseudo($post->user);
                     }
                 }
+                $this->show('front/comment/read', [
+                    'comments' => $comments,
+                    'author' => $author
+                ]);
+            } else {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
             }
-            $this->show('front/comment/read', [
-                'comments' => $comments,
-                'author' => $author
-            ]);
         }
     }
 

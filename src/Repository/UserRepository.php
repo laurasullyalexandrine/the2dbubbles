@@ -79,6 +79,24 @@ class UserRepository extends Database
         return $user instanceof User ? $user : null;
     }
 
+
+    public function findBySlug(string $slug): ?User
+    {
+        $sql = "
+            SELECT *
+            FROM user
+            WHERE slug = :slug
+            ";
+        $pdoStatement = $this->dbh->prepare($sql);
+        // Méthode bindValue() permet de contraintes les types de données saisies 
+        $pdoStatement->bindValue(':slug', $slug, PDO::PARAM_STR);
+        $pdoStatement->execute();
+
+        $user = $pdoStatement->fetchObject(User::class);
+
+        return $user instanceof User ? $user : null;
+    }
+
     /**
      * Méthode permettant de trouver les posts et commentaire par son pseudo
      *
