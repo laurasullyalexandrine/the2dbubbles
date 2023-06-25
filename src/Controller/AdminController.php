@@ -31,7 +31,7 @@ class AdminController extends CoreController
             header('Location: /security/login');
         } else {
             $currentUserRole = $this->roleRepository->findById($this->userIsConnected()->getRoleId());
-            if ($currentUserRole->getName() === "utilisateur")  {
+            if ($currentUserRole->getName() === "utilisateur") {
                 $error403 = new ErrorController;
                 $error403->accessDenied();
             } else {
@@ -70,12 +70,11 @@ class AdminController extends CoreController
                 if ($this->isPost()) {
                     $this->update($commentId);
                 }
+                // We display our view by transmitting the Comment information and alert messages
+                $this->show('/admin/comment/read', [
+                    'comments' => $comments
+                ]);
             }
-
-            // We display our view by transmitting the Comment information and alert messages
-            $this->show('/admin/comment/read', [
-                'comments' => $comments
-            ]);
         }
     }
     /**
@@ -138,7 +137,7 @@ class AdminController extends CoreController
                 if ($currentUserRole->getName() === "utilisateur") {
                     $error403 = new ErrorController;
                     $error403->accessDenied();
-            } else {
+                } else {
                     if ($comment) {
                         $this->commentRepository->delete($commentId);
                         $this->flashes('success', "Le Bubbles Comment $commentId a bien été supprimé.");
