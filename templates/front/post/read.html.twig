@@ -6,12 +6,12 @@
 {% block body %}
 	<article class="row d-flex flex-wrap justify-content-between">
 		<p class="align-self-end"><a class="card-link" href="/post/list">Retour</a></p>
-		{# Formulaire d'ajout de commentaire #}
+		{# Add comment form #}
 			<section class="col">
 				{{ include('front/comment/create.html.twig') }}
 			</section>
 			
-		{# Article #}
+		{# Post #}
 		<section class="col-lg-5 col-sm-6 mt-lg-4 p-4 d-flex flex-column">
 			<div>
 				<h1 class="p-2 rounded" style="background-color:pink;">{{ post.title }}</h1>
@@ -25,16 +25,17 @@
 							<time datetime="{{ post.updatedAt|date('H:i:s') }}">{{ post.updatedAt|date('H:i:s') }}</time>
 						</li>
 					</ul>
+				{% else %}
+					<ul class="list-group mt-3">
+						<li class="fs-6 list-group-item">
+							Publié par
+							{{post.user}}
+							le 
+							<time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
+							<time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
+						</li>
+					</ul>
 				{% endif %}
-				<ul class="list-group mt-3">
-					<li class="fs-6 list-group-item">
-						Publié par
-						{{post.user}}
-						le 
-						<time datetime="{{ post.createdAt|date('d-m-Y')}}">{{ post.createdAt|date('d-m-Y') }}</time>
-						<time datetime="{{ post.createdAt|date('H:i:s')}}">{{post.createdAt|date('H:i:s')}}</time>
-					</li>
-				</ul>
 				<div class="d-flex">
 					{% if is_granted() == "super_admin" %}
 						<a class="card-link" href="/post/update/{{ post.slug }}">Modifier</a>

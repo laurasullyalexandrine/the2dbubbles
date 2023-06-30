@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Entity\User;
+use App\Repository\RoleRepository;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 use Twig\Extension\DebugExtension;
 
 class CoreController
 {
-
-
     /**
-     * Méthode permettant la gestion des fonctions et affichage dans les templates Twig
+     * Method for managing functions and display in Twig templates
      *
      * @param string $viewName
      * @param array $viewVars
@@ -23,23 +21,24 @@ class CoreController
      */
     protected function show(string $viewName, array $viewVars= []): void
     {
-        // Charge le chemin absolu vers le dossier front
+        // Load absolute path to front folder
         $loader = new \Twig\Loader\FilesystemLoader(dirname(__DIR__) . '/../templates/');
 
-        // Crée l'environement des modèles charger avec ceux dans le dossier front
+        // Create the environment of the models loaded with those in the front folder
         $twig = new \Twig\Environment($loader, [
             'debug' => true,
         ]);
         $twig->addExtension(new DebugExtension());
 
         /**
-         * Controle d'accès en fonction du rôle du user
+         * Access control according to user role
          */
         $isGranted = new \Twig\TwigFunction('is_granted', function () {
             $user = $this->userIsConnected();
+            $roleRepository = new RoleRepository();
             if ($user) {
                 $userRoleId = $user->getRoleId();
-                $role = Role::findById($userRoleId);
+                $role = $roleRepository->findById($userRoleId);
                 $roleName = $role->getName();
 
                 return $roleName;
@@ -48,7 +47,7 @@ class CoreController
         $twig->addFunction($isGranted);
 
         /**
-         * Permet de savoir si il y a un user en session 
+         * Lets you know if there is a user in session 
          */
         $user = new \Twig\TwigFunction('user', function () {
             $userCurrent = $this->userIsConnected();
@@ -61,7 +60,7 @@ class CoreController
         $twig->addFunction($user);
 
         /**
-         * Permet d'avoir la clé flashes en permanence dans la session
+         * Allows you to have the flash key permanently in the session
          */
         $displayFlashes = new \Twig\TwigFunction('display_flashes', function () {
 
@@ -80,7 +79,7 @@ class CoreController
         });
         $twig->addFunction($request_uri);
 
-        // Dynamiser l'affichage des modèles
+        // Make models display more dynamic
         $template = $twig->load($viewName . '.html.twig');
 
         // Affiche les modèles
@@ -89,17 +88,27 @@ class CoreController
 
 
     /**
-     * Permet de savoir si la méthode de soumission d'un formulaire est bien POST
+     * Allows you to know if the submission method of a form is indeed POST
      *
      * @return boolean
      */
     protected function isPost(): bool
     {
-        return $_SERVER['REQUEST_METHOD'] === 'POST';
+        return $_SERVER["REQUEST_METHOD"] === 'POST';
     }
 
     /**
-     * Permet de créer la clé flashes dans la super globale $_SESSION
+     * Allows to give access to the super global $_SERVER
+     *
+     * @return string
+     */
+    protected function uri(): string
+    {
+        return $_SERVER["REQUEST_URI"];
+    }
+
+    /**
+     * Allows to create the flashes key in the super global $_SESSION
      *
      * @param string|null $alert
      * @param string|null $message
@@ -119,7 +128,7 @@ class CoreController
     }
 
     /**
-     * Permet de créer un slug 
+     * Allows you to create a slug 
      *
      * @param string $string
      * @return string
@@ -149,7 +158,7 @@ class CoreController
     }
 
     /**
-     * Méthode permettant de récupérer le user connecté
+     * Method to retrieve logged in user
      *
      * @return ?User
      */
@@ -166,7 +175,21 @@ class CoreController
     }
 
     /**
-     * Envoyer de messages
+     * Method to retrieve an array of roles
+     *
+     * @return array
+     */
+    protected function getRoles(): array
+    {
+        $role = new RoleRepository();
+  
+        $roles = $role->findAll();
+
+        return $roles;
+    }
+
+    /**
+     * Send messages
      *
      * @param string $from
      * @param string $content
@@ -190,9 +213,9 @@ class CoreController
 
         $mail = new PHPMailer(true);
 
-        // Gestion des exceptions
+        // Exception handling
         try {
-            // Configuration de SMTP
+            // SMTP Setup
             $mail->isSMTP();
             $mail->Host = "localhost";
             $mail->Port = 1025; // Port MailHog
@@ -200,18 +223,18 @@ class CoreController
             // Charset 
             $mail->CharSet = "utf-8";
 
-            // Destinataire
+            // Recipient
             $mail->addAddress($to);
 
-            // Expéditeur
+            // Sender
             $mail->setFrom($from);
 
-            // Contenu du message
-            $mail->isHTML(true); // Permet d'ajouter des balises HTML
+            // Message content
+            $mail->isHTML(true); // Allows you to add HTML tags
             $mail->Subject = $object;
             $mail->Body = "<p>$content</p> <p>Prénom/Pseudo : $name</p>  <p>Email: $from</p> ";
 
-            // Envoyer le mail
+            // send email
             $mail->send();
             $this->flashes('success', 'Ton Bubbles message a bien été envoyé.');
         } catch (Exception) {

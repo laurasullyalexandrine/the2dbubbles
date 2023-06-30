@@ -4,40 +4,45 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Entity\User;
+use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
 
-/**
- * Controller dédié à la gestion des posts
- */
 class SecurityController extends CoreController
 {
+    protected UserRepository $userRepository;
+    protected RoleRepository $roleRepository;
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+        $this->roleRepository = new RoleRepository();
+    }
+
     /**
-     * Traitement du formulaire de connexion
+     * Login form processing
      * @return void
      */
     public function login(): void
     {
         if ($this->isPost()) {
-
             $email =  filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
             $password = filter_input(INPUT_POST, 'password');
 
-            // Vérifier l'existence du user
-            $userCurrent = User::findByEmail($email);
+            // Check the existence of the user
+            $userCurrent = $this->userRepository->findByEmail($email);
 
-            // Créer un système de contrôle du formulaire et si erreur afficher un message d'alerte
+            // Create a form control system and if error display an alert message
             if (empty($password)) {
                 $this->flashes('warning', 'Merci de saisir Ton mot de passe!');
             } elseif (
                 $userCurrent
                 && !empty($password)
-                && !password_verify($password, $userCurrent->getPassword()) // Si la vérification du mot de passe échoue
+                && !password_verify($password, $userCurrent->getPassword()) // If password verification fails
             ) {
                 $this->flashes('danger', 'Mot de passe incorrect!');
             }
 
-            // Contrôle email
+            // Email control
             if (empty($email)) {
                 $this->flashes('warning', 'Merci de saisir ton email');
             } elseif (
@@ -47,18 +52,18 @@ class SecurityController extends CoreController
                 $this->flashes('danger', 'Email incorrect!');
             }
 
-            // Contrôle du user
+            // User control
             if (!$userCurrent) {
                 $this->flashes('danger', "Cet utilisateur n'existe pas!");
                 header('Location: /security/login');
             }
 
-            // Si il y a des erreurs on les affiches sinon ...
+            // If there are errors we display them otherwise ...
             if (!empty($_SESSION["flashes"])) {
                 $this->show('security/login', [
                     'user' => $userCurrent
                 ]);
-            } // Connecter le user
+            } // Connect the user
             else {
                 $_SESSION['id'] = $userCurrent->getId();
                 $_SESSION['userObject'] = $userCurrent;
@@ -69,18 +74,17 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Traitement du formulaire d'inscription
+     * Processing the registration form
      * @return void
      */
     public function register(): void
     {
         $user = new User();
-        $role = new Role();
-        $roles = $role::findAll();
+        $roles = $this->roleRepository->findAll();
 
         if ($this->isPost()) {
 
-            // Récupérer les données recues du formalaire d'inscription
+            // Retrieve the data received from the registration form
             $pseudo = filter_input(INPUT_POST, 'pseudo');
             $slug = $this->slugify($pseudo);
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
@@ -90,7 +94,7 @@ class SecurityController extends CoreController
             $user->setPseudo($pseudo)
                 ->setEmail($email);
 
-            // Vérifier que tous les champs ne sont pas vide 
+            // Check that all fields are not empty
             if (empty($email)) {
                 $this->flashes('warning', 'Le champ email est vide');
             }
@@ -107,31 +111,30 @@ class SecurityController extends CoreController
                 $this->flashes('danger', 'Les mots de passe de correspondent pas!');
             }
 
-
-            // Contrôler si le rôle soumis est un rôle existant en BDD 
+            // Check if the submitted role is an existing role in BDD
             $rolesIdArray = [];
             $roleExist = false;
             foreach ($roles as $existingRole) {
                 $rolesIdArray[] = $existingRole->getId();
-                $getIdRoleSubmited = $existingRole::findByName($hiddenRole)->getId();
+                $getIdRoleSubmited = $this->roleRepository->findByName($hiddenRole)->getId();
 
-                // Si l'id du rôle soumis existe en base de données alors
+                // If the submitted role id exists in the database then
                 if (in_array($getIdRoleSubmited, $rolesIdArray)) {
-                    // la valeur de la variable roleExist devient true
+                    // the value of the roleExist variable becomes true
                     $roleExist = true;
                     break;
                 }
             }
 
-            // Si il n'existe pas on affiche le message d'alerte
+            // If it does not exist, the alert message is displayed.
             if (!$roleExist) {
                 $this->flashes('danger', 'Erreur lors du traitement!');
             }
 
-            // Si le formulaire est valide alors ...
+            // If the form is valid then ...
             if (empty($_SESSION["flashes"])) {
-                // Hasher le mot de passe 
-                $option = ['cost' => User::HASH_COST];
+                // Hash the password 
+                $option = ['cost' => UserRepository::HASH_COST];
                 $password = password_hash(
                     $password,
                     PASSWORD_BCRYPT,
@@ -141,26 +144,26 @@ class SecurityController extends CoreController
                     ->setPassword($password)
                     ->setRoleId($getIdRoleSubmited);
 
-                // Permettra de vérifier si l'email soumis n'exite pas en base
+                // Will allow to check if the email submitted does not exist in the database
                 try {
-                    if ($user->insert()) {
+                    if ($this->userRepository->insert($user)) {
                         $this->flashes('success', 'Ton Bubbles Space a bien été créé, C\'est parti!');
                         header('Location: /security/login');
                         return;
-                    } // Si erreur lors de l'enregistrement
+                    } // If error while recording
                     else {
                         $this->flashes('danger', "Ton Bubbles Space n'a pas été créé!");
                     }
-                } catch (\Exception $e) { // Attrapper l'exception 23000 qui correspond du code Unique de MySQL (avant ça il indiquer dans la bdd quel champ est 'unique')
+                } catch (\Exception $e) { // Catch exception 23000 which corresponds to MySQL Unique code (before that it indicates in the database which field is 'unique')
                     if ($e->getCode() === '23000') {
                         $this->flashes('danger', 'Il existe déjà un compte avec cet email!');
                     } else {
                         $this->flashes('danger', $e->getMessage());
                     }
                 }
-            } // Si le formulaire est soumis mais pas valide alors ... 
+            } // If the form is submitted but not valid then ... 
             else {
-                // Afficher le formulaire pré-rempli avec les erreurs 
+                // Show pre-filled form with errors
                 $user->setEmail($email);
                 $this->show('security/register', [
                     'user' => $user
@@ -174,7 +177,7 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Gestion du formulaire demande de réinitialisation de mot de passe
+     * Management of the password reset request form
      *
      * @return void
      */
@@ -186,7 +189,7 @@ class SecurityController extends CoreController
             if (empty($email)) {
                 $this->flashes('warning', "Celui il est important parce sinon on va rien pourvoir faire...");
             }
-            $user = User::findByEmail($email);
+            $user = $this->userRepository->findByEmail($email);
 
             try {
                 if (!$user instanceof User) {
@@ -194,19 +197,19 @@ class SecurityController extends CoreController
                 }
                 $pseudo = $user->getPseudo();
 
-                // Création d'un token d'une chaîne hexadecimal de 32 caractères
+                // Creating a token from a 32 character hexadecimal string
                 $token = bin2hex(random_bytes(32));
 
-                // Ajout du token généré à l'utilisateur reconnu
+                // Add generated token to recognized user
                 $user->setToken($token);
-                $user->update();
+                $this->userRepository->update($user);
                 $host = $_SERVER["HTTP_HOST"];
                 $scheme = array_key_exists("HTTPS", $_SERVER) ? "https" : "http";
 
-                // Générer le lien de réinitialisation de mot de passe
+                // Generate password reset link
                 $resetUrl = "$scheme://$host/security/resetPassword/$token";
 
-                // Envoyer le mail
+                // Send email
                 $this->messageSend(
                     "Réinitialisation de mot de passe",
                     $pseudo,
@@ -228,7 +231,7 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Page redirection Confirmation d'envoi de mail
+     * Redirection page Confirmation of sending mail
      *
      * @return void
      */
@@ -238,15 +241,15 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Gestion du formulaire du nouveau mot de passe
+     * Management of the new password form
      *
      * @param string $token
      * @return void
      */
     public function resetPassword(string $token): void
     {
-        // Vérifier si le token existe en bdd
-        $user = User::findOneByToken($token);
+        // Check if the token exists in db
+        $user = $this->userRepository->findOneByToken($token);
 
         if ($this->isPost()) {
             $password = filter_input(INPUT_POST, 'password');
@@ -268,11 +271,11 @@ class SecurityController extends CoreController
                 throw new \Exception("Oupss! Cet utilisateur n'existe pas!");
             } else {
                 if (empty($_SESSION["flashes"])) {
-                    // Effacer le token avec une chaîne de caractère vide
+                    // Delete token with empty string
                     $user->setToken('');
 
-                    // Hasher et remplacer le mot de passe 
-                    $option = ['cost' => User::HASH_COST];
+                    // Hasher and replace password
+                    $option = ['cost' => UserRepository::HASH_COST];
                     $password = password_hash(
                         $password,
                         PASSWORD_BCRYPT,
@@ -280,11 +283,11 @@ class SecurityController extends CoreController
                     );
                     $user->setPassword($password);
 
-                    if ($user->update()) {
+                    if ($this->userRepository->update($user)) {
                         $this->flashes('success', 'Ton mot de passe est maintenant modifié. Ah! Tu peux te connecter maintenant.');
                         header('Location: /security/login');
                         return;
-                    } // Si erreur lors de l'enregistrement
+                    } // If error while recording
                     else {
                         $this->flashes('danger', "Oupss! Ton mot de passe n'a pas été modifié!");
                     }
@@ -298,7 +301,7 @@ class SecurityController extends CoreController
     }
 
     /**
-     * Déconnexion de l'utilisateur
+     * User logout
      * @return void
      */
     public function logout(): void

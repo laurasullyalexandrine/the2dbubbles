@@ -4,13 +4,25 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Models\Post;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Comment;
+use App\Entity\Comment;
+use App\Repository\PostRepository;
+use App\Repository\RoleRepository;
+use App\Repository\UserRepository;
+use App\Repository\CommentRepository;
 
 class CommentController extends CoreController
 {
+    protected UserRepository $userRepository;
+    protected CommentRepository $commentRepository;
+    protected RoleRepository $roleRepository;
+    protected PostRepository $postRepository;
+    public function __construct()
+    {
+        $this->userRepository = new UserRepository();
+        $this->commentRepository = new CommentRepository();
+        $this->roleRepository = new RoleRepository();
+        $this->postRepository = new PostRepository();
+    }
     /**
      * Ajout d'un nouveau commentaire
      * 
@@ -19,167 +31,194 @@ class CommentController extends CoreController
     public function create(string $slug): void
     {
         $comment = new Comment();
-
-        // Trouver le Post à l'aide slug qui sera transmis à la vue
-        $post = Post::findBySlug($this->slugify($slug));
-
-        // Récupérer l'id du Post afin de le setter sur le Comment en cours de création
-        $postId = $post->getId();
-
-        // Si pas de user connecté
         if (!$this->userIsConnected()) {
-            // le rediriger vers la page de login
+            $this->flashes('warning', 'Merci de te connecter!');
             header('Location: /security/login');
         } else {
-            // Si oui Récupérer le user connecté
-            $userCurrent = $this->userIsConnected();
+            // Find the Post using slug which will be passed to the view
+            $post =  $this->postRepository->findBySlug($this->slugify($slug));
 
-            if ($this->isPost()) {
-                $content = filter_input(INPUT_POST, 'content');
+            // Retrieve the Post id in order to set it on the Comment being created
+            $postId = $post->getId();
 
-                if (empty($content)) {
-                    $this->flashes('warning', 'Le champ contenu est vide');
-                }
-                if (empty($_SESSION["flashes"])) {
-                    $comment->setContent($content)
-                        ->setPosts($postId)
-                        ->setStatus(2);
-                    $userId = $userCurrent->getId();
-                    $comment->setUsers($userId);
+            // If no user connected
+            if (!$this->userIsConnected()) {
+                // redirect him to the login page
+                header('Location: /security/login');
+            } else {
+                // If yes Retrieve the connected user
+                $userCurrent = $this->userIsConnected();
 
-                    if ($comment->insert()) {
-                        $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
-                        header('Location: /post/read/' . $post->getSlug());
-                        return;
-                    } else {
-                        $this->flashes('danger', "Le commentaire n'a pas été créé!");
+                if ($this->isPost()) {
+                    $content = filter_input(INPUT_POST, 'content');
+
+                    if (empty($content)) {
+                        $this->flashes('warning', 'Le champ contenu est vide');
                     }
-                } else {
-                    $comment->setContent(filter_input(INPUT_POST, $content));
+                    if (empty($_SESSION["flashes"])) {
+                        $comment->setContent($content)
+                            ->setPostId($postId)
+                            ->setStatus(Comment::STATUS_WAITING);
+                        $userId = $userCurrent->getId();
+                        $comment->setUserId($userId);
+
+                        if ($this->commentRepository->insert($comment)) {
+                            $this->flashes('warning', 'Ton bubbles Comment a bien été enregistré. Il est maintenant attente de validation!');
+                            header('Location: /post/read/' . $post->getSlug());
+                            return;
+                        } else {
+                            $this->flashes('danger', "Le commentaire n'a pas été créé!");
+                        }
+                    } else {
+                        $comment->setContent(filter_input(INPUT_POST, $content));
+                    }
                 }
+                $this->show('/front/comment/create', [
+                    'Comment' => new Comment(),
+                    'user' => $userCurrent,
+                    'post' => $post
+                ]);
             }
-            $this->show('/front/comment/create', [
-                'Comment' => new Comment(),
-                'user' => $userCurrent,
-                'post' => $post
-            ]);
         }
     }
 
     /**
-     * Voir un Post et ses commentaires
+     * See a Post and its comments
      * 
      * @param int $commentId
      * @return void
      */
     public function userComment(string $slug): void
     {
-        $comments = Comment::findByUser($slug);
+        // Retrieve author of comments or future comments
+        $uri= $this->uri();
+        $uri = trim($uri, '/');
+        $params = explode('/', $uri);
+        $userCurrentslug = end($params);
 
-        if (empty($comments)) {
-            $author = null;
+        $comments = $this->commentRepository->findByUser($slug);
+        if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
         } else {
-            $posts = [];
-            foreach ($comments as $comment) {
-                $posts[] = Post::findBySlug($this->slugify($comment->post));
-                
-                foreach ($posts as $post) {
-                    $author = User::findByPseudo($post->user);
+            $author = $this->userRepository->findBySlug($userCurrentslug);
+            if ($author == $this->userIsConnected()) {
+                $posts = [];
+                foreach ($comments as $comment) {
+                    $posts[] = $this->postRepository->findBySlug($this->slugify($comment->post));
+
+                    foreach ($posts as $post) {
+                        $author = $this->userRepository->findByPseudo($post->user);
+                    }
                 }
+                $this->show('front/comment/read', [
+                    'comments' => $comments,
+                    'author' => $author
+                ]);
+            } else {
+                $error403 = new ErrorController;
+                $error403->accessDenied();
             }
         }
-        $this->show('front/comment/read', [
-            'comments' => $comments,
-            'author' => $author
-        ]);
     }
 
     /**
-     * Édition d'un commentaire
+     * Editing a comment
      *
      * @param [type] $commentId
      * @return void
      */
     public function update(int $commentId): void
     {
-        $comment = Comment::findById($commentId);
-
-        // Stocker le user en session
-        $userCurrent = $this->userIsConnected();
-
-        // Récupérer le role du user en session
-        $roleId = $userCurrent->getRoleId();
-        Role::findById($roleId);
-
-        // Récupérer l'id de lauteur du commentaire
-        $idAuthorComment = $comment->getUsers();
-
-        // Vérifier qu'il y a bien un user connecté
-        if (!$userCurrent) {
-            // Sinon le rediriger vers la page de login
-            header('Location: /security/login');
-        } elseif($userCurrent->getId() !== $idAuthorComment) {
-            // Si le user connecté n'est pas l'auteur du commentaire
-            $error403 = new ErrorController;
-            $error403->accessDenied(); 
+        if (!$this->commentRepository->findById($commentId)) {
+            $error404 = new ErrorController();
+            $error404->pageNotFoundAction();
         } else {
-            if ($this->isPost()) {
-                $content = filter_input(INPUT_POST, 'content');
-        
-                if (empty($content)) {
-                    $this->flashes('warning', 'Le champ contenu est vide.');
+            $comment = $this->commentRepository->findById($commentId);
+
+            // Store user in session
+            $userCurrent = $this->userIsConnected();
+
+            // Check that there is indeed a connected user
+            if (!$userCurrent) {
+                $this->flashes('warning', 'Merci de te connecter!');
+                header('Location: /security/login');
+            } else {
+                // Retrieve the role of the user in session
+                $roleId = $userCurrent->getRoleId();
+                $this->roleRepository->findById($roleId);
+
+                // Get comment author id
+                $idAuthorComment = $comment->getUserId();
+                if ($userCurrent->getId() !== $idAuthorComment) {
+                    // If the connected user is not the author of the comment
+                    $error403 = new ErrorController;
+                    $error403->accessDenied();
                 }
 
-                if (empty($_SESSION["flashes"])) {
-                    $comment->setContent($content)
-                        ->setStatus(2);
+                if ($this->isPost()) {
+                    $content = filter_input(INPUT_POST, 'content');
 
-                    if ($comment->update()) {
-                        header('Location: /comment/userComment/'. $userCurrent->getSlug());
-                        $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Par contre il est de nouveau en cours de validation.");
-                        return;
-                    } else {
-                        $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");
+                    if (empty($content)) {
+                        $this->flashes('warning', 'Le champ contenu est vide.');
+                    }
+
+                    if (empty($_SESSION["flashes"])) {
+                        $comment->setContent($content)
+                            ->setStatus(Comment::STATUS_WAITING);
+
+                        if ($this->commentRepository->update($comment)) {
+                            header('Location: /comment/userComment/' . $userCurrent->getSlug());
+                            $this->flashes('success', "Ton Bubbles Comment a bien été modifié. Par contre il est de nouveau en cours de validation.");
+                            return;
+                        } else {
+                            $this->flashes('danger', "Le Bubbles Comment n'a pas été modifié!");
+                        }
                     }
                 }
+                // Show view by passing Comment info and alert messages
+                $this->show('front/comment/update', [
+                    'comment' => $comment
+                ]);
             }
         }
-        // Afficher la vue en transmettant les infos du Comment et des messages d'alerte.
-        $this->show('front/comment/update', [
-            'comment' => $comment
-        ]);
     }
 
     /**
-     * Suppression d'un commentaire
+     * Deleting a comment
      * 
      * @param [type] $commentId
      * @return void
      */
     public function delete(int $commentId)
     {
-        $comment = Comment::findById($commentId);
-        $idAuthorComment = $comment->getUsers();
-
-        if (!$this->userIsConnected()) {
-            $this->flashes('warning', 'Merci de te connecter!');
-            header('Location: /security/login');
-        } elseif($this->userIsConnected()->getId() !== $idAuthorComment) {
-             // Si le user connecté n'est pas l'auteur du commentaire
-             $error403 = new ErrorController;
-             $error403->accessDenied();
+        if (!$this->commentRepository->findById($commentId)) {
+            $error404 = new ErrorController();
+            $error404->pageNotFoundAction();
         } else {
-            if ($comment) {
-                $comment->delete();
-                $this->flashes('success', "Le commentaire a bien été supprimé.");
-                header('Location: /comment/userComment/'. $this->userIsConnected()->getSlug());
-                return;
+            $comment = $this->commentRepository->findById($commentId);
+            $idAuthorComment = $comment->getUserId();
+
+            if (!$this->userIsConnected()) {
+                $this->flashes('warning', 'Merci de te connecter!');
+                header('Location: /security/login');
+            } elseif ($this->userIsConnected()->getId() !== $idAuthorComment) {
+                // If the connected user is not the author of the comment
+                $error403 = new ErrorController;
+                $error403->accessDenied();
             } else {
-                $this->flashes('danger', "Ce commentaire n'existe pas!");
+                if ($comment) {
+                    $this->commentRepository->delete($commentId);
+                    $this->flashes('success', "Le commentaire a bien été supprimé.");
+                    header('Location: /comment/userComment/' . $this->userIsConnected()->getSlug());
+                    return;
+                } else {
+                    $this->flashes('danger', "Ce commentaire n'existe pas!");
+                }
+                $this->show('front/comment/read', [
+                    'comment' => $comment
+                ]);
             }
-            $this->show('front/comment/read', [
-                'comment' => $comment
-            ]);
         }
     }
 }

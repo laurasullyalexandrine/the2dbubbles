@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-class MainController extends CoreController {
-    
+class MainController extends CoreController
+{
+
     /**
-     * Afficher la page d'accueil
+     * Show homepage
      *
      * @return void
      */
     public function home(): void
     {
-        $this->show('front/main/home');
+        if (!$this->userIsConnected()) {
+            $this->flashes('warning', 'Merci de te connecter!');
+            header('Location: /security/login');
+        } else {
+            $this->show('front/main/home');
+        }
     }
 }
