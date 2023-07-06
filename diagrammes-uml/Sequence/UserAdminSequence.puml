@@ -33,7 +33,7 @@ Comment -> Admin: le comment en cours de modification n'existe pas
 
 Admin  -> Post: modifier post
 else erreur 403
-Comment -> Admin: vous n'avez pas accès à cette ressource
+Post -> Admin: vous n'avez pas accès à cette ressource
 
 Admin  -> Comment: modérer commentaire
 Comment -> Admin: accepter commentaire
