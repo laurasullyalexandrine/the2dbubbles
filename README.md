@@ -43,4 +43,4 @@ La gestion des comptes utilisateurs.
 
 [Documentation Twig](https://twig.symfony.com/doc/)
 
-[Docummentation PHP](https://www.php.net/docs.php)
+[Documentation PHP](https://www.php.net/docs.php)
